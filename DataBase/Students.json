@@ -1,0 +1,21 @@
+{
+    "Students":[
+        {
+            "id":1,
+            "name":"Pavan Kumar Chennupati",
+            "roll":"22501A05E0",
+            "leetcode":"pavankc",
+            "codechef":"pavankc",
+            "codeforces":"pavankc"
+        },
+        {
+            "id":2,
+            "name":"Vignesh Varanasi",
+            "roll":"22501A05J1",
+            "leetcode":"vvsvignesh",
+            "codechef":"vvsvignesh",
+            "codeforces":"vvsvignesh"
+        }
+
+    ] 
+}
