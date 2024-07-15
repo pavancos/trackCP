@@ -1,0 +1,252 @@
+// File: \Users\pavan\Documents\GitHub\trackCP\src\assets\DataBase\Students.json
+{
+    "Students":[
+        {
+            "id":1,
+            "name":"Pavan Kumar Chennupati",
+            "roll":"22501A05E0",
+            "leetcode":"pavankc",
+            "leetcodeContest":[],
+            "codechef":"pavankc",
+            "codechefContest":[],
+            "codeforces":"pavankc"
+        },
+        {
+            "id":2,
+            "name":"Vignesh Varanasi",
+            "roll":"22501A05J1",
+            "leetcode":"vvsvignesh",
+            "leetcodeContest":[],
+            "codechef":"vvsvignesh",
+            "codechefContest":[],
+            "codeforces":"vvsvignesh"
+        }
+
+    ] 
+}
+
+// File: \Users\pavan\Documents\GitHub\trackCP\src\assets\DataBase\Students.json
+{
+    "Students":[
+        {
+            "id":1,
+            "name":"Pavan Kumar Chennupati",
+            "roll":"22501A05E0",
+            "leetcode":"pavankc",
+            "leetcodeContest":[],
+            "codechef":"pavankc",
+            "codechefContest":[],
+            "codeforces":"pavankc"
+        },
+        {
+            "id":2,
+            "name":"Vignesh Varanasi",
+            "roll":"22501A05J1",
+            "leetcode":"vvsvignesh",
+            "leetcodeContest":[],
+            "codechef":"vvsvignesh",
+            "codechefContest":[],
+            "codeforces":"vvsvignesh"
+        }
+
+    ] 
+}
+
+// File: \Users\pavan\Documents\GitHub\trackCP\src\App.css
+
+// File: \Users\pavan\Documents\GitHub\trackCP\src\App.jsx
+import { useEffect, useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+import {Students} from './assets/DataBase/Students.json'
+import './App.css'
+import { LeetCode } from "leetcode-query";
+
+
+
+function App() {
+  const [contests, setContests] = useState([]);
+  const [students,setStudents]=useState(Students);
+  const [studentsContests, setStudentsContests] = useState([]);
+  const [studentsUsernames, setStudentsUsernames] = useState([]);
+  
+
+  async function getContestTest(username){
+    try{
+      const leetcode = new LeetCode();
+      const user = await leetcode.user(username);
+      console.log(user)
+    }catch(err){
+      console.log(err)
+    }
+  }
+
+  
+  useEffect(()=>{
+    console.log(students)
+  },[]);
+  
+  async function getLeetCodeContestHistory(username) {
+    // let urlAPI = `http://localhost:3000/${username}/contest/history`;
+    // let urlAPI = `https://alfa-leetcode-api.onrender.com/${username}/contest/history`
+    try{
+      let body = await fetch(`http://localhost:3000/${username}/contest/history`);
+      let res = await body.json();
+      // console.log(res.contestHistory)
+      let allContests = res.contestHistory;
+      let attendedContests = allContests.filter((contest)=>contest.attended==true);
+      // console.log(attendedContests)
+      return attendedContests;
+    }catch(err){
+      console.log(err)
+    }
+    
+  }
+
+
+
+  async function getCodeChefContestHistory(username) {
+    try{
+      let body = await fetch(`https://codechef-api.vercel.app/${username}`);
+      let res = await body.json();
+      let allContests = res.ratingData;
+      let attendedContests = allContests.reverse();
+      console.log(attendedContests)
+      return attendedContests;
+    }catch(err){
+      console.log(err)
+    
+    }
+  }
+
+
+  useEffect(()=>{
+    students.map((student)=>{
+      // console.log(student.leetcode)
+      // getLeetCodeContestHistory(student.leetcode).then((data)=>{
+      // getContestTest(student.leetcode).then((data)=>{
+      getCodeChefContestHistory(student.codechef).then((data)=>{
+        setStudentsContests([...studentsContests,data]);
+      })
+      studentsUsernames.codechefContest=studentsContests;
+    })
+  },[]);
+
+  useEffect(()=>{
+    console.log(studentsContests)
+  },[studentsContests]);
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  return (
+    <>
+      <div className="">
+        <table className="table-auto border-collapse border border-slate-500">
+          <thead>
+            <tr>
+              <th className="border border-slate-600 p-4">Roll.No</th>
+              <th className="border border-slate-600 p-4">Name</th>
+              <th className="border border-slate-600 p-4">Contest Name</th>
+              <th className="border border-slate-600 p-4">Rank</th>
+              <th className="border border-slate-600 p-4">Attended</th>
+              <th className="border border-slate-600 p-4">N.of Problems Solved</th>
+              <th className="border border-slate-600 p-4">Day</th>
+              <th className="border border-slate-600 p-4">Month</th>
+              <th className="border border-slate-600 p-4">Year</th>
+            </tr>
+          </thead>
+          <tbody>
+
+
+          </tbody>
+        </table>
+      </div>
+
+    </>
+  )
+}
+
+export default App
+
+// File: \Users\pavan\Documents\GitHub\trackCP\src\index.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// File: \Users\pavan\Documents\GitHub\trackCP\src\main.jsx
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.jsx'
+import './index.css'
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+ 
+    <App />
+  
+)
+
+// File: \Users\pavan\Documents\GitHub\trackCP\src\assets\DataBase\Students.json
+{
+    "Students":[
+        {
+            "id":1,
+            "name":"Pavan Kumar Chennupati",
+            "roll":"22501A05E0",
+            "leetcode":"pavankc",
+            "leetcodeContest":[],
+            "codechef":"pavankc",
+            "codechefContest":[],
+            "codeforces":"pavankc"
+        },
+        {
+            "id":2,
+            "name":"Vignesh Varanasi",
+            "roll":"22501A05J1",
+            "leetcode":"vvsvignesh",
+            "leetcodeContest":[],
+            "codechef":"vvsvignesh",
+            "codechefContest":[],
+            "codeforces":"vvsvignesh"
+        }
+
+    ] 
+}
+
+// File: \Users\pavan\Documents\GitHub\trackCP\src\assets\DataBase\Students.json
+{
+    "Students":[
+        {
+            "id":1,
+            "name":"Pavan Kumar Chennupati",
+            "roll":"22501A05E0",
+            "leetcode":"pavankc",
+            "leetcodeContest":[],
+            "codechef":"pavankc",
+            "codechefContest":[],
+            "codeforces":"pavankc"
+        },
+        {
+            "id":2,
+            "name":"Vignesh Varanasi",
+            "roll":"22501A05J1",
+            "leetcode":"vvsvignesh",
+            "leetcodeContest":[],
+            "codechef":"vvsvignesh",
+            "codechefContest":[],
+            "codeforces":"vvsvignesh"
+        }
+
+    ] 
+}
+

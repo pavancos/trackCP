@@ -5,16 +5,22 @@
             "name":"Pavan Kumar Chennupati",
             "roll":"22501A05E0",
             "leetcode":"pavankc",
+            "leetcodeContest":[],
             "codechef":"pavankc",
-            "codeforces":"pavankc"
+            "codechefContest":[],
+            "codeforces":"pavankc",
+            "codeforcesContest":[]
         },
         {
             "id":2,
             "name":"Vignesh Varanasi",
             "roll":"22501A05J1",
             "leetcode":"vvsvignesh",
+            "leetcodeContest":[],
             "codechef":"vvsvignesh",
-            "codeforces":"vvsvignesh"
+            "codechefContest":[],
+            "codeforces":"vvsvignesh",
+            "codeforcesContest":[]
         }
 
     ] 

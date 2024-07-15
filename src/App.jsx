@@ -1,37 +1,100 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+import {Students} from './assets/DataBase/Students.json'
 import './App.css'
-
+import { LeetCode } from "leetcode-query";
 
 function App() {
-  const [userData, setUserData] = useState([])
+  const [contests, setContests] = useState([]);
+  const [students,setStudents]=useState(Students);
+  const [studentHistory, setStudentHistory] = useState([]);
+  const [codeChefContestHistory, setcodeChefContestHistory] = useState([  ]);
+  const [leetCodeContestHistory, setleetCodeContestHistory] = useState([]);
+  const [codeForcesContestHistory, setcodeForcesContestHistory] = useState([]);
+  
+  
+  useEffect(()=>{
+    console.log("First Render of Students: ",students)
+  },[]);
 
-  async function getContestHistory(username) {
-    let urlAPI = `https://alfa-leetcode-api.onrender.com/${username}/contest/history`
-    let body = fetch(urlAPI)
-      .then(res => res.json())
-      .then(data => data)
-    return body
+
+  // LeetCode Contest History
+  async function getLeetCodeContestHistory(username) {
+    // let urlAPI = `http://localhost:3000/${username}/contest/history`;
+    // let urlAPI = `https://alfa-leetcode-api.onrender.com/${username}/contest/history`
+    try{
+      let body = await fetch(`http://localhost:3000/${username}/contest/history`);
+      let res = await body.json();
+      // console.log(res.contestHistory)
+      let allContests = res.contestHistory;
+      let attendedContests = allContests.filter((contest)=>contest.attended==true);
+      // console.log(attendedContests)
+      return attendedContests;
+    }catch(err){
+      console.log(err)
+    }
+    
   }
 
-  useEffect(() => {
-    let username = 'pavankc'
-    let data = getContestHistory(username)
-    data.then(res => {
-      console.log(res.contestHistory)
-      setUserData(res)
-      let contests = res.contestHistory.reverse();
 
+  // CodeChef Contest History
+  async function getCodeChefContestHistory(username) {
+    try{
+      let body = await fetch(`https://codechef-api.vercel.app/${username}`);
+      let res = await body.json();
+      let allContests = res.ratingData;
+      let attendedContests = allContests.reverse();
+      console.log("     in function: ",attendedContests)
+      return attendedContests;
+    }catch(err){
+      console.log(err)
+    }
+  }
+
+  // CodeForces Contest History
+  async function getCodeForcesContestHistory(username) {
+    try{
+      let body = await fetch(`https://codeforces.com/api/user.rating?handle=${username}`);
+      let res = await body.json();
+      let allContests = res.result;
+      let attendedContests = allContests.reverse();
+      console.log("     in function: ",attendedContests)
+      return attendedContests;
+    }catch(err){
+      console.log(err)
+    }
+  }
+
+  // Get codeChef Contest History of all students
+  useEffect(()=>{
+    students.map(async (student)=>{
+      let codeChefContestHistory = await getCodeChefContestHistory(student.codechef);
+      setcodeChefContestHistory((prev)=>[...prev,codeChefContestHistory]);
     })
+  },[])
 
-  }, []);
+  // Get LeetCode Contest History of all students
+  useEffect(()=>{
+    students.map(async (student)=>{
+      let leetCodeContestHistory = await getLeetCodeContestHistory(student.leetcode);
+      setleetCodeContestHistory((prev)=>[...prev,leetCodeContestHistory]);
+    })
+  },[])
 
-
+  // Get CodeForces Contest History of all students
+  useEffect(()=>{
+    students.map(async (student)=>{
+      let codeForcesContestHistory = await getCodeForcesContestHistory(student.codeforces);
+      setcodeForcesContestHistory((prev)=>[...prev,codeForcesContestHistory]);
+    })
+  },[])
 
   return (
     <>
+
       <div className="">
+        
         <table className="table-auto border-collapse border border-slate-500">
           <thead>
             <tr>
@@ -47,17 +110,7 @@ function App() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="border border-slate-700 p-4">Data 1</td>
-              <td className="border border-slate-700 p-4">Data 2</td>
-              <td className="border border-slate-700 p-4">Data 3</td>
-              <td className="border border-slate-700 p-4">Data 3</td>
-              <td className="border border-slate-700 p-4">Data 3</td>
-              <td className="border border-slate-700 p-4">Data 3</td>
-              <td className="border border-slate-700 p-4">Data 3</td>
-              <td className="border border-slate-700 p-4">Data 3</td>
-              <td className="border border-slate-700 p-4">Data 3</td>
-            </tr>
+
 
           </tbody>
         </table>
