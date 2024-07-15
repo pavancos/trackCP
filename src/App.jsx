@@ -1,22 +1,42 @@
 import { useEffect, useState, Suspense } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import {Students} from './assets/DataBase/Students.json'
 import './App.css'
 import { LeetCode } from "leetcode-query";
 
 function App() {
   const [contests, setContests] = useState([]);
-  const [students,setStudents]=useState(Students);
+  const [students,setStudents]=useState([]);
   const [studentHistory, setStudentHistory] = useState([]);
   const [codeChefContestHistory, setcodeChefContestHistory] = useState([  ]);
   const [leetCodeContestHistory, setleetCodeContestHistory] = useState([]);
   const [codeForcesContestHistory, setcodeForcesContestHistory] = useState([]);
-  
-  
+
+
+  //using Student.json from json-server
+  async function getStudents() {
+    try{
+      let body = await fetch('http://localhost:8000/Students');
+      let res = await body.json();
+      let students = await res;
+      return students;
+    }catch(err){
+      console.log(err)
+    }
+  }
+
+
+  // array of students
   useEffect(()=>{
-    console.log("First Render of Students: ",students)
-  },[]);
+    getStudents().then((students)=>{
+      setStudents(students);
+    })
+  } ,[])
+
+  //console log students
+  useEffect(()=>{
+    console.log(students)
+  } , [students])
 
 
   // LeetCode Contest History
@@ -92,7 +112,7 @@ function App() {
 
   return (
     <>
-
+    <button onClick={getStudents}>Get</button>
       <div className="">
         
         <table className="table-auto border-collapse border border-slate-500">
