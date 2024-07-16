@@ -2,13 +2,15 @@ import { useEffect, useState, Suspense } from 'react'
 import { Students } from './DataBase/Students.json'
 import { LeetCode } from "leetcode-query";
 import './App.css'
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import LeetcodeTable from './components/LeetcodeTable';
 
 function App() {
   const { register, handleSubmit } = useForm();
   const [students, setStudents] = useState(Students);
   const [filteredLeetcodeContests, setFilteredLeetcodeContests] = useState([]);
+  const [filteredCodechefContests, setFilteredCodechefContests] = useState([]);
+
 
 
   const [contests, setContests] = useState([]);
@@ -17,6 +19,7 @@ function App() {
   const [codeForcesContestHistory, setcodeForcesContestHistory] = useState([]);
   const todayDate = new Date();
   const todayFormatted = todayDate.toISOString().split('T')[0];
+  const ccDateFormat = todayDate.toISOString().split(' ')[0];
 
 
   //console log students
@@ -37,7 +40,7 @@ function App() {
       // console.log(res.contestHistory)
       let allContests = res.contestHistory;
       let attendedContests = allContests.filter((contest) => contest.attended == true);
-      console.log("LeetCode ->", username, attendedContests)
+      // console.log("LeetCode ->", username, attendedContests)
 
       // Reverse the array to get the latest contest firs
       attendedContests = attendedContests.reverse();
@@ -56,8 +59,9 @@ function App() {
       let res = await body.json();
       let allContests = res.ratingData;
       let attendedContests = allContests.reverse();
-      console.log(`Code Chef -> ${username}`, attendedContests)
+      // console.log(`Code Chef -> ${username}`, attendedContests)
       return attendedContests;
+
     } catch (err) {
       console.log(err)
     }
@@ -70,8 +74,9 @@ function App() {
       let res = await body.json();
       let allContests = res.result;
       let attendedContests = allContests.reverse();
-      console.log(`Code Forces -> ${username}`, attendedContests)
-      filterFromDate(attendedContests)
+      // console.log(`Code Forces -> ${username}`, attendedContests)
+      // filterFromDate(attendedContests)
+
       return attendedContests;
     } catch (err) {
       console.log(err)
@@ -79,12 +84,12 @@ function App() {
   }
 
   // // Get codeChef Contest History of all students
-  // useEffect(()=>{
-  //   students.map(async (student)=>{
-  //     let codeChefContestHistory = await getCodeChefContestHistory(student.codechef);
-  //     setcodeChefContestHistory((prev)=>[...prev,codeChefContestHistory]);
-  //   })
-  // },[students])
+  useEffect(() => {
+    students.map(async (student) => {
+      let codeChefContestHistory = await getCodeChefContestHistory(student.codechef);
+      setcodeChefContestHistory((prev) => [...prev, codeChefContestHistory]);
+    })
+  }, [students])
 
   // Get LeetCode Contest History of all students
   useEffect(() => {
@@ -95,25 +100,39 @@ function App() {
   }, [students])
 
   // Get CodeForces Contest History of all students
-  // useEffect(()=>{
-  //   students.map(async (student)=>{
-  //     let codeForcesContestHistory = await getCodeForcesContestHistory(student.codeforces);
-  //     setcodeForcesContestHistory((prev)=>[...prev,codeForcesContestHistory]);
-  //   })
-  // }
-  // ,[])
+  useEffect(()=>{
+    students.map(async (student)=>{
+      let codeForcesContestHistory = await getCodeForcesContestHistory(student.codeforces);
+      setcodeForcesContestHistory((prev)=>[...prev,codeForcesContestHistory]);
+    })
+  },[])
 
 
   async function handleFormSubmit(dates) {
     console.log('dates: ', dates);
-    const filteredData = students.map((student, index) => {
+    const filteredContests = students.map((student, index) => {
       return {
         student,
-        contests: filterLeetcode(dates.from, dates.to, leetCodeContestHistory[index])
+        contests: {
+          leetcode: filterLeetcode(dates.from, dates.to, leetCodeContestHistory[index]),
+          codechef: filteCodechef(dates.from, dates.to, codeChefContestHistory[index]),
+          codeforces: filterCodeforces(dates.from, dates.to, codeForcesContestHistory[index])
+        }
       };
     });
-    console.log('filteredData: ', filteredData);
-    setFilteredLeetcodeContests(filteredData);
+    console.log('filteredContests: ', filteredContests);
+    setFilteredLeetcodeContests(filteredContests);
+
+  }
+
+  function filteCodechef(fromDate, toDate, contestsData) {
+    let startDate = new Date(fromDate);
+    let endDate = new Date(toDate);
+    let filteredContests = contestsData.filter((contest) => {
+      let date = new Date(contest.end_date.split(' ')[0]);
+      return date >= startDate && date <= endDate;
+    })
+    return filteredContests
   }
 
   function filterLeetcode(fromDate, toDate, contestsData) {
@@ -121,6 +140,15 @@ function App() {
     let endDate = new Date(toDate);
     let filteredContests = contestsData.filter((contest) => {
       let date = new Date(contest.contest.startTime * 1000);
+      return date >= startDate && date <= endDate;
+    })
+    return filteredContests
+  }
+  function filterCodeforces(fromDate, toDate, contestsData) {
+    let startDate = new Date(fromDate);
+    let endDate = new Date(toDate);
+    let filteredContests = contestsData.filter((contest) => {
+      let date = new Date(contest.ratingUpdateTimeSeconds * 1000);
       return date >= startDate && date <= endDate;
     })
     return filteredContests
