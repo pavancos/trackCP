@@ -21,6 +21,28 @@
             "codechefContest":[],
             "codeforces":"vvsvignesh",
             "codeforcesContest":[]
+        },
+        {
+            "id":3,
+            "name":"Shaik Fakruddin",
+            "roll":"22501A05G1",
+            "leetcode":"skfakruddin21",
+            "leetcodeContest":[],
+            "codechef":"fakruddin2145",
+            "codechefContest":[],
+            "codeforces":"shaikfakruddin2145",
+            "codeforcesContest":[]
+        },
+        {
+            "id":4,
+            "name":"Eswar Aditya",
+            "roll":"22501A05J8",
+            "leetcode":"yeswaraditya3006",
+            "leetcodeContest":[],
+            "codechef":"yeswaraditya13",
+            "codechefContest":[],
+            "codeforces":"eswar1357",
+            "codeforcesContest":[]
         }
 
     ] 

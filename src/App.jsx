@@ -1,136 +1,155 @@
 import { useEffect, useState, Suspense } from 'react'
-import {Students} from './assets/DataBase/Students.json'
-import './App.css'
+import { Students } from './DataBase/Students.json'
 import { LeetCode } from "leetcode-query";
+import './App.css'
+import { useForm } from 'react-hook-form';
+import LeetcodeTable from './components/LeetcodeTable';
 
 function App() {
+  const { register, handleSubmit } = useForm();
+  const [students, setStudents] = useState(Students);
+  const [filteredLeetcodeContests, setFilteredLeetcodeContests] = useState([]);
+
+
   const [contests, setContests] = useState([]);
-  const [students,setStudents]=useState(Students);
-  const [studentHistory, setStudentHistory] = useState([]);
-  const [codeChefContestHistory, setcodeChefContestHistory] = useState([  ]);
+  const [codeChefContestHistory, setcodeChefContestHistory] = useState([]);
   const [leetCodeContestHistory, setleetCodeContestHistory] = useState([]);
   const [codeForcesContestHistory, setcodeForcesContestHistory] = useState([]);
+  const todayDate = new Date();
+  const todayFormatted = todayDate.toISOString().split('T')[0];
 
 
   //console log students
-  useEffect(()=>{
+  useEffect(() => {
     console.log(students)
-  } , [students])
+  }, [students])
+
+
 
 
   // LeetCode Contest History
   async function getLeetCodeContestHistory(username) {
     // let urlAPI = `http://localhost:3000/${username}/contest/history`;
     // let urlAPI = `https://alfa-leetcode-api.onrender.com/${username}/contest/history`
-    try{
+    try {
       let body = await fetch(`http://localhost:3000/${username}/contest/history`);
       let res = await body.json();
       // console.log(res.contestHistory)
       let allContests = res.contestHistory;
-      let attendedContests = allContests.filter((contest)=>contest.attended==true);
-      console.log("LeetCode ->",username,attendedContests)
-      let date = new Date(attendedContests[17].contest.startTime*1000);
-      console.log("Time Check",date.getDate(),"-",date.getMonth()+1,"-",date.getFullYear());
+      let attendedContests = allContests.filter((contest) => contest.attended == true);
+      console.log("LeetCode ->", username, attendedContests)
 
-      // get latest 3 contests
+      // Reverse the array to get the latest contest firs
       attendedContests = attendedContests.reverse();
-      let latestContests = attendedContests.slice(0,3);
-      console.log('latest Contests 3: ', latestContests);
-
-      // Get contests according to the given dates
-      let startDate = new Date(2024, 0, 1);
-      let endDate = new Date(2024, 2, 31);
-      let filteredContests = attendedContests.filter((contest)=>{
-        let date = new Date(contest.contest.startTime*1000);
-        return date>=startDate && date<=endDate;
-      })
-      console.log('filtered Contests According to Date: ', filteredContests);
 
       return attendedContests;
-    }catch(err){
+    } catch (err) {
       console.log(err)
     }
-    
-  }
 
+  }
 
   // CodeChef Contest History
   async function getCodeChefContestHistory(username) {
-    try{
+    try {
       let body = await fetch(`https://codechef-api.vercel.app/${username}`);
       let res = await body.json();
       let allContests = res.ratingData;
       let attendedContests = allContests.reverse();
-      console.log(`Code Chef -> ${username}`,attendedContests)
+      console.log(`Code Chef -> ${username}`, attendedContests)
       return attendedContests;
-    }catch(err){
+    } catch (err) {
       console.log(err)
     }
   }
-  
+
   // CodeForces Contest History
   async function getCodeForcesContestHistory(username) {
-    try{
+    try {
       let body = await fetch(`https://codeforces.com/api/user.rating?handle=${username}`);
       let res = await body.json();
       let allContests = res.result;
       let attendedContests = allContests.reverse();
-      console.log(`Code Forces -> ${username}`,attendedContests)
+      console.log(`Code Forces -> ${username}`, attendedContests)
+      filterFromDate(attendedContests)
       return attendedContests;
-    }catch(err){
+    } catch (err) {
       console.log(err)
     }
   }
 
-  // Get codeChef Contest History of all students
-  useEffect(()=>{
-    students.map(async (student)=>{
-      let codeChefContestHistory = await getCodeChefContestHistory(student.codechef);
-      setcodeChefContestHistory((prev)=>[...prev,codeChefContestHistory]);
-    })
-  },[students])
+  // // Get codeChef Contest History of all students
+  // useEffect(()=>{
+  //   students.map(async (student)=>{
+  //     let codeChefContestHistory = await getCodeChefContestHistory(student.codechef);
+  //     setcodeChefContestHistory((prev)=>[...prev,codeChefContestHistory]);
+  //   })
+  // },[students])
 
   // Get LeetCode Contest History of all students
-  useEffect(()=>{
-    students.map(async (student)=>{
+  useEffect(() => {
+    students.map(async (student) => {
       let leetCodeContestHistory = await getLeetCodeContestHistory(student.leetcode);
-      setleetCodeContestHistory((prev)=>[...prev,leetCodeContestHistory]);
+      setleetCodeContestHistory((prev) => [...prev, leetCodeContestHistory]);
     })
-  },[students])
+  }, [students])
 
   // Get CodeForces Contest History of all students
-  useEffect(()=>{
-    students.map(async (student)=>{
-      let codeForcesContestHistory = await getCodeForcesContestHistory(student.codeforces);
-      setcodeForcesContestHistory((prev)=>[...prev,codeForcesContestHistory]);
+  // useEffect(()=>{
+  //   students.map(async (student)=>{
+  //     let codeForcesContestHistory = await getCodeForcesContestHistory(student.codeforces);
+  //     setcodeForcesContestHistory((prev)=>[...prev,codeForcesContestHistory]);
+  //   })
+  // }
+  // ,[])
+
+
+  async function handleFormSubmit(dates) {
+    console.log('dates: ', dates);
+    const filteredData = students.map((student, index) => {
+      return {
+        student,
+        contests: filterLeetcode(dates.from, dates.to, leetCodeContestHistory[index])
+      };
+    });
+    console.log('filteredData: ', filteredData);
+    setFilteredLeetcodeContests(filteredData);
+  }
+
+  function filterLeetcode(fromDate, toDate, contestsData) {
+    let startDate = new Date(fromDate);
+    let endDate = new Date(toDate);
+    let filteredContests = contestsData.filter((contest) => {
+      let date = new Date(contest.contest.startTime * 1000);
+      return date >= startDate && date <= endDate;
     })
-  },[])
+    return filteredContests
+  }
 
   return (
     <>
-      <div className="">
-        
-        <table className="table-auto border-collapse border border-slate-500">
-          <thead>
-            <tr>
-              <th className="border border-slate-600 p-4">Roll.No</th>
-              <th className="border border-slate-600 p-4">Name</th>
-              <th className="border border-slate-600 p-4">Contest Name</th>
-              <th className="border border-slate-600 p-4">Rank</th>
-              <th className="border border-slate-600 p-4">Attended</th>
-              <th className="border border-slate-600 p-4">N.of Problems Solved</th>
-              <th className="border border-slate-600 p-4">Day</th>
-              <th className="border border-slate-600 p-4">Month</th>
-              <th className="border border-slate-600 p-4">Year</th>
-            </tr>
-          </thead>
-          <tbody>
+      <div className="m-5">
+        <form onSubmit={handleSubmit(handleFormSubmit)} className="max-w-md mx-auto p-4">
+          <div className='flex-row flex justify-between'>
+            <div className="mb-4">
+              <label htmlFor="from" className="block text-sm font-medium text-blue-700">From</label>
+              <input type="date" id="from" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-blue-700" {...register('from')} />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="to" className="block text-sm font-medium text-blue-700">To</label>
+              <input type="date" id="to" defaultValue={todayFormatted} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-blue-700"{...register('to')} />
+            </div>
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Submit
+          </button>
+        </form>
 
-
-          </tbody>
-        </table>
+        <LeetcodeTable data={filteredLeetcodeContests} />
       </div>
-
     </>
   )
 }
