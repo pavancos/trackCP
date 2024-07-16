@@ -1,6 +1,4 @@
 import { useEffect, useState, Suspense } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import {Students} from './assets/DataBase/Students.json'
 import './App.css'
 import { LeetCode } from "leetcode-query";
@@ -30,7 +28,24 @@ function App() {
       // console.log(res.contestHistory)
       let allContests = res.contestHistory;
       let attendedContests = allContests.filter((contest)=>contest.attended==true);
-      // console.log(attendedContests)
+      console.log("LeetCode ->",username,attendedContests)
+      let date = new Date(attendedContests[17].contest.startTime*1000);
+      console.log("Time Check",date.getDate(),"-",date.getMonth()+1,"-",date.getFullYear());
+
+      // get latest 3 contests
+      attendedContests = attendedContests.reverse();
+      let latestContests = attendedContests.slice(0,3);
+      console.log('latest Contests 3: ', latestContests);
+
+      // Get contests according to the given dates
+      let startDate = new Date(2024, 0, 1);
+      let endDate = new Date(2024, 2, 31);
+      let filteredContests = attendedContests.filter((contest)=>{
+        let date = new Date(contest.contest.startTime*1000);
+        return date>=startDate && date<=endDate;
+      })
+      console.log('filtered Contests According to Date: ', filteredContests);
+
       return attendedContests;
     }catch(err){
       console.log(err)
@@ -46,13 +61,13 @@ function App() {
       let res = await body.json();
       let allContests = res.ratingData;
       let attendedContests = allContests.reverse();
-      console.log("     in function: ",attendedContests)
+      console.log(`Code Chef -> ${username}`,attendedContests)
       return attendedContests;
     }catch(err){
       console.log(err)
     }
   }
-
+  
   // CodeForces Contest History
   async function getCodeForcesContestHistory(username) {
     try{
@@ -60,7 +75,7 @@ function App() {
       let res = await body.json();
       let allContests = res.result;
       let attendedContests = allContests.reverse();
-      console.log("     in function: ",attendedContests)
+      console.log(`Code Forces -> ${username}`,attendedContests)
       return attendedContests;
     }catch(err){
       console.log(err)
@@ -89,7 +104,7 @@ function App() {
       let codeForcesContestHistory = await getCodeForcesContestHistory(student.codeforces);
       setcodeForcesContestHistory((prev)=>[...prev,codeForcesContestHistory]);
     })
-  },[students])
+  },[])
 
   return (
     <>
