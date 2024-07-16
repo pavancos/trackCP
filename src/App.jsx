@@ -1,37 +1,18 @@
 import { useEffect, useState, Suspense } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+import {Students} from './assets/DataBase/Students.json'
 import './App.css'
 import { LeetCode } from "leetcode-query";
 
 function App() {
   const [contests, setContests] = useState([]);
-  const [students,setStudents]=useState([]);
+  const [students,setStudents]=useState(Students);
   const [studentHistory, setStudentHistory] = useState([]);
   const [codeChefContestHistory, setcodeChefContestHistory] = useState([  ]);
   const [leetCodeContestHistory, setleetCodeContestHistory] = useState([]);
   const [codeForcesContestHistory, setcodeForcesContestHistory] = useState([]);
 
-
-  //using Student.json from json-server
-  async function getStudents() {
-    try{
-      let body = await fetch('http://localhost:8000/Students');
-      let res = await body.json();
-      let students = await res;
-      return students;
-    }catch(err){
-      console.log(err)
-    }
-  }
-
-
-  // array of students
-  useEffect(()=>{
-    getStudents().then((students)=>{
-      setStudents(students);
-    })
-  } ,[])
 
   //console log students
   useEffect(()=>{
@@ -92,7 +73,7 @@ function App() {
       let codeChefContestHistory = await getCodeChefContestHistory(student.codechef);
       setcodeChefContestHistory((prev)=>[...prev,codeChefContestHistory]);
     })
-  },[])
+  },[students])
 
   // Get LeetCode Contest History of all students
   useEffect(()=>{
@@ -100,7 +81,7 @@ function App() {
       let leetCodeContestHistory = await getLeetCodeContestHistory(student.leetcode);
       setleetCodeContestHistory((prev)=>[...prev,leetCodeContestHistory]);
     })
-  },[])
+  },[students])
 
   // Get CodeForces Contest History of all students
   useEffect(()=>{
@@ -108,11 +89,10 @@ function App() {
       let codeForcesContestHistory = await getCodeForcesContestHistory(student.codeforces);
       setcodeForcesContestHistory((prev)=>[...prev,codeForcesContestHistory]);
     })
-  },[])
+  },[students])
 
   return (
     <>
-    <button onClick={getStudents}>Get</button>
       <div className="">
         
         <table className="table-auto border-collapse border border-slate-500">
