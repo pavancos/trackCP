@@ -1,0 +1,26 @@
+/* Styles specific for printing */
+@media print {
+    @page {
+      size: landscape; /* Set page orientation to landscape */
+      margin: 2mm; /* Adjust margins as needed */
+
+    }
+  
+    body {
+      /* Use relative units to help with scaling, but this won't directly set the scale */
+      font-size: 12pt; /* Adjust font size for print */
+      width: 100%; /* Ensure content uses available width */
+      overflow: hidden; /* Prevent overflow issues */
+    }
+  
+    .printable {
+      page-break-inside: avoid; /* Prevent page breaks inside elements */
+    }
+  
+    /* Set printing scale to 80% */
+    .print-scale-70 {
+      transform: scale(0.7);
+      transform-origin: 0 0;
+    }
+  }
+  

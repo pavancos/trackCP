@@ -1,190 +1,523 @@
-// File: \Users\pavan\Documents\GitHub\trackCP\src\assets\DataBase\Students.json
-{
-    "Students":[
-        {
-            "id":1,
-            "name":"Pavan Kumar Chennupati",
-            "roll":"22501A05E0",
-            "leetcode":"pavankc",
-            "leetcodeContest":[],
-            "codechef":"pavankc",
-            "codechefContest":[],
-            "codeforces":"pavankc"
-        },
-        {
-            "id":2,
-            "name":"Vignesh Varanasi",
-            "roll":"22501A05J1",
-            "leetcode":"vvsvignesh",
-            "leetcodeContest":[],
-            "codechef":"vvsvignesh",
-            "codechefContest":[],
-            "codeforces":"vvsvignesh"
-        }
+// File: \trackCP\src\components\LeetcodeTable.jsx
+import React from 'react';
 
-    ] 
-}
+function LeetcodeTable({ data }) {
 
-// File: \Users\pavan\Documents\GitHub\trackCP\src\assets\DataBase\Students.json
-{
-    "Students":[
-        {
-            "id":1,
-            "name":"Pavan Kumar Chennupati",
-            "roll":"22501A05E0",
-            "leetcode":"pavankc",
-            "leetcodeContest":[],
-            "codechef":"pavankc",
-            "codechefContest":[],
-            "codeforces":"pavankc"
-        },
-        {
-            "id":2,
-            "name":"Vignesh Varanasi",
-            "roll":"22501A05J1",
-            "leetcode":"vvsvignesh",
-            "leetcodeContest":[],
-            "codechef":"vvsvignesh",
-            "codechefContest":[],
-            "codeforces":"vvsvignesh"
-        }
+  // async function getProblems()
 
-    ] 
-}
+  const formatDate = (dateString) => {
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+  };
 
-// File: \Users\pavan\Documents\GitHub\trackCP\src\App.css
-
-// File: \Users\pavan\Documents\GitHub\trackCP\src\App.jsx
-import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import {Students} from './assets/DataBase/Students.json'
-import './App.css'
-import { LeetCode } from "leetcode-query";
-
-
-
-function App() {
-  const [contests, setContests] = useState([]);
-  const [students,setStudents]=useState(Students);
-  const [studentsContests, setStudentsContests] = useState([]);
-  const [studentsUsernames, setStudentsUsernames] = useState([]);
-  
-
-  async function getContestTest(username){
-    try{
-      const leetcode = new LeetCode();
-      const user = await leetcode.user(username);
-      console.log(user)
-    }catch(err){
-      console.log(err)
-    }
-  }
-
-  
-  useEffect(()=>{
-    console.log(students)
-  },[]);
-  
-  async function getLeetCodeContestHistory(username) {
-    // let urlAPI = `http://localhost:3000/${username}/contest/history`;
-    // let urlAPI = `https://alfa-leetcode-api.onrender.com/${username}/contest/history`
-    try{
-      let body = await fetch(`http://localhost:3000/${username}/contest/history`);
-      let res = await body.json();
-      // console.log(res.contestHistory)
-      let allContests = res.contestHistory;
-      let attendedContests = allContests.filter((contest)=>contest.attended==true);
-      // console.log(attendedContests)
-      return attendedContests;
-    }catch(err){
-      console.log(err)
-    }
-    
-  }
-
-
-
-  async function getCodeChefContestHistory(username) {
-    try{
-      let body = await fetch(`https://codechef-api.vercel.app/${username}`);
-      let res = await body.json();
-      let allContests = res.ratingData;
-      let attendedContests = allContests.reverse();
-      console.log(attendedContests)
-      return attendedContests;
-    }catch(err){
-      console.log(err)
-    
-    }
-  }
-
-
-  useEffect(()=>{
-    students.map((student)=>{
-      // console.log(student.leetcode)
-      // getLeetCodeContestHistory(student.leetcode).then((data)=>{
-      // getContestTest(student.leetcode).then((data)=>{
-      getCodeChefContestHistory(student.codechef).then((data)=>{
-        setStudentsContests([...studentsContests,data]);
-      })
-      studentsUsernames.codechefContest=studentsContests;
-    })
-  },[]);
-
-  useEffect(()=>{
-    console.log(studentsContests)
-  },[studentsContests]);
-
-
-
-
-
-
-
-
-
-  
 
 
 
 
   return (
+    <div className="overflow-x-auto">
+      <table className="table-auto border-collapse border border-slate-500 min-w-full">
+        <thead>
+          <tr>
+            <th className="border border-slate-600 p-4" rowSpan={2}>Roll.No</th>
+            <th className="border border-slate-600 p-4" rowSpan={2}>Name</th>
+            <th className="border border-slate-600 p-4" colSpan={5}>Leetcode</th>
+            <th className="border border-slate-600 p-4" colSpan={3}>Codechef</th>
+            <th className="border border-slate-600 p-4" colSpan={3}>Code Forces</th>
+          </tr>
+          <tr>
+            {/* <th className="border border-slate-600 p-4"></th>
+            <th className="border border-slate-600 p-4"></th> */}
+            <th className="border border-slate-600 p-4">Contest Name</th>
+            <th className="border border-slate-600 p-4">Rank</th>
+            <th className="border border-slate-600 p-4">No of Problems Solved</th>
+            <th className="border border-slate-600 p-4">Total Problems</th>
+            <th className="border border-slate-600 p-4">Date</th>
+            <th className="border border-slate-600 p-4">Contest Name</th>
+            <th className="border border-slate-600 p-4">Rank</th>
+            <th className="border border-slate-600 p-4">Date</th>
+            <th className="border border-slate-600 p-4">Contest Name</th>
+            <th className="border border-slate-600 p-4">Rank</th>
+            {/* <th className="border border-slate-600 p-4">No of Problems Solved</th>
+            <th className="border border-slate-600 p-4">Total Problems</th> */}
+            <th className="border border-slate-600 p-4">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map(({ student, contests }, studentIndex) => {
+            const maxRows = Math.max(contests.leetcode.length, contests.codechef.length);
+
+            return Array.from({ length: maxRows }).map((_, rowIndex) => {
+              const leetcodeContest = contests.leetcode[rowIndex] || {};
+              const codechefContest = contests.codechef[rowIndex] || {};
+              const codeforcesContest = contests.codeforces[rowIndex] || {};
+
+              return (
+                <tr key={`${studentIndex}-${rowIndex}`}>
+                  {rowIndex === 0 && (
+                    <>
+                      <td rowSpan={maxRows} className="border font-bold border-slate-600 p-4">{student.roll}</td>
+                      <td rowSpan={maxRows} className="border border-slate-600 p-4">{student.name}</td>
+                    </>
+                  )}
+                  <td className="border border-slate-600 p-4">{leetcodeContest.contest?.title}</td>
+                  <td className="border border-slate-600 p-4">{leetcodeContest.ranking}</td>
+                  <td className="border border-slate-600 p-4">{leetcodeContest.problemsSolved}</td>
+                  <td className="border border-slate-600 p-4">{leetcodeContest.totalProblems}</td>
+                  <td className="border border-slate-600 p-4">
+                    {leetcodeContest.contest ? new Date(leetcodeContest.contest.startTime * 1000).toLocaleDateString('en-IN', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric'
+                    }) : ' '}
+                  </td>
+                  <td className="border border-slate-600 p-4">{codechefContest.code || '-'}</td>
+                  <td className="border border-slate-600 p-4">{codechefContest.rank || '-'}</td>
+                  <td className="border border-slate-600 p-4">
+                    {codechefContest.end_date ? formatDate(codechefContest.end_date.split(' ')[0]) : '-'}
+                  </td>
+                  <td className="border border-slate-600 p-4">{codeforcesContest.contestName || '-'}</td>
+                  <td className="border border-slate-600 p-4">{codeforcesContest.rank || '-'}</td>
+                  {/* <td className="border border-slate-600 p-4">{codeforcesContest.solved || '-'}</td>
+                  <td className="border border-slate-600 p-4">{codeforcesContest.total || '-'}</td> */}
+                  <td className="border border-slate-600 p-4">
+                    {codeforcesContest.contestName ? new Date(codeforcesContest.ratingUpdateTimeSeconds * 1000).toLocaleDateString('en-IN', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric'
+                    }) : ' '}
+                  </td>
+                </tr>
+              );
+            });
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+export default LeetcodeTable;
+
+// File: \trackCP\src\components\LeetcodeTable.jsx
+import React from 'react';
+
+function LeetcodeTable({ data }) {
+
+  // async function getProblems()
+
+  const formatDate = (dateString) => {
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+  };
+
+
+
+
+
+  return (
+    <div className="overflow-x-auto">
+      <table className="table-auto border-collapse border border-slate-500 min-w-full">
+        <thead>
+          <tr>
+            <th className="border border-slate-600 p-4" rowSpan={2}>Roll.No</th>
+            <th className="border border-slate-600 p-4" rowSpan={2}>Name</th>
+            <th className="border border-slate-600 p-4" colSpan={5}>Leetcode</th>
+            <th className="border border-slate-600 p-4" colSpan={3}>Codechef</th>
+            <th className="border border-slate-600 p-4" colSpan={3}>Code Forces</th>
+          </tr>
+          <tr>
+            {/* <th className="border border-slate-600 p-4"></th>
+            <th className="border border-slate-600 p-4"></th> */}
+            <th className="border border-slate-600 p-4">Contest Name</th>
+            <th className="border border-slate-600 p-4">Rank</th>
+            <th className="border border-slate-600 p-4">No of Problems Solved</th>
+            <th className="border border-slate-600 p-4">Total Problems</th>
+            <th className="border border-slate-600 p-4">Date</th>
+            <th className="border border-slate-600 p-4">Contest Name</th>
+            <th className="border border-slate-600 p-4">Rank</th>
+            <th className="border border-slate-600 p-4">Date</th>
+            <th className="border border-slate-600 p-4">Contest Name</th>
+            <th className="border border-slate-600 p-4">Rank</th>
+            {/* <th className="border border-slate-600 p-4">No of Problems Solved</th>
+            <th className="border border-slate-600 p-4">Total Problems</th> */}
+            <th className="border border-slate-600 p-4">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map(({ student, contests }, studentIndex) => {
+            const maxRows = Math.max(contests.leetcode.length, contests.codechef.length);
+
+            return Array.from({ length: maxRows }).map((_, rowIndex) => {
+              const leetcodeContest = contests.leetcode[rowIndex] || {};
+              const codechefContest = contests.codechef[rowIndex] || {};
+              const codeforcesContest = contests.codeforces[rowIndex] || {};
+
+              return (
+                <tr key={`${studentIndex}-${rowIndex}`}>
+                  {rowIndex === 0 && (
+                    <>
+                      <td rowSpan={maxRows} className="border font-bold border-slate-600 p-4">{student.roll}</td>
+                      <td rowSpan={maxRows} className="border border-slate-600 p-4">{student.name}</td>
+                    </>
+                  )}
+                  <td className="border border-slate-600 p-4">{leetcodeContest.contest?.title}</td>
+                  <td className="border border-slate-600 p-4">{leetcodeContest.ranking}</td>
+                  <td className="border border-slate-600 p-4">{leetcodeContest.problemsSolved}</td>
+                  <td className="border border-slate-600 p-4">{leetcodeContest.totalProblems}</td>
+                  <td className="border border-slate-600 p-4">
+                    {leetcodeContest.contest ? new Date(leetcodeContest.contest.startTime * 1000).toLocaleDateString('en-IN', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric'
+                    }) : ' '}
+                  </td>
+                  <td className="border border-slate-600 p-4">{codechefContest.code || '-'}</td>
+                  <td className="border border-slate-600 p-4">{codechefContest.rank || '-'}</td>
+                  <td className="border border-slate-600 p-4">
+                    {codechefContest.end_date ? formatDate(codechefContest.end_date.split(' ')[0]) : '-'}
+                  </td>
+                  <td className="border border-slate-600 p-4">{codeforcesContest.contestName || '-'}</td>
+                  <td className="border border-slate-600 p-4">{codeforcesContest.rank || '-'}</td>
+                  {/* <td className="border border-slate-600 p-4">{codeforcesContest.solved || '-'}</td>
+                  <td className="border border-slate-600 p-4">{codeforcesContest.total || '-'}</td> */}
+                  <td className="border border-slate-600 p-4">
+                    {codeforcesContest.contestName ? new Date(codeforcesContest.ratingUpdateTimeSeconds * 1000).toLocaleDateString('en-IN', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric'
+                    }) : ' '}
+                  </td>
+                </tr>
+              );
+            });
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+export default LeetcodeTable;
+
+// File: \trackCP\src\DataBase\Students.json
+{
+    "Students":[
+        {
+            "id":1,
+            "name":"Pavan Kumar Chennupati",
+            "roll":"22501A05E0",
+            "leetcode":"pavankc",
+            "leetcodeContest":[],
+            "codechef":"pavankc",
+            "codechefContest":[],
+            "codeforces":"pavankc",
+            "codeforcesContest":[]
+        },
+        {
+            "id":2,
+            "name":"Vignesh Varanasi",
+            "roll":"22501A05J1",
+            "leetcode":"vvsvignesh",
+            "leetcodeContest":[],
+            "codechef":"vvsvignesh",
+            "codechefContest":[],
+            "codeforces":"vvsvignesh",
+            "codeforcesContest":[]
+        },
+        {
+            "id":3,
+            "name":"Shaik Fakruddin",
+            "roll":"22501A05G1",
+            "leetcode":"skfakruddin21",
+            "leetcodeContest":[],
+            "codechef":"fakruddin2145",
+            "codechefContest":[],
+            "codeforces":"shaikfakruddin2145",
+            "codeforcesContest":[]
+        },
+        {
+            "id":4,
+            "name":"Eswar Aditya",
+            "roll":"22501A05J8",
+            "leetcode":"yeswaraditya3006",
+            "leetcodeContest":[],
+            "codechef":"yeswaraditya13",
+            "codechefContest":[],
+            "codeforces":"eswar1357",
+            "codeforcesContest":[]
+        }
+
+    ] 
+}
+
+// File: \trackCP\src\App.css
+
+// File: \trackCP\src\App.jsx
+import { useEffect, useState, Suspense } from 'react'
+import { Students } from './DataBase/Students.json'
+import { LeetCode } from "leetcode-query";
+import './App.css'
+import { set, useForm } from 'react-hook-form';
+import LeetcodeTable from './components/LeetcodeTable';
+
+function App() {
+  const { register, handleSubmit } = useForm();
+  const [students, setStudents] = useState(Students);
+  const [filteredLeetcodeContests, setFilteredLeetcodeContests] = useState([]);
+  const [filteredCodechefContests, setFilteredCodechefContests] = useState([]);
+  const { LeetcodeContests, setLeetcodeContests } = useState([]);
+  const { CodechefContests, setCodechefContests } = useState([]);
+  const { CodeforcesContests, setCodeforcesContests } = useState([]);
+
+
+
+  const [contests, setContests] = useState([]);
+  const [codeChefContestHistory, setcodeChefContestHistory] = useState([]);
+  const [leetCodeContestHistory, setleetCodeContestHistory] = useState([]);
+  const [codeForcesContestHistory, setcodeForcesContestHistory] = useState([]);
+  const todayDate = new Date();
+  const todayFormatted = todayDate.toISOString().split('T')[0];
+  const ccDateFormat = todayDate.toISOString().split(' ')[0];
+
+
+  //console log students
+  useEffect(() => {
+    console.log(students)
+  }, [students])
+
+
+
+
+  // LeetCode Contest History
+  async function getLeetCodeContestHistory(username) {
+    // let urlAPI = `http://localhost:3000/${username}/contest/history`;
+    // let urlAPI = `https://alfa-leetcode-api.onrender.com/${username}/contest/history`
+    try {
+      let body = await fetch(`http://localhost:3000/${username}/contest/history`);
+      let res = await body.json();
+      // console.log(res.contestHistory)
+      let allContests = res.contestHistory;
+      let attendedContests = allContests.filter((contest) => contest.attended == true);
+      // console.log("LeetCode ->", username, attendedContests)
+
+      // Reverse the array to get the latest contest firs
+      attendedContests = attendedContests.reverse();
+
+      return attendedContests;
+    } catch (err) {
+      console.log(err)
+    }
+
+  }
+
+  // CodeChef Contest History
+  async function getCodeChefContestHistory(username) {
+    try {
+      let body = await fetch(`https://codechef-api.vercel.app/${username}`);
+      let res = await body.json();
+      let allContests = res.ratingData;
+      let attendedContests = allContests.reverse();
+      // console.log(`Code Chef -> ${username}`, attendedContests)
+      return attendedContests;
+
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  // CodeForces Contest History
+  async function getCodeForcesContestHistory(username) {
+    try {
+      let body = await fetch(`https://codeforces.com/api/user.rating?handle=${username}`);
+      let res = await body.json();
+      let allContests = res.result;
+      let attendedContests = allContests.reverse();
+      // console.log(`Code Forces -> ${username}`, attendedContests)
+      // filterFromDate(attendedContests)
+
+      return attendedContests;
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  // Get total problems in Codeforces contest
+  async function getTotalProblems(contestId) {
+    try {
+      let body = await fetch(`https://codeforces.com/api/contest.standings/?contestId=${contestId}&from=1&count=1`);
+      let res = await body.json();
+      let total = res.result.problems.length;
+      return total;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+
+    // Get Solved problems in Codeforces contest
+  async function getSolved(username, contestId) {
+    try {
+      let body = await fetch(`https://codeforces.com/api/contest.status?handle=${username}&contestId=${contestId}`);
+      let res = await body.json();
+      res.result = res.result.filter((problem) => problem.verdict == "OK");
+      let solved = res.result.length;
+      return solved;
+    }catch(err){
+      console.log(err);
+    }
+  }
+
+  // // Get codeChef Contest History of all students
+  useEffect(() => {
+    students.map(async (student) => {
+      let codeChefContestHistory = await getCodeChefContestHistory(student.codechef);
+      setcodeChefContestHistory((prev) => [...prev, codeChefContestHistory]);
+    })
+  }, [students])
+
+  // Get LeetCode Contest History of all students
+  useEffect(() => {
+    students.map(async (student) => {
+      let leetCodeContestHistory = await getLeetCodeContestHistory(student.leetcode);
+      setleetCodeContestHistory((prev) => [...prev, leetCodeContestHistory]);
+    })
+  }, [students])
+
+  // Get CodeForces Contest History of all students
+  useEffect(() => {
+    students.map(async (student) => {
+      let codeForcesContestHistory = await getCodeForcesContestHistory(student.codeforces);
+      setcodeForcesContestHistory((prev) => [...prev, codeForcesContestHistory]);
+    })
+  }, [])
+
+
+  async function handleFormSubmit(dates) {
+    console.log('dates: ', dates);
+    // FILTER STUDENTS ACCORDING TO ROLL NO ACCORDING TO LAST 2 VALUES
+    let fromRoll = dates.fromroll;
+    let toRoll = dates.toroll;
+    let students = Students.filter((student) => {
+      let roll = student.roll;
+      let rollNo = roll.split('A')[1];
+      return rollNo >= fromRoll.split('A')[1] && rollNo <= toRoll.split('A')[1];
+    });
+    let filteredContests = students.map(async (student, index) => {
+      let leetcode = await getLeetCodeContestHistory(student.leetcode);
+      let codechef = await getCodeChefContestHistory(student.codechef);
+      let codeforces = await getCodeForcesContestHistory(student.codeforces);
+
+
+      // console.log('leetcode: ', leetcode);
+      // console.log('codechef: ', codechef);
+      // console.log('codeforces: ', codeforces);
+      return {
+        student,
+        contests: {
+          leetcode: filterLeetcode(dates.from, dates.to, leetcode),
+          codechef: filteCodechef(dates.from, dates.to, codechef),
+          codeforces: filterCodeforces(dates.from, dates.to, codeforces,student.codeforces)
+        }
+      };
+    });
+    filteredContests = await Promise.all(filteredContests);
+    console.log('filteredContests: ', filteredContests);
+    setFilteredLeetcodeContests(filteredContests);
+
+  }
+
+  function filteCodechef(fromDate, toDate, contestsData) {
+    let startDate = new Date(fromDate);
+    let endDate = new Date(toDate);
+    let filteredContests = contestsData.filter((contest) => {
+      let date = new Date(contest.end_date.split(' ')[0]);
+      return date >= startDate && date <= endDate;
+    })
+
+    return filteredContests
+  }
+
+  function filterLeetcode(fromDate, toDate, contestsData) {
+    let startDate = new Date(fromDate);
+    let endDate = new Date(toDate);
+    let filteredContests = contestsData.filter((contest) => {
+      let date = new Date(contest.contest.startTime * 1000);
+      return date >= startDate && date <= endDate;
+    })
+    return filteredContests
+  }
+
+  function filterCodeforces(fromDate, toDate, contestsData) {
+    let startDate = new Date(fromDate);
+    let endDate = new Date(toDate);
+    let filteredContests = contestsData.filter((contest) => {
+      let date = new Date(contest.ratingUpdateTimeSeconds * 1000);
+      return date >= startDate && date <= endDate;
+    });
+    // filteredContests = filteredContests.map((contest) => {
+    //   let tmp = contest;
+    //   let total = getTotalProblems(contest.contestId);
+    //   total.then((res) => {
+    //     tmp.total = res;
+    //   });
+    //   let solved = getSolved(contest.handle, contest.contestId);
+    //   solved.then((res) => {
+    //     tmp.solved = res;
+    //   });
+    //   return tmp;
+    // });
+    return filteredContests
+  }
+
+  return (
     <>
-      <div className="">
-        <table className="table-auto border-collapse border border-slate-500">
-          <thead>
-            <tr>
-              <th className="border border-slate-600 p-4">Roll.No</th>
-              <th className="border border-slate-600 p-4">Name</th>
-              <th className="border border-slate-600 p-4">Contest Name</th>
-              <th className="border border-slate-600 p-4">Rank</th>
-              <th className="border border-slate-600 p-4">Attended</th>
-              <th className="border border-slate-600 p-4">N.of Problems Solved</th>
-              <th className="border border-slate-600 p-4">Day</th>
-              <th className="border border-slate-600 p-4">Month</th>
-              <th className="border border-slate-600 p-4">Year</th>
-            </tr>
-          </thead>
-          <tbody>
+      <div className="m-5">
+        <h1 className="text-2xl font-bold text-blue-700 text-center">Contest Tracker</h1>
+        <form onSubmit={handleSubmit(handleFormSubmit)} className="max-w-md mx-auto p-4">
+          <div className="flex-row flex justify-between">
+            <div className="mb-4 w-1/2 pr-2">
+              <label htmlFor="from" className="block text-sm font-medium text-blue-700">From</label>
+              <input type="date" id="from" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-blue-700" {...register('from')} />
+            </div>
+            <div className="mb-4 w-1/2 pl-2">
+              <label htmlFor="to" className="block text-sm font-medium text-blue-700">To</label>
+              <input type="date" id="to" defaultValue={todayFormatted} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-blue-700" {...register('to')} />
+            </div>
+          </div>
+          <div className="flex-row flex justify-between">
+            <div className="mb-4 w-1/2 pr-2">
+              <label htmlFor="fromroll" className="block text-sm font-medium text-blue-700">From Roll No</label>
+              <input type="text" id="fromroll" defaultValue="22501A05E0" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-blue-700" {...register('fromroll')} onInput={(e) => e.target.value = e.target.value.toUpperCase()} />
+            </div>
+            <div className="mb-4 w-1/2 pl-2">
+              <label htmlFor="toroll" className="block text-sm font-medium text-blue-700">To Roll No</label>
+              <input type="text" id="toroll" defaultValue="22501A05G1" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-blue-700" {...register('toroll')} onInput={(e) => e.target.value = e.target.value.toUpperCase()}/>
+            </div>
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Submit
+          </button>
+        </form>
 
 
-          </tbody>
-        </table>
+        <LeetcodeTable data={filteredLeetcodeContests} />
       </div>
-
     </>
   )
 }
 
 export default App
 
-// File: \Users\pavan\Documents\GitHub\trackCP\src\index.css
+// File: \trackCP\src\index.css
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-// File: \Users\pavan\Documents\GitHub\trackCP\src\main.jsx
+// File: \trackCP\src\main.jsx
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
@@ -196,34 +529,108 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   
 )
 
-// File: \Users\pavan\Documents\GitHub\trackCP\src\assets\DataBase\Students.json
-{
-    "Students":[
-        {
-            "id":1,
-            "name":"Pavan Kumar Chennupati",
-            "roll":"22501A05E0",
-            "leetcode":"pavankc",
-            "leetcodeContest":[],
-            "codechef":"pavankc",
-            "codechefContest":[],
-            "codeforces":"pavankc"
-        },
-        {
-            "id":2,
-            "name":"Vignesh Varanasi",
-            "roll":"22501A05J1",
-            "leetcode":"vvsvignesh",
-            "leetcodeContest":[],
-            "codechef":"vvsvignesh",
-            "codechefContest":[],
-            "codeforces":"vvsvignesh"
-        }
+// File: \trackCP\src\components\LeetcodeTable.jsx
+import React from 'react';
 
-    ] 
+function LeetcodeTable({ data }) {
+
+  // async function getProblems()
+
+  const formatDate = (dateString) => {
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+  };
+
+
+
+
+
+  return (
+    <div className="overflow-x-auto">
+      <table className="table-auto border-collapse border border-slate-500 min-w-full">
+        <thead>
+          <tr>
+            <th className="border border-slate-600 p-4" rowSpan={2}>Roll.No</th>
+            <th className="border border-slate-600 p-4" rowSpan={2}>Name</th>
+            <th className="border border-slate-600 p-4" colSpan={5}>Leetcode</th>
+            <th className="border border-slate-600 p-4" colSpan={3}>Codechef</th>
+            <th className="border border-slate-600 p-4" colSpan={3}>Code Forces</th>
+          </tr>
+          <tr>
+            {/* <th className="border border-slate-600 p-4"></th>
+            <th className="border border-slate-600 p-4"></th> */}
+            <th className="border border-slate-600 p-4">Contest Name</th>
+            <th className="border border-slate-600 p-4">Rank</th>
+            <th className="border border-slate-600 p-4">No of Problems Solved</th>
+            <th className="border border-slate-600 p-4">Total Problems</th>
+            <th className="border border-slate-600 p-4">Date</th>
+            <th className="border border-slate-600 p-4">Contest Name</th>
+            <th className="border border-slate-600 p-4">Rank</th>
+            <th className="border border-slate-600 p-4">Date</th>
+            <th className="border border-slate-600 p-4">Contest Name</th>
+            <th className="border border-slate-600 p-4">Rank</th>
+            {/* <th className="border border-slate-600 p-4">No of Problems Solved</th>
+            <th className="border border-slate-600 p-4">Total Problems</th> */}
+            <th className="border border-slate-600 p-4">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map(({ student, contests }, studentIndex) => {
+            const maxRows = Math.max(contests.leetcode.length, contests.codechef.length);
+
+            return Array.from({ length: maxRows }).map((_, rowIndex) => {
+              const leetcodeContest = contests.leetcode[rowIndex] || {};
+              const codechefContest = contests.codechef[rowIndex] || {};
+              const codeforcesContest = contests.codeforces[rowIndex] || {};
+
+              return (
+                <tr key={`${studentIndex}-${rowIndex}`}>
+                  {rowIndex === 0 && (
+                    <>
+                      <td rowSpan={maxRows} className="border font-bold border-slate-600 p-4">{student.roll}</td>
+                      <td rowSpan={maxRows} className="border border-slate-600 p-4">{student.name}</td>
+                    </>
+                  )}
+                  <td className="border border-slate-600 p-4">{leetcodeContest.contest?.title}</td>
+                  <td className="border border-slate-600 p-4">{leetcodeContest.ranking}</td>
+                  <td className="border border-slate-600 p-4">{leetcodeContest.problemsSolved}</td>
+                  <td className="border border-slate-600 p-4">{leetcodeContest.totalProblems}</td>
+                  <td className="border border-slate-600 p-4">
+                    {leetcodeContest.contest ? new Date(leetcodeContest.contest.startTime * 1000).toLocaleDateString('en-IN', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric'
+                    }) : ' '}
+                  </td>
+                  <td className="border border-slate-600 p-4">{codechefContest.code || '-'}</td>
+                  <td className="border border-slate-600 p-4">{codechefContest.rank || '-'}</td>
+                  <td className="border border-slate-600 p-4">
+                    {codechefContest.end_date ? formatDate(codechefContest.end_date.split(' ')[0]) : '-'}
+                  </td>
+                  <td className="border border-slate-600 p-4">{codeforcesContest.contestName || '-'}</td>
+                  <td className="border border-slate-600 p-4">{codeforcesContest.rank || '-'}</td>
+                  {/* <td className="border border-slate-600 p-4">{codeforcesContest.solved || '-'}</td>
+                  <td className="border border-slate-600 p-4">{codeforcesContest.total || '-'}</td> */}
+                  <td className="border border-slate-600 p-4">
+                    {codeforcesContest.contestName ? new Date(codeforcesContest.ratingUpdateTimeSeconds * 1000).toLocaleDateString('en-IN', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric'
+                    }) : ' '}
+                  </td>
+                </tr>
+              );
+            });
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
-// File: \Users\pavan\Documents\GitHub\trackCP\src\assets\DataBase\Students.json
+export default LeetcodeTable;
+
+// File: \trackCP\src\DataBase\Students.json
 {
     "Students":[
         {
@@ -234,7 +641,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             "leetcodeContest":[],
             "codechef":"pavankc",
             "codechefContest":[],
-            "codeforces":"pavankc"
+            "codeforces":"pavankc",
+            "codeforcesContest":[]
         },
         {
             "id":2,
@@ -244,7 +652,30 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             "leetcodeContest":[],
             "codechef":"vvsvignesh",
             "codechefContest":[],
-            "codeforces":"vvsvignesh"
+            "codeforces":"vvsvignesh",
+            "codeforcesContest":[]
+        },
+        {
+            "id":3,
+            "name":"Shaik Fakruddin",
+            "roll":"22501A05G1",
+            "leetcode":"skfakruddin21",
+            "leetcodeContest":[],
+            "codechef":"fakruddin2145",
+            "codechefContest":[],
+            "codeforces":"shaikfakruddin2145",
+            "codeforcesContest":[]
+        },
+        {
+            "id":4,
+            "name":"Eswar Aditya",
+            "roll":"22501A05J8",
+            "leetcode":"yeswaraditya3006",
+            "leetcodeContest":[],
+            "codechef":"yeswaraditya13",
+            "codechefContest":[],
+            "codeforces":"eswar1357",
+            "codeforcesContest":[]
         }
 
     ] 

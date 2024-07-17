@@ -5,44 +5,32 @@
             "name":"Pavan Kumar Chennupati",
             "roll":"22501A05E0",
             "leetcode":"pavankc",
-            "leetcodeContest":[],
             "codechef":"pavankc",
-            "codechefContest":[],
-            "codeforces":"pavankc",
-            "codeforcesContest":[]
+            "codeforces":"pavankc"
         },
         {
             "id":2,
             "name":"Vignesh Varanasi",
             "roll":"22501A05J1",
             "leetcode":"vvsvignesh",
-            "leetcodeContest":[],
             "codechef":"vvsvignesh",
-            "codechefContest":[],
-            "codeforces":"vvsvignesh",
-            "codeforcesContest":[]
+            "codeforces":"vvsvignesh"
         },
         {
             "id":3,
             "name":"Shaik Fakruddin",
             "roll":"22501A05G1",
             "leetcode":"skfakruddin21",
-            "leetcodeContest":[],
             "codechef":"fakruddin2145",
-            "codechefContest":[],
-            "codeforces":"shaikfakruddin2145",
-            "codeforcesContest":[]
+            "codeforces":"shaikfakruddin2145"
         },
         {
             "id":4,
             "name":"Eswar Aditya",
             "roll":"22501A05J8",
             "leetcode":"yeswaraditya3006",
-            "leetcodeContest":[],
             "codechef":"yeswaraditya13",
-            "codechefContest":[],
-            "codeforces":"eswar1357",
-            "codeforcesContest":[]
+            "codeforces":"eswar1357"
         }
 
     ] 
