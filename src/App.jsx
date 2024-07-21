@@ -63,7 +63,7 @@ function App() {
   // CodeChef Contest History
   async function getCodeChefContestHistory(username) {
     try {
-      let body = await fetch(`https://codechef-api.vercel.app/${username}`);
+      let body = await fetch(`https://codechef-api.vercel.app/handle/${username}`);
       let res = await body.json();
       let allContests = res.ratingData;
       let attendedContests = allContests.reverse();
