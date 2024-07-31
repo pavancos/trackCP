@@ -50,8 +50,7 @@ function App() {
 
     // console.log(students)
     let filteredContests = students.map(async (student, index) => {
-      // console.log(student.leetcode.data.userContestRankingHistory);
-      // console.log(student.codeforces.attendedContests);
+
       return {
         student,
         contests: {
