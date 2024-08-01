@@ -46,6 +46,7 @@ function Table({ data }) {
               <th className="border border-slate-600 p-4">Date</th> */}
               <th className="border border-slate-600 p-4">Contest Name</th>
               <th className="border border-slate-600 p-4">Rank</th>
+              <th className="border border-slate-600 p-4">No of Problems Solved</th>
               <th className="border border-slate-600 p-4">Date</th>
             </tr>
           </thead>
@@ -89,6 +90,8 @@ function Table({ data }) {
                     </td> */}
                     <td className="border border-slate-600 p-4">{codeforcesContest.contestName || '-'}</td>
                     <td className="border border-slate-600 p-4">{codeforcesContest.rank || '-'}</td>
+                    <td className='border border-slate-600 p-4'>{codeforcesContest.problemsSolved || '-'}</td>
+                    {/* <td className='border border-slate-600 p-4'>{codeforcesContest.totalProblems || '-'}</td> */}
                     <td className="border border-slate-600 p-4">
                       {
                         codeforcesContest.contestName ? new Date(codeforcesContest.ratingUpdateTimeSeconds * 1000).toLocaleDateString('en-IN', {

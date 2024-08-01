@@ -27,6 +27,7 @@ function App() {
     let studentsData = await studentsDataFromAPI.json();
     // console.log('studentsData: ', studentsData);
     setstudentsInfo(studentsData);
+    console.log("useEffect Invoked");
   }
 
   useEffect(() => {
@@ -42,13 +43,11 @@ function App() {
     let toRoll = dataFromForm.toroll;
     let students = studentsInfo.filter((student) => {
       let roll = student.roll;
-      
+
       let rollNo = roll.split('A')[1];
       return rollNo >= fromRoll.split('A')[1] && rollNo <= toRoll.split('A')[1];
     });
-    console.log('students: ', students);
-
-    // console.log(students)
+    // console.log('students: ', students);
     let filteredContests = students.map(async (student, index) => {
       // console.log(student.leetcode.data.userContestRankingHistory);
       // console.log(student.codeforces.attendedContests);
@@ -78,6 +77,31 @@ function App() {
       return date >= startDate && date <= endDate;
     })
     return filteredContests
+  }
+
+  // Get solved problems in Codeforces contest
+  async function getSolved(username, contestId) {
+    try {
+      let body = await fetch(`https://codeforces.com/api/contest.status?handle=${username}&contestId=${contestId}`);
+      let res = await body.json();
+      res.result = res.result.filter((problem) => problem.verdict == "OK");
+      let solved = res.result.length;
+      return solved;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  // Get total problems in Codeforces contest
+  async function getTotalProblems(contestId) {
+    try {
+      let body = await fetch(`https://codeforces.com/api/contest.standings/?contestId=${contestId}&from=1&count=1`);
+      let res = await body.json();
+      let total = res.result.problems.length;
+      return total;
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   function filterCodeforces(fromDate, toDate, contestsData) {
