@@ -33,7 +33,7 @@ function Table({ data }) {
               <th className="border border-slate-600 p-4" rowSpan={2}>Name</th>
               <th className="border border-slate-600 p-4" colSpan={5}>Leetcode</th>
               {/* <th className="border border-slate-600 p-4" colSpan={3}>Codechef</th> */}
-              <th className="border border-slate-600 p-4" colSpan={3}>Code Forces</th>
+              <th className="border border-slate-600 p-4" colSpan={4}>Code Forces</th>
             </tr>
             <tr>
               <th className="border border-slate-600 p-4">Contest Name</th>

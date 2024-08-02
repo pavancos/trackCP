@@ -6,6 +6,8 @@ import { get, set, useForm } from 'react-hook-form';
 import Table from './components/Table';
 import PrintButton from './components/PrintButton';
 import html2pdf from 'html2pdf.js';
+import { writeFile, utils } from 'xlsx';
+import * as XLSX from 'xlsx';
 
 function App() {
   const { register, handleSubmit } = useForm();
@@ -21,13 +23,12 @@ function App() {
   const ccDateFormat = todayDate.toISOString().split(' ')[0];
 
 
-  // GET STUDENTS INFO FROM API (Only Usernames)
   async function getstudentInfo() {
     let studentsDataFromAPI = await fetch(`https://getdata-contests.vercel.app/getAllData`);
     let studentsData = await studentsDataFromAPI.json();
     // console.log('studentsData: ', studentsData);
     setstudentsInfo(studentsData);
-    console.log("useEffect Invoked");
+    // console.log("useEffect Invoked");
   }
 
   useEffect(() => {
@@ -78,31 +79,6 @@ function App() {
     return filteredContests
   }
 
-  // Get solved problems in Codeforces contest
-  async function getSolved(username, contestId) {
-    try {
-      let body = await fetch(`https://codeforces.com/api/contest.status?handle=${username}&contestId=${contestId}`);
-      let res = await body.json();
-      res.result = res.result.filter((problem) => problem.verdict == "OK");
-      let solved = res.result.length;
-      return solved;
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  // Get total problems in Codeforces contest
-  async function getTotalProblems(contestId) {
-    try {
-      let body = await fetch(`https://codeforces.com/api/contest.standings/?contestId=${contestId}&from=1&count=1`);
-      let res = await body.json();
-      let total = res.result.problems.length;
-      return total;
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
   function filterCodeforces(fromDate, toDate, contestsData) {
     let startDate = new Date(fromDate);
     let endDate = new Date(toDate);
@@ -110,18 +86,6 @@ function App() {
       let date = new Date(contest.ratingUpdateTimeSeconds * 1000);
       return date >= startDate && date <= endDate;
     });
-    // filteredContests = filteredContests.map((contest) => {
-    //   let tmp = contest;
-    //   let total = getTotalProblems(contest.contestId);
-    //   total.then((res) => {
-    //     tmp.total = res;
-    //   });
-    //   let solved = getSolved(contest.handle, contest.contestId);
-    //   solved.then((res) => {
-    //     tmp.solved = res;
-    //   });
-    //   return tmp;
-    // });
     return filteredContests
   }
 
@@ -137,6 +101,209 @@ function App() {
 
     html2pdf().from(element).set(options).save();
   };
+
+  // const exportToExcel = () => {
+  //   const dataToExport = filteredContests.map(item => {
+  //     return {
+  //       Name: item.student.name,
+  //       RollNo: item.student.roll,
+  //       // Leetcode Contest Details
+  //       LeetcodeProblemsSolved: item.contests.leetcode.map(
+
+  //       ),
+  //       LeetcodeTotalProblems: item.contests.leetcode.map(contest => contest.totalProblems).join(', '),
+  //       LeetcodeDate: item.contests.leetcode.map(contest => new Date(contest.contest.startTime * 1000).toDateString()).join(', '),
+  //       // Codeforces Contest Details
+  //       CodeforcesContestName: item.contests.codeforces.map(contest => contest.contestName),
+  //       CodeforcesRank: item.contests.codeforces.map(contest => contest.rank).join(', '),
+  //       CodeforcesProblemsSolved: item.contests.codeforces.map(contest => contest.problemsSolved).join(', '),
+  //       CodeforcesDate: item.contests.codeforces.map(contest => new Date(contest.ratingUpdateTimeSeconds * 1000).toDateString()).join(', ')
+  //     };
+  //   });
+
+
+  // const exportToExcel = () => {
+  //   const workbook = XLSX.utils.book_new();
+  //   const dataToExport = [];
+  //   let headerRow = {
+  //     RollNo: "Roll No",
+  //     Name: "Student Name",
+  //     ContestName: "Contest Name",
+  //     Rank: "Rank",
+  //     ProblemsSolved: "Problems Solved",
+  //     TotalProblems: "Total Problems",
+  //     Date: "Date"
+  //   }
+  //   dataToExport.push(headerRow);
+
+  //   filteredContests.forEach(({ student, contests }) => {
+  //     let newLeetCodeContests = contests.leetcode;
+  //     if (contests.leetcode.length > 0) {
+
+  //       const studentRow = {
+  //         RollNo: student.roll,
+  //         Name: student.name,
+  //         ContestName: '' + contests.leetcode[0].contest.title,
+  //         Rank: '' + contests.leetcode[0].ranking,
+  //         ProblemsSolved: '' + contests.leetcode[0].problemsSolved,
+  //         TotalProblems: '' + contests.leetcode[0].totalProblems,
+  //         Date: '' + new Date(contests.leetcode[0].contest.startTime * 1000).toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' }),
+  //       };
+
+  //       dataToExport.push(studentRow);
+  //       newLeetCodeContests = contests.leetcode.slice(1);
+  //     }
+      
+
+  //     const leetcodeContests = newLeetCodeContests.map((contest) => {
+  //       console
+  //       return(
+        
+  //         {
+  //           RollNo: '',
+  //           Name: '',
+  //           ContestName: contest.contest.title,
+  //           Rank: contest.ranking,
+  //           ProblemsSolved: contest.problemsSolved,
+  //           TotalProblems: contest.totalProblems,
+  //           Date: new Date(contest.contest.startTime * 1000).toLocaleDateString('en-IN', {
+  //             day: '2-digit',
+  //             month: '2-digit',
+  //             year: 'numeric',
+  //           }),
+  //         }
+  //       )});
+
+  //     const codeforcesContests = contests.codeforces.map((contest) => ({
+  //       RollNo: '',
+  //       Name: '',
+  //       ContestName: contest.contestName,
+  //       Rank: contest.rank,
+  //       ProblemsSolved: contest.problemsSolved,
+  //       TotalProblems: '',
+  //       Date: new Date(contest.ratingUpdateTimeSeconds * 1000).toLocaleDateString('en-IN', {
+  //         day: '2-digit',
+  //         month: '2-digit',
+  //         year: 'numeric',
+  //       }),
+  //     }));
+
+  //     dataToExport.push(...leetcodeContests, ...codeforcesContests);
+  //   });
+
+  //   const worksheet = XLSX.utils.json_to_sheet(dataToExport, { skipHeader: true });
+  //   const mergeCells = [];
+
+  //   let currentRow = 1;
+  //   filteredContests.forEach(({ student, contests }) => {
+  //     const totalRows = contests.leetcode.length + contests.codeforces.length;
+
+  //     if (totalRows > 0) {
+  //       mergeCells.push({
+  //         s: { r: currentRow, c: 0 },
+  //         e: { r: currentRow + totalRows - 1, c: 0 },
+  //       });
+  //       mergeCells.push({
+  //         s: { r: currentRow, c: 1 },
+  //         e: { r: currentRow + totalRows - 1, c: 1 },
+  //       });
+  //     }
+
+  //     currentRow += totalRows + 1;
+  //   });
+
+  //   worksheet['!merges'] = mergeCells;
+  //   XLSX.utils.book_append_sheet(workbook, worksheet, 'Contests');
+  //   XLSX.writeFile(workbook, 'Contests.xlsx');
+  // };
+
+
+
+  const exportToExcel = () => {
+    const workbook = XLSX.utils.book_new();
+    const dataToExport = [];
+    let headerRow={
+      RollNo: "Roll No",
+        Name: "Student Name",
+        ContestName: "Contest Name",
+        Rank: "Rank",
+        ProblemsSolved: "Problems Solved",
+        TotalProblems: "Total Problems",
+        Date: "Date"
+    }
+    dataToExport.push(headerRow);
+    filteredContests.forEach(({ student, contests }) => {
+      const studentRow = {
+        RollNo: student.roll,
+        Name: student.name,
+        ContestName: '',
+        Rank: '',
+        ProblemsSolved: '',
+        TotalProblems: '',
+        Date: '',
+      };
+
+      dataToExport.push(studentRow);
+      // const newLeetCodeContests = contests.leetcode.slice(1);
+
+      const leetcodeContests = contests.leetcode.map((contest) => ({
+        RollNo: '',
+        Name: '',
+        ContestName: contest.contest.title,
+        Rank: contest.ranking,
+        ProblemsSolved: contest.problemsSolved,
+        TotalProblems: contest.totalProblems,
+        Date: new Date(contest.contest.startTime * 1000).toLocaleDateString('en-IN', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+        }),
+      }));
+
+      const codeforcesContests = contests.codeforces.map((contest) => ({
+        RollNo: '',
+        Name: '',
+        ContestName: contest.contestName,
+        Rank: contest.rank,
+        ProblemsSolved: contest.problemsSolved,
+        TotalProblems: '',
+        Date: new Date(contest.ratingUpdateTimeSeconds * 1000).toLocaleDateString('en-IN', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+        }),
+      }));
+
+      dataToExport.push(...leetcodeContests, ...codeforcesContests);
+    });
+
+    const worksheet = XLSX.utils.json_to_sheet(dataToExport, { skipHeader: true });
+    const mergeCells = [];
+
+    let currentRow = 1;
+    filteredContests.forEach(({ student, contests }) => {
+      const totalRows = contests.leetcode.length + contests.codeforces.length;
+
+      if (totalRows > 0) {
+        mergeCells.push({
+          s: { r: currentRow, c: 0 },
+          e: { r: currentRow + totalRows - 1, c: 0 },
+        });
+        mergeCells.push({
+          s: { r: currentRow, c: 1 },
+          e: { r: currentRow + totalRows - 1, c: 1 },
+        });
+      }
+
+      currentRow += totalRows + 1;
+    });
+
+    worksheet['!merges'] = mergeCells;
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Contests');
+    XLSX.writeFile(workbook, 'Contests.xlsx');
+  };
+
+
 
   return (
     <>
@@ -171,10 +338,10 @@ function App() {
           </button>
         </form>
         <button
-          onClick={downloadPDF}
+          onClick={exportToExcel}
           className="mb-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
-          Download PDF
+          Download Xlsx
         </button>
         {/* <PrintButton></PrintButton> */}
 
