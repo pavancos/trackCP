@@ -27,15 +27,15 @@ function Table({ data }) {
     <div className="overflow-x-auto">
       <div id="table-to-pdf">
         <table className="table-auto border-collapse border border-slate-500 min-w-full">
-          <thead>
-            <tr>
+          <thead className=''>
+            <tr className='bg-[#e9edf4]'>
               <th className="border border-slate-600 p-4" rowSpan={2}>Roll.No</th>
               <th className="border border-slate-600 p-4" rowSpan={2}>Name</th>
               <th className="border border-slate-600 p-4" colSpan={5}>Leetcode</th>
               {/* <th className="border border-slate-600 p-4" colSpan={3}>Codechef</th> */}
               <th className="border border-slate-600 p-4" colSpan={4}>Code Forces</th>
             </tr>
-            <tr>
+            <tr className='bg-[#e9edf4]'>
               <th className="border border-slate-600 p-4">Contest Name</th>
               <th className="border border-slate-600 p-4">Rank</th>
               <th className="border border-slate-600 p-4">No of Problems Solved</th>
