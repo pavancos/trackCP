@@ -73,6 +73,7 @@ function Table({ data }) {
                       </>
                     )}
                     
+
                     <td className="border border-slate-600 p-4">{leetcodeContest.contest?.title}</td>
                     <td className="border border-slate-600 p-4">{leetcodeContest.ranking}</td>
                     <td className="border border-slate-600 p-4">{leetcodeContest.problemsSolved}</td>
