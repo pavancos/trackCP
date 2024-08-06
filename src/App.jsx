@@ -23,7 +23,7 @@ function App() {
   async function getstudentInfo() {
     let studentsDataFromAPI = await fetch(`https://getdata-contests.vercel.app/getAllData`);
     let studentsData = await studentsDataFromAPI.json();
-    // console.log('studentsData: ', studentsData);
+    console.log('studentsData: ', studentsData);
     setstudentsInfo(studentsData);
     // console.log("useEffect Invoked");
   }
@@ -51,7 +51,7 @@ function App() {
         student,
         contests: {
           leetcode: filterLeetcode(dataFromForm.from, dataFromForm.to, student.leetcode.data.userContestRankingHistory),
-          // codechef: filteCodechef(dataFromForm.from, dataFromForm.to, codechef),
+          codechef: filterCodechef(dataFromForm.from, dataFromForm.to, student.codechef.newAllRating),
           codeforces: filterCodeforces(dataFromForm.from, dataFromForm.to, student.codeforces.attendedContests)
         }
       };
@@ -74,6 +74,23 @@ function App() {
     })
     return filteredContests
   }
+
+  function filterCodechef(fromDate, toDate, contestsData) {
+    // console.log('contestsData: ', contestsData);
+    let startDate = new Date(fromDate);
+    let endDate = new Date(toDate);
+    let filteredContests = contestsData.filter((contest) => {
+      // console.log('contest: ', contest);
+      if(contest.end_date!=null ){
+        let date = new Date(contest.end_date.split(" ")[0]);
+        // console.log('date: ', date);
+        return date >= startDate && date <= endDate;
+      }
+    });
+    return filteredContests
+  }
+  
+  
 
   function filterCodeforces(fromDate, toDate, contestsData) {
     let startDate = new Date(fromDate);
@@ -117,7 +134,7 @@ function App() {
             Submit
           </button>
           {
-            isSubmitted &&
+            true &&
             <button
               onClick={() => ExportToXlxs(filteredContests)}
               className="w-full mt-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
@@ -128,7 +145,7 @@ function App() {
         </form>
 
         {
-          isSubmitted &&
+          true &&
           <>
             {/* <button
               onClick={() => ExportToXlxs(filteredContests)}

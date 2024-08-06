@@ -31,19 +31,19 @@ function Table({ data }) {
             <tr className='bg-[#e9edf4]'>
               <th className="border border-slate-600 p-4" rowSpan={2}>Roll.No</th>
               <th className="border border-slate-600 p-4" rowSpan={2}>Name</th>
-              <th className="border border-slate-600 p-4" colSpan={5}>Leetcode</th>
-              {/* <th className="border border-slate-600 p-4" colSpan={3}>Codechef</th> */}
+              <th className="border border-slate-600 p-4" colSpan={4}>Leetcode</th>
+              <th className="border border-slate-600 p-4" colSpan={4}>Codechef</th>
               <th className="border border-slate-600 p-4" colSpan={4}>Code Forces</th>
             </tr>
             <tr className='bg-[#e9edf4]'>
               <th className="border border-slate-600 p-4">Contest Name</th>
               <th className="border border-slate-600 p-4">Rank</th>
               <th className="border border-slate-600 p-4">No of Problems Solved</th>
-              <th className="border border-slate-600 p-4">Total Problems</th>
               <th className="border border-slate-600 p-4">Date</th>
-              {/* <th className="border border-slate-600 p-4">Contest Name</th>
+              <th className="border border-slate-600 p-4">Contest Name</th>
               <th className="border border-slate-600 p-4">Rank</th>
-              <th className="border border-slate-600 p-4">Date</th> */}
+              <th className="border border-slate-600 p-4">No of Problems Solved</th>
+              <th className="border border-slate-600 p-4">Date</th>
               <th className="border border-slate-600 p-4">Contest Name</th>
               <th className="border border-slate-600 p-4">Rank</th>
               <th className="border border-slate-600 p-4">No of Problems Solved</th>
@@ -58,7 +58,7 @@ function Table({ data }) {
 
               return Array.from({ length: maxRows }).map((_, rowIndex) => {
                 const leetcodeContest = contests.leetcode[rowIndex] || {};
-                // const codechefContest = contests.codechef[rowIndex] || {};
+                const codechefContest = contests.codechef[rowIndex] || {};
                 const codeforcesContest = contests.codeforces[rowIndex] || {};
                 
 
@@ -75,7 +75,6 @@ function Table({ data }) {
                     <td className="border border-slate-600 p-4">{leetcodeContest.contest?.title}</td>
                     <td className="border border-slate-600 p-4">{leetcodeContest.ranking}</td>
                     <td className="border border-slate-600 p-4">{leetcodeContest.problemsSolved}</td>
-                    <td className="border border-slate-600 p-4">{leetcodeContest.totalProblems}</td>
                     <td className="border border-slate-600 p-4">
                       {leetcodeContest.contest ? new Date(leetcodeContest.contest.startTime * 1000).toLocaleDateString('en-IN', {
                         day: '2-digit',
@@ -83,11 +82,13 @@ function Table({ data }) {
                         year: 'numeric'
                       }) : ' '}
                     </td>
-                    {/* <td className="border border-slate-600 p-4">{codechefContest.code || '-'}</td>
+                    <td className="border border-slate-600 p-4">{codechefContest.name || '-'}</td>
                     <td className="border border-slate-600 p-4">{codechefContest.rank || '-'}</td>
+                    
+                    <td className="border border-slate-600 p-4">{codechefContest.noOfProblems || '-'}</td>
                     <td className="border border-slate-600 p-4">
                       {codechefContest.end_date ? formatDate(codechefContest.end_date.split(' ')[0]) : '-'}
-                    </td> */}
+                    </td>
                     <td className="border border-slate-600 p-4">{codeforcesContest.contestName || '-'}</td>
                     <td className="border border-slate-600 p-4">{codeforcesContest.rank || '-'}</td>
                     <td className='border border-slate-600 p-4'>{codeforcesContest.problemsSolved || '-'}</td>
