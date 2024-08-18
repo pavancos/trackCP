@@ -1,96 +1,93 @@
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
+import { saveAs } from 'file-saver';
 
-function preventDefault() {
-  const originalAddEventListener = document.addEventListener;
-  document.addEventListener = function (type, listener, options) {
-    if (type === 'beforeprint') {
-      return;
-    }
-    originalAddEventListener.apply(document, arguments);
-  };
-}
+async function exportToExcel(filteredContests) {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Contests');
 
-function exportToExcel(filteredContests) {
-  const workbook = XLSX.utils.book_new();
-  const dataToExport = [];
-  const headerRow = {
-    RollNo: "Roll No",
-    Name: "Student Name",
-    ContestName: "Contest Name",
-    Rank: "Rank",
-    ProblemsSolved: "Problems Solved",
-    TotalProblems: "Total Problems",
-    Date: "Date"
-  }
-  dataToExport.push(headerRow);
+    // Add Header Row
+    worksheet.columns = [
+        { header: 'Roll No', key: 'rollNo', width: 15 },
+        { header: 'Student Name', key: 'studentName', width: 30 },
+        { header: 'Contest Name', key: 'contestName', width: 40 },
+        { header: 'Rank', key: 'rank', width: 10 },
+        { header: 'Problems Solved', key: 'problemsSolved', width: 20 },
+        { header: 'Total Problems', key: 'totalProblems', width: 20 },
+        { header: 'Date', key: 'date', width: 15 }
+    ];
 
-  filteredContests.forEach(({ student, contests }) => {
-    const studentRollNo = student.roll;
-    const studentName = student.name;
-    let isFirstRow = true; // Flag to indicate the first row for the student
+    worksheet.getRow(1).font = { bold: true };
+    worksheet.getRow(1).fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'D3D3D3' } // Grey background for header
+    };
 
-    // Add contest details for the student
-    contests.leetcode.forEach((contest) => {
-      const studentRow = {
-        RollNo: isFirstRow ? studentRollNo : '',
-        Name: isFirstRow ? studentName : '',
-        ContestName: contest.contest.title,
-        Rank: contest.ranking,
-        ProblemsSolved: contest.problemsSolved,
-        TotalProblems: contest.totalProblems,
-        Date: new Date(contest.contest.startTime * 1000).toLocaleDateString('en-IN', {
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric',
-        }),
-      };
-      dataToExport.push(studentRow);
-      isFirstRow = false; // Subsequent rows should not repeat student information
+    // Format date function
+    const formatDate = (timestamp) => {
+        const date = new Date(timestamp * 1000);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}-${month}-${year}`;
+    };
+
+    // Add data rows
+    filteredContests.forEach(({ student, contests }) => {
+        const studentRollNo = student.roll;
+        const studentName = student.name;
+        let isFirstRow = true;
+
+        contests.leetcode.forEach((contest) => {
+            worksheet.addRow({
+                rollNo: isFirstRow ? studentRollNo : '',
+                studentName: isFirstRow ? studentName : '',
+                contestName: contest.contest.title,
+                rank: contest.ranking,
+                problemsSolved: contest.problemsSolved,
+                totalProblems: contest.totalProblems,
+                date: formatDate(contest.contest.startTime)
+            });
+            isFirstRow = false;
+        });
+
+        contests.codeforces.forEach((contest) => {
+            worksheet.addRow({
+                rollNo: isFirstRow ? studentRollNo : '',
+                studentName: isFirstRow ? studentName : '',
+                contestName: contest.contestName,
+                rank: contest.rank,
+                problemsSolved: contest.problemsSolved,
+                totalProblems: '',
+                date: formatDate(contest.ratingUpdateTimeSeconds)
+            });
+            isFirstRow = false;
+        });
     });
 
-    contests.codeforces.forEach((contest) => {
-      const studentRow = {
-        RollNo: isFirstRow ? studentRollNo : '',
-        Name: isFirstRow ? studentName : '',
-        ContestName: contest.contestName,
-        Rank: contest.rank,
-        ProblemsSolved: contest.problemsSolved,
-        TotalProblems: '',
-        Date: new Date(contest.ratingUpdateTimeSeconds * 1000).toLocaleDateString('en-IN', {
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric',
-        }),
-      };
-      dataToExport.push(studentRow);
-      isFirstRow = false; // Subsequent rows should not repeat student information
+    // align cells
+    worksheet.getColumn('rollNo').alignment = { horizontal: 'center', vertical: 'middle' };
+    worksheet.getColumn('studentName').alignment = { horizontal: 'center', vertical: 'middle' };
+    worksheet.getColumn('problemsSolved').alignment = { horizontal: 'center'};
+    worksheet.getColumn('totalProblems').alignment = { horizontal: 'center'};
+    worksheet.getColumn('rank').alignment = { horizontal: 'center'};
+    worksheet.getColumn('date').alignment = { horizontal: 'center'};
+
+    // merging cells
+    let startRow = 2;
+    filteredContests.forEach(({ contests }) => {
+        const totalRows = contests.leetcode.length + contests.codeforces.length;
+        if (totalRows > 1) {
+            worksheet.mergeCells(`A${startRow}:A${startRow + totalRows - 1}`);
+            worksheet.mergeCells(`B${startRow}:B${startRow + totalRows - 1}`);
+        }
+        startRow += totalRows;
     });
-  });
 
-  const worksheet = XLSX.utils.json_to_sheet(dataToExport, { skipHeader: true });
-  const mergeCells = [];
-
-  let currentRow = 1;
-  filteredContests.forEach(({ student, contests }) => {
-    const totalRows = contests.leetcode.length + contests.codeforces.length;
-
-    if (totalRows > 0) {
-      mergeCells.push({
-        s: { r: currentRow, c: 0 },
-        e: { r: currentRow + totalRows - 1, c: 0 },
-      });
-      mergeCells.push({
-        s: { r: currentRow, c: 1 },
-        e: { r: currentRow + totalRows - 1, c: 1 },
-      });
-    }
-
-    currentRow += totalRows;
-  });
-
-  worksheet['!merges'] = mergeCells;
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Contests');
-  XLSX.writeFile(workbook, 'Contests.xlsx');
+    // Save the file
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    saveAs(blob, 'Contests.xlsx');
 }
 
 export default exportToExcel;
