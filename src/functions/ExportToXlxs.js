@@ -32,6 +32,12 @@ async function exportToExcel(filteredContests) {
         return `${day}-${month}-${year}`;
     };
 
+    // Format Codechef Date
+    const formatCodechefDate = (date) => {
+        const [year, month, day] = date.split('-');
+        return `${day}-${month}-${year}`;
+    };
+
     // Add data rows
     filteredContests.forEach(({ student, contests }) => {
         const studentRollNo = student.roll;
@@ -60,6 +66,19 @@ async function exportToExcel(filteredContests) {
                 problemsSolved: contest.problemsSolved,
                 totalProblems: '',
                 date: formatDate(contest.ratingUpdateTimeSeconds)
+            });
+            isFirstRow = false;
+        });
+
+        contests.codechef.forEach((contest) => {
+            worksheet.addRow({
+                rollNo: isFirstRow ? studentRollNo : '',
+                studentName: isFirstRow ? studentName : '',
+                contestName: contest.name,
+                rank: contest.rank,
+                problemsSolved: contest.noOfProblems,
+                totalProblems: '',
+                date: formatCodechefDate( contest.end_date.split(' ')[0])
             });
             isFirstRow = false;
         });
