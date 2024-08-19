@@ -29,26 +29,26 @@ function App() {
 
   const notify = () => toast.custom(
     <div className='flex flex-row items-center justify-around p-3 bg-slate-200 rounded-lg shadow-2xl border'>
-        <p>Oops! Found no one participated in contests, try with different date</p>
-        <button
-            onClick={() => toast.remove()}
-            type="button" className="rounded-lg ml-2 p-1.5 focus:ring-2 focus:ring-slate-400 inline-flex items-center justify-center h-8 w-8 text-gray-500">
-            <span className="sr-only">Close</span>
-            <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-            </svg>
-        </button>
+      <p>Oops! Found no one participated in contests, try with different date</p>
+      <button
+        onClick={() => toast.remove()}
+        type="button" className="rounded-lg ml-2 p-1.5 focus:ring-2 focus:ring-slate-400 inline-flex items-center justify-center h-8 w-8 text-gray-500">
+        <span className="sr-only">Close</span>
+        <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+          <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+        </svg>
+      </button>
     </div>,
     {
-        duration: 9000,
-        position: 'top-center',
-        icon: '⚠️',
-        style: {
-            background: '#333',
-            color: '#fff',
-        },
+      duration: 9000,
+      position: 'top-center',
+      icon: '⚠️',
+      style: {
+        background: '#333',
+        color: '#fff',
+      },
     }
-);
+  );
 
 
   async function getstudentInfo() {
@@ -90,7 +90,7 @@ function App() {
     console.log('filteredContests: ', filteredContests);
     // await new Promise((resolve) => setTimeout(resolve, 2000));
     setFilteredContests(filteredContests);
-    
+
     setIsSubmitted(true);
     // Resolves Renderering table w/o Data
     filteredContests.map((contest) => {
@@ -98,12 +98,12 @@ function App() {
         // console.log('true');
         // console.log(contest.contests.codechef.length, contest.contests.codeforces.length, contest.contests.leetcode.length)
         setAreThereAnyContests(true);
-      }else{
+      } else {
         setAreThereAnyContests(false);
       }
     });
 
-    
+
   }
 
   // -> Filter Logics
@@ -156,6 +156,7 @@ function App() {
   // })
   // return false;
   // }
+  const today = new Date().toISOString().split('T')[0];
 
   return (
     <>
@@ -165,11 +166,25 @@ function App() {
           <div className="flex-row flex justify-between">
             <div className="mb-4 w-1/2 pr-2">
               <label htmlFor="from" className="block text-sm font-medium text-blue-700">From</label>
-              <input type="date" id="from" defaultValue={oneWeekAgoFormatted} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-blue-700" {...register('from')} />
+              <input
+                type="date"
+                id="from"
+                defaultValue={oneWeekAgoFormatted}
+                max={today}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-blue-700"
+                {...register('from')}
+              />
             </div>
             <div className="mb-4 w-1/2 pl-2">
               <label htmlFor="to" className="block text-sm font-medium text-blue-700">To</label>
-              <input type="date" id="to" defaultValue={todayFormatted} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-blue-700" {...register('to')} />
+              <input
+                type="date"
+                id="to"
+                defaultValue={todayFormatted}
+                max={today}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-blue-700"
+                {...register('to')}
+              />
             </div>
           </div>
           <div className="flex-row flex justify-between">
@@ -195,15 +210,15 @@ function App() {
                     w-full   text-white 
                     font-semibold py-2 px-4 rounded-md focus:outline-none 
                     focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
-                    ${isFetchedFromAPI?"bg-blue-500 hover:bg-blue-600":"bg-blue-300 cursor-not-allowed"}
+                    ${isFetchedFromAPI ? "bg-blue-500 hover:bg-blue-600" : "bg-blue-300 cursor-not-allowed"}
                     transition duration-700 ease-in-out
 
                     `}
-              // onClick={()=>{
-              //   if(!areThereAnyContests){
-              //     notify();
-              //   }
-              // }}
+            // onClick={()=>{
+            //   if(!areThereAnyContests){
+            //     notify();
+            //   }
+            // }}
             >
               {isFetchedFromAPI ? 'Submit' : 'Fetching Data...'}
             </button>
@@ -230,13 +245,13 @@ function App() {
           areThereAnyContests &&
           <>
             <Suspense
-             fallback={
-              <>
-                <div className='w-full flex flex-row justify-center '>
-                  <Loading/>
-                </div>
-              </>
-             }
+              fallback={
+                <>
+                  <div className='w-full flex flex-row justify-center '>
+                    <Loading />
+                  </div>
+                </>
+              }
             >
               <Table data={filteredContests} />
             </Suspense>
