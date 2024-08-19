@@ -1,6 +1,6 @@
 import { useEffect, useState, Suspense } from 'react'
 import './App.css'
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import Table from './components/Table';
 import * as XLSX from 'xlsx';
 import ExportToXlxs from './functions/ExportToXlxs';
@@ -10,6 +10,7 @@ function App() {
   const [studentsInfo, setstudentsInfo] = useState([]);
   const [filteredContests, setFilteredContests] = useState([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [areThereAnyContests, setAreThereAnyContests] = useState(false);
 
 
   const todayDate = new Date();
@@ -34,7 +35,6 @@ function App() {
 
 
   async function handleFormSubmit(dataFromForm) {
-
     console.log('dataFromForm: ', dataFromForm);
     // FILTER STUDENTS ACCORDING TO ROLL NO ACCORDING TO LAST 2 VALUES
     let fromRoll = dataFromForm.fromroll;
@@ -46,7 +46,7 @@ function App() {
       return rollNo >= fromRoll.split('A')[1] && rollNo <= toRoll.split('A')[1];
     });
     // console.log('students: ', students);
-    let filteredContests = students.map(async (student, index) => {
+    let filteredContests = await students.map(async (student, index) => {
       return {
         student,
         contests: {
@@ -60,6 +60,17 @@ function App() {
     console.log('filteredContests: ', filteredContests);
     setFilteredContests(filteredContests);
     setIsSubmitted(true);
+    // Resolves Renderering table w/o Data
+    await filteredContests.map((contest) => {
+      if (contest.contests.codechef.length > 0 || contest.contests.codeforces.length > 0 || contest.contests.leetcode.length > 0) {
+        console.log('true');
+        console.log(contest.contests.codechef.length, contest.contests.codeforces.length, contest.contests.leetcode.length)
+        setAreThereAnyContests(true);
+      }else{
+        setAreThereAnyContests(false);
+      }
+    })
+    
   }
 
   // -> Filter Logics
@@ -102,6 +113,17 @@ function App() {
     return filteredContests
   }
 
+  // function areThereAnyContests(contests){
+  // contests.map((contest)=>{
+  //   if(contest.contests.codechef.length>0 && contest.contests.codeforces.length>0 && contest.contests.leetcode.length>0){
+  //     console.log('true');
+  //     console.log(contest.contests.codechef.length , contest.contests.codeforces.length , contest.contests.leetcode.length)
+  //     return true;
+  //   }
+  // })
+  // return false;
+  // }
+
   return (
     <>
       <div className="m-5" id='table-to-pdf'>
@@ -140,6 +162,7 @@ function App() {
           </button>
           {
             isSubmitted &&
+            areThereAnyContests &&
             <button
               onClick={() => ExportToXlxs(filteredContests)}
               className="w-full mt-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
@@ -151,16 +174,8 @@ function App() {
 
         {
           isSubmitted &&
-          <>
-            {/* <button
-              onClick={() => ExportToXlxs(filteredContests)}
-              className="w-1/3 mb-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Download Xlsx
-            </button> */}
-
-            <Table data={filteredContests} />
-          </>
+          areThereAnyContests &&
+          <Table data={filteredContests} />
         }
       </div>
     </>

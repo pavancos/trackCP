@@ -25,6 +25,7 @@ function Table({ data }) {
 
   return (
     <div className="overflow-x-auto">
+      
       <div id="table-to-pdf">
         <table className="table-auto border-collapse border border-slate-500 min-w-full">
           <thead className=''>
@@ -55,6 +56,7 @@ function Table({ data }) {
               data.map(({ student, contests }, studentIndex) => {
               // each row will have max of leetcode, codechef, codeforces contests n.of rows
               const maxRows = Math.max(contests.leetcode.length, contests.codechef.length, contests.codeforces.length);
+              
               // console.log(student)
 
               return Array.from({ length: maxRows }).map((_, rowIndex) => {
