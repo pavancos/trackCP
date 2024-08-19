@@ -1,16 +1,22 @@
+import React from 'react'
 import { useEffect, useState, Suspense } from 'react'
+import toast, { Toaster } from 'react-hot-toast';
 import './App.css'
 import { set, useForm } from 'react-hook-form';
-import Table from './components/Table';
+// import Table from './components/Table';
+const Table = React.lazy(() => import('./components/Table'));
 import * as XLSX from 'xlsx';
 import ExportToXlxs from './functions/ExportToXlxs';
+import Loading from './components/Loading';
+
 
 function App() {
   const { register, handleSubmit } = useForm();
   const [studentsInfo, setstudentsInfo] = useState([]);
   const [filteredContests, setFilteredContests] = useState([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [areThereAnyContests, setAreThereAnyContests] = useState(false);
+  const [isFetchedFromAPI, setIsFetchedFromAPI] = useState(false);
+  const [areThereAnyContests, setAreThereAnyContests] = useState();
 
 
   const todayDate = new Date();
@@ -19,6 +25,30 @@ function App() {
   const todayFormatted = todayDate.toISOString().split('T')[0];
   const oneWeekAgoFormatted = oneWeekAgoDate.toISOString().split('T')[0];
   const ccDateFormat = todayDate.toISOString().split(' ')[0];
+
+
+  const notify = () => toast.custom(
+    <div className='flex flex-row items-center justify-around p-3 bg-slate-200 rounded-lg shadow-2xl border'>
+        <p>Oops! Found no one participated in contests, try with different date</p>
+        <button
+            onClick={() => toast.remove()}
+            type="button" className="rounded-lg ml-2 p-1.5 focus:ring-2 focus:ring-slate-400 inline-flex items-center justify-center h-8 w-8 text-gray-500">
+            <span className="sr-only">Close</span>
+            <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+            </svg>
+        </button>
+    </div>,
+    {
+        duration: 9000,
+        position: 'top-center',
+        icon: '⚠️',
+        style: {
+            background: '#333',
+            color: '#fff',
+        },
+    }
+);
 
 
   async function getstudentInfo() {
@@ -58,18 +88,21 @@ function App() {
     });
     filteredContests = await Promise.all(filteredContests);
     console.log('filteredContests: ', filteredContests);
+    // await new Promise((resolve) => setTimeout(resolve, 2000));
     setFilteredContests(filteredContests);
+    
     setIsSubmitted(true);
     // Resolves Renderering table w/o Data
-    await filteredContests.map((contest) => {
+    filteredContests.map((contest) => {
       if (contest.contests.codechef.length > 0 || contest.contests.codeforces.length > 0 || contest.contests.leetcode.length > 0) {
-        console.log('true');
-        console.log(contest.contests.codechef.length, contest.contests.codeforces.length, contest.contests.leetcode.length)
+        // console.log('true');
+        // console.log(contest.contests.codechef.length, contest.contests.codeforces.length, contest.contests.leetcode.length)
         setAreThereAnyContests(true);
       }else{
         setAreThereAnyContests(false);
       }
-    })
+    });
+
     
   }
 
@@ -154,18 +187,38 @@ function App() {
               />
             </div>
           </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          >
-            Submit
-          </button>
+          {
+            // isFetched &&
+            <button
+              type="submit"
+              className={`
+                    w-full   text-white 
+                    font-semibold py-2 px-4 rounded-md focus:outline-none 
+                    focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+                    ${isFetchedFromAPI?"bg-blue-500 hover:bg-blue-600":"bg-blue-300 cursor-not-allowed"}
+                    transition duration-700 ease-in-out
+
+                    `}
+              // onClick={()=>{
+              //   if(!areThereAnyContests){
+              //     notify();
+              //   }
+              // }}
+            >
+              {isFetchedFromAPI ? 'Submit' : 'Fetching Data...'}
+            </button>
+          }
           {
             isSubmitted &&
             areThereAnyContests &&
             <button
               onClick={() => ExportToXlxs(filteredContests)}
-              className="w-full mt-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className={`
+                 w-full mt-2 bg-blue-500 hover:bg-blue-600
+                 text-white font-semibold py-2 px-4 
+                 rounded-md focus:outline-none focus:ring-2 
+                 focus:ring-offset-2 focus:ring-blue-500
+                `}
             >
               Download .xlsx
             </button>
@@ -175,9 +228,22 @@ function App() {
         {
           isSubmitted &&
           areThereAnyContests &&
-          <Table data={filteredContests} />
+          <>
+            <Suspense
+             fallback={
+              <>
+                <div className='w-full flex flex-row justify-center '>
+                  <Loading/>
+                </div>
+              </>
+             }
+            >
+              <Table data={filteredContests} />
+            </Suspense>
+          </>
         }
       </div>
+      {/* <Toaster /> */}
     </>
   )
 }
