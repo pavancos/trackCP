@@ -60,7 +60,9 @@ function App() {
   }
 
   useEffect(() => {
-    getstudentInfo()
+    getstudentInfo().then(()=>{
+      setIsFetchedFromAPI(true);
+    })
   }, [])
 
 
