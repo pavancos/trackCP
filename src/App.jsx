@@ -81,7 +81,7 @@ function App() {
     let endDate = new Date(toDate);
     let filteredContests = contestsData.filter((contest) => {
       // console.log('contest: ', contest);
-      if(contest.end_date!=null ){
+      if (contest.end_date != null) {
         let date = new Date(contest.end_date.split(" ")[0]);
         // console.log('date: ', date);
         return date >= startDate && date <= endDate;
@@ -89,8 +89,8 @@ function App() {
     });
     return filteredContests
   }
-  
-  
+
+
 
   function filterCodeforces(fromDate, toDate, contestsData) {
     let startDate = new Date(fromDate);
@@ -106,7 +106,7 @@ function App() {
     <>
       <div className="m-5" id='table-to-pdf'>
         <form onSubmit={handleSubmit(handleFormSubmit)} className="max-w-md mx-auto p-4 mb-2 border rounded-md">
-        <h1 className="text-2xl font-bold text-blue-700 text-center">Contest Tracker</h1>
+          <h1 className="text-2xl font-bold text-blue-700 text-center">Contest Tracker</h1>
           <div className="flex-row flex justify-between">
             <div className="mb-4 w-1/2 pr-2">
               <label htmlFor="from" className="block text-sm font-medium text-blue-700">From</label>
@@ -124,7 +124,12 @@ function App() {
             </div>
             <div className="mb-4 w-1/2 pl-2">
               <label htmlFor="toroll" className="block text-sm font-medium text-blue-700">To Roll No</label>
-              <input type="text" id="toroll" defaultValue="22501A05J8" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-blue-700" {...register('toroll')} onInput={(e) => e.target.value = e.target.value.toUpperCase()} />
+              <input
+                type="text" id="toroll" defaultValue="22501A05J8"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-blue-700"
+                {...register('toroll')}
+                onInput={(e) => e.target.value = e.target.value.toUpperCase()}
+              />
             </div>
           </div>
           <button

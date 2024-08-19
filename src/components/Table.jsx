@@ -53,7 +53,8 @@ function Table({ data }) {
           <tbody>
             {
               data.map(({ student, contests }, studentIndex) => {
-              const maxRows = Math.max(contests.leetcode.length);
+              // each row will have max of leetcode, codechef, codeforces contests n.of rows
+              const maxRows = Math.max(contests.leetcode.length, contests.codechef.length, contests.codeforces.length);
               // console.log(student)
 
               return Array.from({ length: maxRows }).map((_, rowIndex) => {
