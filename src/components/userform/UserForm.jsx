@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { set, useForm } from 'react-hook-form';
 
 const UserForm = ({ studentsInfo }) => {
-    console.log("Student data :", studentsInfo);
+    // console.log("Student data :", studentsInfo);
     const { register, handleSubmit } = useForm();
     const handleUserSubmit = async function (rollNo) {
         rollNo = rollNo.toUpperCase();
