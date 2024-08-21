@@ -7,8 +7,10 @@ import { set, useForm } from 'react-hook-form';
 const Table = React.lazy(() => import('./components/Table'));
 import * as XLSX from 'xlsx';
 import ExportToXlxs from './functions/ExportToXlxs';
+import { filterCodechef, filterCodeforces, filterLeetcode } from './functions/filterLogics/filterLogics';
 import Loading from './components/Loading';
-
+import UserForm from './components/userform/UserForm';
+import {fetchFromDB} from './functions/fetchFromDB/fetchFromDB';
 
 function App() {
   const { register, handleSubmit } = useForm();
@@ -25,42 +27,10 @@ function App() {
   const todayFormatted = todayDate.toISOString().split('T')[0];
   const oneWeekAgoFormatted = oneWeekAgoDate.toISOString().split('T')[0];
   const ccDateFormat = todayDate.toISOString().split(' ')[0];
-
-
-  const notify = () => toast.custom(
-    <div className='flex flex-row items-center justify-around p-3 bg-slate-200 rounded-lg shadow-2xl border'>
-      <p>Oops! Found no one participated in contests, try with different date</p>
-      <button
-        onClick={() => toast.remove()}
-        type="button" className="rounded-lg ml-2 p-1.5 focus:ring-2 focus:ring-slate-400 inline-flex items-center justify-center h-8 w-8 text-gray-500">
-        <span className="sr-only">Close</span>
-        <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-          <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-        </svg>
-      </button>
-    </div>,
-    {
-      duration: 9000,
-      position: 'top-center',
-      icon: '⚠️',
-      style: {
-        background: '#333',
-        color: '#fff',
-      },
-    }
-  );
-
-
-  async function getstudentInfo() {
-    let studentsDataFromAPI = await fetch(`https://getdata-contests.vercel.app/getAllData`);
-    let studentsData = await studentsDataFromAPI.json();
-    console.log('studentsData: ', studentsData);
-    setstudentsInfo(studentsData);
-    // console.log("useEffect Invoked");
-  }
+  const today = new Date().toISOString().split('T')[0];
 
   useEffect(() => {
-    getstudentInfo().then(()=>{
+    fetchFromDB(setstudentsInfo).then(()=>{
       setIsFetchedFromAPI(true);
     })
   }, [])
@@ -104,61 +74,9 @@ function App() {
         setAreThereAnyContests(false);
       }
     });
-
-
-  }
-
-  // -> Filter Logics
-
-  function filterLeetcode(fromDate, toDate, contestsData) {
-    // console.log('contestsData: ', contestsData);
-    let startDate = new Date(fromDate);
-    let endDate = new Date(toDate);
-    let filteredContests = contestsData.filter((contest) => {
-      let date = new Date(contest.contest.startTime * 1000);
-      return date >= startDate && date <= endDate;
-    })
-    return filteredContests
-  }
-
-  function filterCodechef(fromDate, toDate, contestsData) {
-    // console.log('contestsData: ', contestsData);
-    let startDate = new Date(fromDate);
-    let endDate = new Date(toDate);
-    let filteredContests = contestsData.filter((contest) => {
-      // console.log('contest: ', contest);
-      if (contest.end_date != null) {
-        let date = new Date(contest.end_date.split(" ")[0]);
-        // console.log('date: ', date);
-        return date >= startDate && date <= endDate;
-      }
-    });
-    return filteredContests
   }
 
 
-
-  function filterCodeforces(fromDate, toDate, contestsData) {
-    let startDate = new Date(fromDate);
-    let endDate = new Date(toDate);
-    let filteredContests = contestsData.filter((contest) => {
-      let date = new Date(contest.ratingUpdateTimeSeconds * 1000);
-      return date >= startDate && date <= endDate;
-    });
-    return filteredContests
-  }
-
-  // function areThereAnyContests(contests){
-  // contests.map((contest)=>{
-  //   if(contest.contests.codechef.length>0 && contest.contests.codeforces.length>0 && contest.contests.leetcode.length>0){
-  //     console.log('true');
-  //     console.log(contest.contests.codechef.length , contest.contests.codeforces.length , contest.contests.leetcode.length)
-  //     return true;
-  //   }
-  // })
-  // return false;
-  // }
-  const today = new Date().toISOString().split('T')[0];
 
   return (
     <>
@@ -167,38 +85,38 @@ function App() {
           <h1 className="text-2xl font-bold text-blue-700 text-center">Contest Tracker</h1>
           <div className="flex-row flex justify-between">
             <div className="mb-4 w-1/2 pr-2">
-              <label htmlFor="from" className="block text-sm font-medium text-blue-700">From</label>
+              <label htmlFor="from" className="labelText">From</label>
               <input
                 type="date"
                 id="from"
                 defaultValue={oneWeekAgoFormatted}
                 max={today}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-blue-700"
+                className="textInputBox"
                 {...register('from')}
               />
             </div>
             <div className="mb-4 w-1/2 pl-2">
-              <label htmlFor="to" className="block text-sm font-medium text-blue-700">To</label>
+              <label htmlFor="to" className="labelText">To</label>
               <input
                 type="date"
                 id="to"
                 defaultValue={todayFormatted}
                 max={today}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-blue-700"
+                className="textInputBox"
                 {...register('to')}
               />
             </div>
           </div>
           <div className="flex-row flex justify-between">
             <div className="mb-4 w-1/2 pr-2">
-              <label htmlFor="fromroll" className="block text-sm font-medium text-blue-700">From Roll No</label>
-              <input type="text" id="fromroll" defaultValue="22501A05D4" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-blue-700" {...register('fromroll')} onInput={(e) => e.target.value = e.target.value.toUpperCase()} />
+              <label htmlFor="fromroll" className="labelText">From Roll No</label>
+              <input type="text" id="fromroll" defaultValue="22501A05D4" className='textInputBox' {...register('fromroll')} onInput={(e) => e.target.value = e.target.value.toUpperCase()} />
             </div>
             <div className="mb-4 w-1/2 pl-2">
-              <label htmlFor="toroll" className="block text-sm font-medium text-blue-700">To Roll No</label>
+              <label htmlFor="toroll" className="labelText">To Roll No</label>
               <input
                 type="text" id="toroll" defaultValue="22501A05J8"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-blue-700"
+                className='textInputBox'
                 {...register('toroll')}
                 onInput={(e) => e.target.value = e.target.value.toUpperCase()}
               />
@@ -214,13 +132,7 @@ function App() {
                     focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
                     ${isFetchedFromAPI ? "bg-blue-500 hover:bg-blue-600" : "bg-blue-300 cursor-not-allowed"}
                     transition duration-700 ease-in-out
-
                     `}
-            // onClick={()=>{
-            //   if(!areThereAnyContests){
-            //     notify();
-            //   }
-            // }}
             >
               {isFetchedFromAPI ? 'Submit' : 'Fetching Data...'}
             </button>
@@ -231,28 +143,22 @@ function App() {
             <button
               onClick={() => ExportToXlxs(filteredContests)}
               className={`
-                 w-full mt-2 bg-blue-500 hover:bg-blue-600
-                 text-white font-semibold py-2 px-4 
-                 rounded-md focus:outline-none focus:ring-2 
-                 focus:ring-offset-2 focus:ring-blue-500
+                 btnSubmit w-full mt-2
                 `}
             >
               Download .xlsx
             </button>
           }
         </form>
-
         {
           isSubmitted &&
           areThereAnyContests &&
           <>
             <Suspense
               fallback={
-                <>
                   <div className='w-full flex flex-row justify-center '>
                     <Loading />
                   </div>
-                </>
               }
             >
               <Table data={filteredContests} />
@@ -260,6 +166,11 @@ function App() {
           </>
         }
       </div>
+      {
+        isFetchedFromAPI &&
+        <UserForm studentsInfo={studentsInfo}></UserForm>
+      }
+      
       {/* <Toaster /> */}
     </>
   )
