@@ -63,7 +63,7 @@ const UserForm = ({ studentsInfo, isFetchedFromAPI }) => {
                                     focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
                                     ${isFetchedFromAPI ? "bg-blue-500 hover:bg-blue-600" : "bg-blue-300 cursor-not-allowed"}
                                     transition duration-700 ease-in-out
-                                    `}
+                                `}
                             >
                                 {isFetchedFromAPI ? 'Get Report' : 'Fetching Data...'}
                             </button>
