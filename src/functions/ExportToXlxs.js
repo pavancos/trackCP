@@ -12,16 +12,26 @@ async function exportToExcel(filteredContests) {
         { header: 'Contest Name', key: 'contestName', width: 40 },
         { header: 'Rank', key: 'rank', width: 10 },
         { header: 'Problems Solved', key: 'problemsSolved', width: 20 },
-        { header: 'Total Problems', key: 'totalProblems', width: 20 },
+        // { header: 'Total Problems', key: 'totalProblems', width: 20 },
         { header: 'Date', key: 'date', width: 15 }
     ];
 
-    worksheet.getRow(1).font = { bold: true };
-    worksheet.getRow(1).fill = {
+    const headerRow = worksheet.getRow(1);
+
+    headerRow.font = { bold: true };
+    headerRow.fill = {
         type: 'pattern',
         pattern: 'solid',
-        fgColor: { argb: 'D3D3D3' } // Grey background for header
+        fgColor: { argb: 'D3D3D3' }, // Grey background for header
     };
+    headerRow.eachCell((cell) => {
+        cell.border = {
+            top: { style: 'thin', color: { argb: '000000' } },
+            left: { style: 'thin', color: { argb: '000000' } },
+            bottom: { style: 'thin', color: { argb: '000000' } },
+            right: { style: 'thin', color: { argb: '000000' } },
+        };
+    });
 
     // Format date function
     const formatDate = (timestamp) => {
@@ -51,7 +61,7 @@ async function exportToExcel(filteredContests) {
                 contestName: contest.contest.title,
                 rank: contest.ranking,
                 problemsSolved: contest.problemsSolved,
-                totalProblems: contest.totalProblems,
+                // totalProblems: contest.totalProblems,
                 date: formatDate(contest.contest.startTime)
             });
             isFirstRow = false;
@@ -64,7 +74,7 @@ async function exportToExcel(filteredContests) {
                 contestName: contest.contestName,
                 rank: contest.rank,
                 problemsSolved: contest.problemsSolved,
-                totalProblems: '',
+                // totalProblems: '',
                 date: formatDate(contest.ratingUpdateTimeSeconds)
             });
             isFirstRow = false;
@@ -77,8 +87,8 @@ async function exportToExcel(filteredContests) {
                 contestName: contest.name,
                 rank: contest.rank,
                 problemsSolved: contest.noOfProblems,
-                totalProblems: '',
-                date: formatCodechefDate( contest.end_date.split(' ')[0])
+                // totalProblems: '',
+                date: formatCodechefDate(contest.end_date.split(' ')[0])
             });
             isFirstRow = false;
         });
@@ -87,10 +97,10 @@ async function exportToExcel(filteredContests) {
     // align cells
     worksheet.getColumn('rollNo').alignment = { horizontal: 'center', vertical: 'middle' };
     worksheet.getColumn('studentName').alignment = { horizontal: 'center', vertical: 'middle' };
-    worksheet.getColumn('problemsSolved').alignment = { horizontal: 'center'};
-    worksheet.getColumn('totalProblems').alignment = { horizontal: 'center'};
-    worksheet.getColumn('rank').alignment = { horizontal: 'center'};
-    worksheet.getColumn('date').alignment = { horizontal: 'center'};
+    worksheet.getColumn('problemsSolved').alignment = { horizontal: 'center' };
+    // worksheet.getColumn('totalProblems').alignment = { horizontal: 'center' };
+    worksheet.getColumn('rank').alignment = { horizontal: 'center' };
+    worksheet.getColumn('date').alignment = { horizontal: 'center' };
 
     // merging cells
     let startRow = 2;
