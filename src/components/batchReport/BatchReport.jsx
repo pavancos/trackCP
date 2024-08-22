@@ -21,7 +21,6 @@ function BatchReport({studentsInfo,isFetchedFromAPI}) {
     const ccDateFormat = todayDate.toISOString().split(' ')[0];
     const today = new Date().toISOString().split('T')[0];
 
-
     async function handleFormSubmit(dataFromForm) {
         console.log('dataFromForm: ', dataFromForm);
         // FILTER STUDENTS ACCORDING TO ROLL NO ACCORDING TO LAST 2 VALUES
@@ -29,12 +28,12 @@ function BatchReport({studentsInfo,isFetchedFromAPI}) {
         let toRoll = dataFromForm.toroll;
         let students = studentsInfo.filter((student) => {
             let roll = student.roll;
-
             let rollNo = roll.split('A')[1];
+
             return rollNo >= fromRoll.split('A')[1] && rollNo <= toRoll.split('A')[1];
         });
-        // console.log('students: ', students);
         let filteredContests = await students.map(async (student) => {
+
             return {
                 student,
                 contests: {
@@ -53,8 +52,6 @@ function BatchReport({studentsInfo,isFetchedFromAPI}) {
         // Resolves Renderering table w/o Data
         filteredContests.map((contest) => {
             if (contest.contests.codechef.length > 0 || contest.contests.codeforces.length > 0 || contest.contests.leetcode.length > 0) {
-                // console.log('true');
-                // console.log(contest.contests.codechef.length, contest.contests.codeforces.length, contest.contests.leetcode.length)
                 setAreThereAnyContests(true);
             } else {
                 setAreThereAnyContests(false);
@@ -105,7 +102,6 @@ function BatchReport({studentsInfo,isFetchedFromAPI}) {
                     </div>
                 </div>
                 {
-                    // isFetched &&
                     <button
                         type="submit"
                         className={`
