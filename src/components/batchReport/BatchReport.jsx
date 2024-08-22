@@ -63,7 +63,7 @@ function BatchReport({studentsInfo,isFetchedFromAPI}) {
     }
 
     return (
-        <div className="mt-6 m-3" id='table-to-pdf'>
+        <div className="mt-6 m-3">
             <form onSubmit={handleSubmit(handleFormSubmit)} className="max-w-md mx-auto p-4 mb-2 border rounded-md ">
                 <h1 className="text-2xl font-semibold text-blue-700 text-center mb-3">Batch Report</h1>
                 <div className="flex-row flex justify-between">

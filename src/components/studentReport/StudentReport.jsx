@@ -34,42 +34,44 @@ const UserForm = ({ studentsInfo, isFetchedFromAPI }) => {
     }
     return (
         <>
-            <form
-                className={`p-6 max-w-md mx-auto border rounded-md mt-6`}
-                onSubmit={handleSubmit((data) => handleUserSubmit(data.rollno))}
-                onInput={(e) => e.target.value = e.target.value.toUpperCase()}
-            >
-                <h1 className="text-2xl font-semibold text-blue-700 text-center mb-3">Student Report</h1>
-                <div>
-                    <label className={`labelText`}>
-                        Roll No
-                    </label>
+            <div className='m-3'>
+                <form
+                    className={`p-6 max-w-md mx-auto border rounded-md mt-6`}
+                    onSubmit={handleSubmit((data) => handleUserSubmit(data.rollno))}
+                    onInput={(e) => e.target.value = e.target.value.toUpperCase()}
+                >
+                    <h1 className="text-2xl font-semibold text-blue-700 text-center mb-3">Student Report</h1>
+                    <div>
+                        <label className={`labelText`}>
+                            Roll No
+                        </label>
 
-                    <input
-                        defaultValue={'22501A05D4'}
-                        type="text"
-                        className='textInputBox'
-                        {...register('rollno')}
-                    />
+                        <input
+                            defaultValue={'22501A05D4'}
+                            type="text"
+                            className='textInputBox'
+                            {...register('rollno')}
+                        />
 
-                    {
-                        // isFetched &&
-                        <button
-                            type="submit"
-                            className={`
-                    w-full mt-4  text-white 
-                    font-semibold py-2 px-4 rounded-md focus:outline-none 
-                    focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
-                    ${isFetchedFromAPI ? "bg-blue-500 hover:bg-blue-600" : "bg-blue-300 cursor-not-allowed"}
-                    transition duration-700 ease-in-out
-                    `}
-                        >
-                            {isFetchedFromAPI ? 'Get Report' : 'Fetching Data...'}
-                        </button>
-                    }
-                </div>
+                        {
+                            // isFetched &&
+                            <button
+                                type="submit"
+                                className={`
+                                    w-full mt-4  text-white 
+                                    font-semibold py-2 px-4 rounded-md focus:outline-none 
+                                    focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+                                    ${isFetchedFromAPI ? "bg-blue-500 hover:bg-blue-600" : "bg-blue-300 cursor-not-allowed"}
+                                    transition duration-700 ease-in-out
+                                    `}
+                            >
+                                {isFetchedFromAPI ? 'Get Report' : 'Fetching Data...'}
+                            </button>
+                        }
+                    </div>
+                </form>
+            </div>
 
-            </form>
             <Suspense
                 fallback={
                     <div className='w-full flex flex-row justify-center '>
