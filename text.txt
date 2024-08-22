@@ -1,9 +1,0 @@
-{
-            "contestId": 1986,
-            "contestName": "Codeforces Round 954 (Div. 3)",
-            "handle": "pavankc",
-            "rank": 21810,
-            "ratingUpdateTimeSeconds": 1719162300,
-            "oldRating": 847,
-            "newRating": 826
-        }

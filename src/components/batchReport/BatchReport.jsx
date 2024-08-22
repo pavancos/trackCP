@@ -6,7 +6,9 @@ import { filterCodechef, filterCodeforces, filterLeetcode } from '../../function
 import Loading from '../Loading'
 const Table = React.lazy(() => import('../Table'));
 
-function BatchReport({isFetchedFromAPI,studentsInfo,areThereAnyContests,setAreThereAnyContests}) {
+function BatchReport({studentsInfo,isFetchedFromAPI}) {
+    const [areThereAnyContests, setAreThereAnyContests] = useState(false);
+
     const { register, handleSubmit } = useForm();
     const [filteredContests, setFilteredContests] = useState([]);
     const [isSubmitted, setIsSubmitted] = useState(false);
@@ -32,7 +34,7 @@ function BatchReport({isFetchedFromAPI,studentsInfo,areThereAnyContests,setAreTh
             return rollNo >= fromRoll.split('A')[1] && rollNo <= toRoll.split('A')[1];
         });
         // console.log('students: ', students);
-        let filteredContests = await students.map(async (student, index) => {
+        let filteredContests = await students.map(async (student) => {
             return {
                 student,
                 contests: {
@@ -61,9 +63,9 @@ function BatchReport({isFetchedFromAPI,studentsInfo,areThereAnyContests,setAreTh
     }
 
     return (
-        <div className="m-5" id='table-to-pdf'>
-            <form onSubmit={handleSubmit(handleFormSubmit)} className="max-w-md mx-auto p-4 mb-2 border rounded-md">
-                <h1 className="text-2xl font-bold text-blue-700 text-center">Contest Tracker</h1>
+        <div className="mt-6 m-3" id='table-to-pdf'>
+            <form onSubmit={handleSubmit(handleFormSubmit)} className="max-w-md mx-auto p-4 mb-2 border rounded-md ">
+                <h1 className="text-2xl font-semibold text-blue-700 text-center mb-3">Batch Report</h1>
                 <div className="flex-row flex justify-between">
                     <div className="mb-4 w-1/2 pr-2">
                         <label htmlFor="from" className="labelText">From</label>
