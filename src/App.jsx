@@ -4,6 +4,7 @@ import './App.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import BatchReport from './components/batchReport/BatchReport';
 import UserForm from './components/studentReport/StudentReport';
+import RefreshDB from './components/refreshdb/RefreshDB';
 import Home from './components/home/Home';
 import Layout from './Layout';
 import { useEffect, useState } from 'react';
@@ -40,6 +41,10 @@ function App() {
             studentsInfo={studentsInfo}
             isFetchedFromAPI={isFetchedFromAPI}
           />
+        },
+        {
+          path: 'refreshdb',
+          element: <RefreshDB />
         }
       ]
     },
