@@ -1,7 +1,7 @@
 import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 
-async function exportToExcel(filteredContests) {
+async function exportToExcel(filteredContests, whtplatform) {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Contests');
 
@@ -54,44 +54,50 @@ async function exportToExcel(filteredContests) {
         const studentName = student.name;
         let isFirstRow = true;
 
-        contests.leetcode.forEach((contest) => {
-            worksheet.addRow({
-                rollNo: isFirstRow ? studentRollNo : '',
-                studentName: isFirstRow ? studentName : '',
-                contestName: contest.contest.title,
-                rank: contest.ranking,
-                problemsSolved: contest.problemsSolved,
-                // totalProblems: contest.totalProblems,
-                date: formatDate(contest.contest.startTime)
+        if (whtplatform === 'leetcode' || whtplatform === 'all') {
+            contests.leetcode.forEach((contest) => {
+                worksheet.addRow({
+                    rollNo: isFirstRow ? studentRollNo : '',
+                    studentName: isFirstRow ? studentName : '',
+                    contestName: contest.contest.title,
+                    rank: contest.ranking,
+                    problemsSolved: contest.problemsSolved,
+                    // totalProblems: contest.totalProblems,
+                    date: formatDate(contest.contest.startTime)
+                });
+                isFirstRow = false;
             });
-            isFirstRow = false;
-        });
+        }
 
-        contests.codeforces.forEach((contest) => {
-            worksheet.addRow({
-                rollNo: isFirstRow ? studentRollNo : '',
-                studentName: isFirstRow ? studentName : '',
-                contestName: contest.contestName,
-                rank: contest.rank,
-                problemsSolved: contest.problemsSolved,
-                // totalProblems: '',
-                date: formatDate(contest.ratingUpdateTimeSeconds)
+        if (whtplatform === 'codeforces' || whtplatform === 'all') {
+            contests.codeforces.forEach((contest) => {
+                worksheet.addRow({
+                    rollNo: isFirstRow ? studentRollNo : '',
+                    studentName: isFirstRow ? studentName : '',
+                    contestName: contest.contestName,
+                    rank: contest.rank,
+                    problemsSolved: contest.problemsSolved,
+                    // totalProblems: '',
+                    date: formatDate(contest.ratingUpdateTimeSeconds)
+                });
+                isFirstRow = false;
             });
-            isFirstRow = false;
-        });
+        }
 
-        contests.codechef.forEach((contest) => {
-            worksheet.addRow({
-                rollNo: isFirstRow ? studentRollNo : '',
-                studentName: isFirstRow ? studentName : '',
-                contestName: contest.name,
-                rank: contest.rank,
-                problemsSolved: contest.noOfProblems,
-                // totalProblems: '',
-                date: formatCodechefDate(contest.end_date.split(' ')[0])
+        if (whtplatform === 'codechef' || whtplatform === 'all') {
+            contests.codechef.forEach((contest) => {
+                worksheet.addRow({
+                    rollNo: isFirstRow ? studentRollNo : '',
+                    studentName: isFirstRow ? studentName : '',
+                    contestName: contest.name,
+                    rank: contest.rank,
+                    problemsSolved: contest.noOfProblems,
+                    // totalProblems: '',
+                    date: formatCodechefDate(contest.end_date.split(' ')[0])
+                });
+                isFirstRow = false;
             });
-            isFirstRow = false;
-        });
+        }
     });
 
     // align cells

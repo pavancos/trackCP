@@ -6,8 +6,9 @@ const Table = React.lazy(() => import('../Table'));
 import toast from 'react-hot-toast';
 
 const UserForm = ({ studentsInfo, isFetchedFromAPI }) => {
+    const [whtplatform, setplatform] = useState('all');
 
-    
+
     const putToast = () => {
         toast.error('No Data Found', {
             style: {
@@ -30,9 +31,11 @@ const UserForm = ({ studentsInfo, isFetchedFromAPI }) => {
     const [isStudentReport, setIsStudentReport] = useState(true);
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [userData, setUserData] = useState([]);
-    const handleUserSubmit = async function (rollNo) {
-        rollNo = rollNo.toUpperCase();
-        let studentDetails = studentsInfo.find((student) => student.roll === rollNo);
+    const handleUserSubmit = async function (data) {
+        console.log('data: ', data);
+        // data.rollNo = data.rollNo.toUpperCase();
+        let studentDetails = studentsInfo.find((student) => student.roll === data.rollno);
+        console.log('studentDetails: ', studentDetails);
         if (!studentDetails) {
             setUserData([]);
             setIsSubmitted(true);
@@ -52,14 +55,15 @@ const UserForm = ({ studentsInfo, isFetchedFromAPI }) => {
         console.log('DataOfUsers: ', userData);
         setUserData(DataOfUsers);
         setIsSubmitted(true);
+        setplatform(data.platform)
     }
     return (
         <>
             <div className='m-3'>
                 <form
                     className={`p-6 max-w-md mx-auto border rounded-md mt-6`}
-                    onSubmit={handleSubmit((data) => handleUserSubmit(data.rollno))}
-                    onInput={(e) => e.target.value = e.target.value.toUpperCase()}
+                    onSubmit={handleSubmit((data) => handleUserSubmit(data))}
+                    
                 >
                     <h1 className="text-2xl font-semibold text-blue-700 text-center mb-3">Student Report</h1>
                     <div>
@@ -72,7 +76,21 @@ const UserForm = ({ studentsInfo, isFetchedFromAPI }) => {
                             type="text"
                             className='textInputBox'
                             {...register('rollno')}
+                            onInput={(e) => e.target.value = e.target.value.toUpperCase()}
                         />
+                        {/* Select which platform to display */}
+                        <div className='mt-4'>
+                            <label className="labelText ">Select Platform</label>
+                            <select
+                                className="textInputBox"
+                                {...register('platform')}
+                            >
+                                <option value="all">All</option>
+                                <option value="codechef">Codechef</option>
+                                <option value="codeforces">Codeforces</option>
+                                <option value="leetcode">Leetcode</option>
+                            </select>
+                        </div>
 
                         {
                             // isFetched &&
@@ -104,7 +122,7 @@ const UserForm = ({ studentsInfo, isFetchedFromAPI }) => {
                     <div className={`m-3`}>
                         {
                             userData.length > 0 &&
-                                <Table data={userData} isStudentReport={isStudentReport} />
+                            <Table data={userData} isStudentReport={isStudentReport} filter={whtplatform}/>
                         }
                     </div>
                 }

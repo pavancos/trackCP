@@ -15,6 +15,7 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
     const { register, handleSubmit } = useForm();
     const [filteredContests, setFilteredContests] = useState([]);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [whtplatform, setplatform] = useState('all');
 
     const todayDate = new Date();
     const oneWeekAgoDate = new Date(todayDate);
@@ -82,6 +83,7 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
         setAreThereAnyContests(hasContests);
         setFilteredContests(filteredContests);
         setIsSubmitted(true);
+        setplatform(dataFromForm.platform);
     }
 
     return (
@@ -126,6 +128,19 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
                         />
                     </div>
                 </div>
+                {/* Select which platform to display */}
+                <div>
+                    <label className="labelText">Select Platform</label>
+                    <select
+                        className="textInputBox mb-4"
+                        {...register('platform')}
+                    >
+                        <option value="all">All</option>
+                        <option value="codechef">Codechef</option>
+                        <option value="codeforces">Codeforces</option>
+                        <option value="leetcode">Leetcode</option>
+                    </select>
+                </div>
                 {
                     <button
                         type="submit"
@@ -144,7 +159,7 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
                     isSubmitted &&
                     areThereAnyContests &&
                     <button
-                        onClick={() => ExportToXlxs(filteredContests)}
+                        onClick={() => ExportToXlxs(filteredContests, whtplatform)}
                         className={`
                  btnSubmit w-full mt-2
                 `}
@@ -164,7 +179,7 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
                             </div>
                         }
                     >
-                        <Table data={filteredContests} />
+                        <Table data={filteredContests} filter={whtplatform} />
                     </Suspense>
                 </>
             }
