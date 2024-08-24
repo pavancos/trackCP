@@ -3,8 +3,28 @@ import { useForm } from 'react-hook-form';
 import { Suspense, useState } from 'react';
 import Loading from '../Loading'
 const Table = React.lazy(() => import('../Table'));
+import toast from 'react-hot-toast';
 
 const UserForm = ({ studentsInfo, isFetchedFromAPI }) => {
+
+    
+    const putToast = () => {
+        toast.error('No Data Found', {
+            style: {
+                marginTop: '-10px',
+                marginBottom: '10px',
+                borderRadius: '10px',
+                background: '#fff',
+                color: '#333',
+            },
+            iconTheme: {
+                primary: '#333',
+                secondary: '#fff',
+            },
+            icon: '🚫',
+            duration: 2000
+        });
+    }
     // console.log("Student data :", studentsInfo);
     const { register, handleSubmit } = useForm();
     const [isStudentReport, setIsStudentReport] = useState(true);
@@ -16,6 +36,7 @@ const UserForm = ({ studentsInfo, isFetchedFromAPI }) => {
         if (!studentDetails) {
             setUserData([]);
             setIsSubmitted(true);
+            putToast();
             return;
         }
         let contestData = {
@@ -82,11 +103,8 @@ const UserForm = ({ studentsInfo, isFetchedFromAPI }) => {
                 {isSubmitted &&
                     <div className={`m-3`}>
                         {
-                            userData.length > 0 ?
-                                <Table data={userData} isStudentReport={isStudentReport} /> :
-                                <div className={`w-full flex flex-row justify-center `}>
-                                    <h1>No Data Found</h1>
-                                </div>
+                            userData.length > 0 &&
+                                <Table data={userData} isStudentReport={isStudentReport} />
                         }
                     </div>
                 }

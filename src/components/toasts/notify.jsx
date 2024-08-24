@@ -1,4 +1,4 @@
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 const notify = () => toast.custom(
     <div className='flex flex-row items-center justify-around p-3 bg-slate-200 rounded-lg shadow-2xl border'>
         <p>Oops! Found no one participated in contests, try with different date</p>
@@ -12,7 +12,7 @@ const notify = () => toast.custom(
         </button>
     </div>,
     {
-        duration: 9000,
+        duration: 2000,
         position: 'top-center',
         icon: '⚠️',
         style: {

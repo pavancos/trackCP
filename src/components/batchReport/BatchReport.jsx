@@ -5,8 +5,11 @@ import ExportToXlxs from '../../functions/ExportToXlxs';
 import { filterCodechef, filterCodeforces, filterLeetcode } from '../../functions/filterLogics/filterLogics';
 import Loading from '../Loading'
 const Table = React.lazy(() => import('../Table'));
+import toast from 'react-hot-toast';
+// import notify from '../toasts/notify';
 
-function BatchReport({studentsInfo,isFetchedFromAPI}) {
+function BatchReport({ studentsInfo, isFetchedFromAPI }) {
+
     const [areThereAnyContests, setAreThereAnyContests] = useState(false);
 
     const { register, handleSubmit } = useForm();
@@ -20,6 +23,23 @@ function BatchReport({studentsInfo,isFetchedFromAPI}) {
     const oneWeekAgoFormatted = oneWeekAgoDate.toISOString().split('T')[0];
     const ccDateFormat = todayDate.toISOString().split(' ')[0];
     const today = new Date().toISOString().split('T')[0];
+
+    const putToast = () => {
+        toast.error('No Contests Found', {
+            style: {
+                marginTop: '-10px',
+                marginBottom: '10px',
+                borderRadius: '10px',
+                background: '#fff',
+                color: '#333',
+            },
+            iconTheme: {
+                primary: '#333',
+                secondary: '#fff',
+            },
+            icon: '🚫',
+        });
+    }
 
     async function handleFormSubmit(dataFromForm) {
         console.log('dataFromForm: ', dataFromForm);
@@ -48,15 +68,20 @@ function BatchReport({studentsInfo,isFetchedFromAPI}) {
         // await new Promise((resolve) => setTimeout(resolve, 2000));
         setFilteredContests(filteredContests);
 
+        // Check if there are any contests
+        const hasContests = filteredContests.some(contest =>
+            contest.contests.codechef.length > 0 ||
+            contest.contests.codeforces.length > 0 ||
+            contest.contests.leetcode.length > 0
+        );
+
+        if (!hasContests) {
+            putToast();
+        }
+
+        setAreThereAnyContests(hasContests);
+        setFilteredContests(filteredContests);
         setIsSubmitted(true);
-        // Resolves Renderering table w/o Data
-        filteredContests.map((contest) => {
-            if (contest.contests.codechef.length > 0 || contest.contests.codeforces.length > 0 || contest.contests.leetcode.length > 0) {
-                setAreThereAnyContests(true);
-            } else {
-                setAreThereAnyContests(false);
-            }
-        });
     }
 
     return (
