@@ -111,7 +111,13 @@ async function exportToExcel(filteredContests, whtplatform) {
     // merging cells
     let startRow = 2;
     filteredContests.forEach(({ contests }) => {
-        const totalRows = contests.leetcode.length + contests.codeforces.length + contests.codechef.length;
+        let totalRows = contests.leetcode.length + contests.codeforces.length + contests.codechef.length;
+        if(whtplatform === 'leetcode')
+            totalRows = contests.leetcode.length;
+        else if(whtplatform === 'codeforces')
+            totalRows = contests.codeforces.length;
+        else if(whtplatform === 'codechef')
+            totalRows = contests.codechef.length;
         if (totalRows > 1) {
             worksheet.mergeCells(`A${startRow}:A${startRow + totalRows - 1}`);
             worksheet.mergeCells(`B${startRow}:B${startRow + totalRows - 1}`);
