@@ -38,7 +38,8 @@ function Table({ data, isStudentReport, filter }) {
       leetcode: [],
       codechef: [],
       codeforces: [],
-    }
+    };
+  
     data.forEach((ele) => {
       let leetcode = ele.contests.leetcode;
       let codechef = ele.contests.codechef;
@@ -46,26 +47,32 @@ function Table({ data, isStudentReport, filter }) {
       forOurSake.leetcode.push(...leetcode);
       forOurSake.codechef.push(...codechef);
       forOurSake.codeforces.push(...codeforces);
-    })
-
+    });
+  
     if (filter === 'leetcode') {
-      if (forOurSake.leetcode.length > 0) {
-        setAreLeetcode(true);
+      setAreLeetcode(forOurSake.leetcode.length > 0);
+      if (forOurSake.leetcode.length === 0) {
+        putToast();
       }
     } else if (filter === 'codechef') {
-      if (forOurSake.codechef.length > 0) {
-        setAreCodechef(true);
+      setAreCodechef(forOurSake.codechef.length > 0);
+      if (forOurSake.codechef.length === 0) {
+        putToast();
       }
     } else if (filter === 'codeforces') {
-      if (forOurSake.codeforces.length > 0) {
-        setAreCodeforces(true);
+      setAreCodeforces(forOurSake.codeforces.length > 0);
+      if (forOurSake.codeforces.length === 0) {
+        putToast();
+      }
+    } else if (filter === 'all') {
+      const hasContests = forOurSake.leetcode.length > 0 || forOurSake.codechef.length > 0 || forOurSake.codeforces.length > 0;
+      setAreAll(hasContests);
+      if (!hasContests) {
+        putToast();
       }
     }
-    // if (((filter === 'all' && !areAll) || (filter === 'leetcode' && !areLeetcode) || (filter === 'codechef' && !areCodechef) || (filter === 'codeforces' && !areCodeforces))) {
-    //   putToast();
-    // }
-
-  }, [data]);
+  }, [data, filter]);
+  
 
   
 
