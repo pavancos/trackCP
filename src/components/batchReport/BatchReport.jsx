@@ -6,16 +6,22 @@ import { filterCodechef, filterCodeforces, filterLeetcode } from '../../function
 import Loading from '../Loading'
 const Table = React.lazy(() => import('../Table'));
 import toast from 'react-hot-toast';
+import { data } from 'autoprefixer';
 // import notify from '../toasts/notify';
 
 function BatchReport({ studentsInfo, isFetchedFromAPI }) {
 
     const [areThereAnyContests, setAreThereAnyContests] = useState(false);
+    const [isTheDataAvailable, setIsTheDataAvailable] = useState(true);
+    
 
     const { register, handleSubmit } = useForm();
     const [filteredContests, setFilteredContests] = useState([]);
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [whtplatform, setplatform] = useState('all');
+    const [hasLeetcode, setHasLeetcode] = useState(false);
+    const [hasCodechef, setHasCodechef] = useState(false);
+    const [hasCodeforces, setHasCodeforces] = useState(false);
 
     const todayDate = new Date();
     const oneWeekAgoDate = new Date(todayDate);
@@ -76,15 +82,29 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
             contest.contests.leetcode.length > 0
         );
 
-        if (!hasContests) {
-            putToast();
-        }
-
         setAreThereAnyContests(hasContests);
         setFilteredContests(filteredContests);
         setIsSubmitted(true);
         setplatform(dataFromForm.platform);
+        if (!hasContests) {
+            putToast();
+        }
+        // Check if there are any contests for asked platform
+        const HasLeetcode = filteredContests.some(contest =>
+            contest.contests.leetcode.length > 0
+        );
+        setHasLeetcode(HasLeetcode);
+        const HasCodechef = filteredContests.some(contest =>
+            contest.contests.codechef.length > 0
+        );
+        setHasCodechef(HasCodechef);
+        const HasCodeforces = filteredContests.some(contest =>
+            contest.contests.codeforces.length > 0
+        );
+        setHasCodeforces(HasCodeforces);
     }
+
+    
 
     return (
         <div className="mt-6 m-3">
@@ -158,6 +178,10 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
                 {
                     isSubmitted &&
                     areThereAnyContests &&
+                    (whtplatform === 'all' || (whtplatform==='leetcode' && hasLeetcode) || (whtplatform==='codechef' && hasCodechef) || (whtplatform==='codeforces' && hasCodeforces)) &&
+                    
+                    
+
                     <button
                         onClick={() => ExportToXlxs(filteredContests, whtplatform)}
                         className={`
