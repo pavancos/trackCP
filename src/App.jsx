@@ -9,6 +9,7 @@ import Home from './components/home/Home';
 import Layout from './Layout';
 import { useEffect, useState } from 'react';
 import { fetchFromDB } from './functions/fetchFromDB/fetchFromDB';
+import PlayGround from './components/playgorund/PlayGround';
 
 function App() {
   const [studentsInfo, setstudentsInfo] = useState([]);
@@ -45,6 +46,10 @@ function App() {
         {
           path: 'refreshdb',
           element: <RefreshDB />
+        },
+        {
+          path:'playground',
+          element:<PlayGround/>
         }
       ]
     },

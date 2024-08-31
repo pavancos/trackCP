@@ -15,6 +15,9 @@ const Navbar = () => {
           <li>
             <Link to="studentreport">Student Report</Link>
           </li>
+          <li>
+            <Link to="playground">Play Ground</Link>
+          </li>
         </ul>
       </nav>
 
