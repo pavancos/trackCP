@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
+import CodechefChart from '../codechefCharts/CodechefChart';
 
 const PlayGround = () => {
     const { register, handleSubmit } = useForm();
@@ -9,33 +10,38 @@ const PlayGround = () => {
     const [isLeetcodeSelected, setIsLeetcodeSelected] = useState(true);
     const [isSpojSelected, setIsSpojSelected] = useState(true);
     const [isAtCoderSelected, setIsAtCoderSelected] = useState(true);
+    const [isSubmitted, setIsSubmitted] = useState(false);
+
+    const [codechefData, setCodechefData] = useState([]);
 
 
     async function playGroundInput(usernamesData) {
         console.log('usernamesData: ', usernamesData);
         let onlyUsernames = usernamesData;
         delete onlyUsernames.nameOfUser;
-        if(!isCodeChefSelected)
+        if (!isCodeChefSelected)
             delete onlyUsernames.Codechef;
-        if(!isCodeforcesSelected)
+        if (!isCodeforcesSelected)
             delete onlyUsernames.Codeforces;
-        if(!isLeetcodeSelected)
+        if (!isLeetcodeSelected)
             delete onlyUsernames.Leetcode;
-        if(!isSpojSelected)
+        if (!isSpojSelected)
             delete onlyUsernames.Spoj;
-        if(!isAtCoderSelected)
+        if (!isAtCoderSelected)
             delete onlyUsernames.Atcoder;
         console.log('onlyUsernames: ', onlyUsernames);
         let params = new URLSearchParams(onlyUsernames).toString().toLowerCase();
         console.log('params: ', params);
-        let res = await fetch(`https://cpplayground.vercel.app/all?${params}`,{
-            method:'GET',
-            headers:{
-                'Content-Type':'application/json'
+        let res = await fetch(`https://cpplayground.vercel.app/all?${params}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
             }
         });
-        let data = await res.json(); 
+        let data = await res.json();
         console.log('data: ', data);
+        setCodechefData(data.codechef);
+        setIsSubmitted(true);
     }
 
     async function onCheckChange(e) {
@@ -57,13 +63,6 @@ const PlayGround = () => {
         }
     }
 
-    // useEffect(() => {
-    //     console.log('Codechef: ', isCodeChefSelected);
-    //     console.log('Codeforces: ', isCodeforcesSelected);
-    //     console.log('Leetcode: ', isLeetcodeSelected);
-    //     console.log('Spoj: ', isSpojSelected);
-    //     console.log('AtCoder: ', isAtCoderSelected);
-    // })
 
     return (
         <div className='m-3'>
@@ -226,10 +225,16 @@ const PlayGround = () => {
                 <button
                     type="submit"
                     className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-700 ease-in-out"
+
                 >
                     Submit
                 </button>
             </form>
+
+            {
+                isSubmitted &&
+                <CodechefChart codechefData={codechefData} />
+            }
         </div>
     );
 };
