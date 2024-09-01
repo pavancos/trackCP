@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import CodechefChart from '../codechefCharts/CodechefChart';
+import CodechefChart from '../Charts/CodechefChart';
+import LeetcodeChart from '../Charts/LeetcodeChart';
+import Loading from '../Loading'
 
 const PlayGround = () => {
     const { register, handleSubmit } = useForm();
@@ -11,11 +13,15 @@ const PlayGround = () => {
     const [isSpojSelected, setIsSpojSelected] = useState(true);
     const [isAtCoderSelected, setIsAtCoderSelected] = useState(true);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [isFetchedFromApi, setIsFetchedFromApi] = useState(true);
 
     const [codechefData, setCodechefData] = useState([]);
+    const [codeforcesData, setCodeforcesData] = useState([]);
+    const [leetcodeData, setLeetcodeData] = useState([]);
 
 
     async function playGroundInput(usernamesData) {
+        setIsFetchedFromApi(false);
         console.log('usernamesData: ', usernamesData);
         let onlyUsernames = usernamesData;
         delete onlyUsernames.nameOfUser;
@@ -41,7 +47,9 @@ const PlayGround = () => {
         let data = await res.json();
         console.log('data: ', data);
         setCodechefData(data.codechef);
+        setLeetcodeData(data.leetcode);
         setIsSubmitted(true);
+        setIsFetchedFromApi(true);
     }
 
     async function onCheckChange(e) {
@@ -224,7 +232,13 @@ const PlayGround = () => {
 
                 <button
                     type="submit"
-                    className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-700 ease-in-out"
+                    className={
+                        `w-full  font-semibold py-2 px-4 rounded-md
+                        transition duration-700 ease-in-out text-white 
+                        hover:bg-blue-600 focus:outline-none focus:ring-2 
+                        focus:ring-offset-2 focus:ring-blue-500 
+                        ${!isFetchedFromApi ? 'cursor-not-allowed bg-blue-300' : 'cursor-pointer bg-blue-500'}`
+                    }
 
                 >
                     Submit
@@ -232,8 +246,17 @@ const PlayGround = () => {
             </form>
 
             {
-                isSubmitted &&
+                !isFetchedFromApi && <div className='flex flex-row justify-center'><Loading></Loading></div>
+            }
+            {
+                (isSubmitted && isFetchedFromApi) && 
+                isCodeChefSelected &&
                 <CodechefChart codechefData={codechefData} />
+            }
+            {
+                (isSubmitted && isFetchedFromApi) && 
+                isLeetcodeSelected &&
+                <LeetcodeChart leetcodeData={leetcodeData} />
             }
         </div>
     );
