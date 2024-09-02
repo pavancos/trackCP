@@ -9,6 +9,7 @@ import toast from 'react-hot-toast';
 
 const Play = () => {
     const { register, handleSubmit } = useForm();
+    const [nameOfUser, setNameOfUser] = useState('');
     const [selectedPlatforms, setSelectedPlatforms] = useState({
         Codechef: true,
         Leetcode: true,
@@ -75,6 +76,7 @@ const Play = () => {
 
     const playGroundInput = async (usernamesData) => {
         setIsFetchedFromApi(false);
+        setNameOfUser(usernamesData.nameOfUser);
         
         
 
@@ -220,6 +222,10 @@ const Play = () => {
 
             {/* Show loading spinner while data is being fetched */}
             {!isFetchedFromApi && <div className="flex flex-row justify-center"><Loading /></div>}
+            {
+                isSubmitted && isFetchedFromApi &&
+                <h1 className='text-4xl font-semibold text-blue-500 text-center'>Hello {nameOfUser}!</h1>
+    }
 
             {/* Render charts for platforms */}
             {isSubmitted && isFetchedFromApi && (

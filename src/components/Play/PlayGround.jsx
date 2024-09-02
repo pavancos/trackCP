@@ -16,6 +16,7 @@ const PlayGround = () => {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [isFetchedFromApi, setIsFetchedFromApi] = useState(true);
     const [isAnyChange, setIsAnyChange] = useState(false);
+    const [nameOfUser,setnameOfUser] = useState('');
 
     const [codechefData, setCodechefData] = useState([]);
     const [codeforcesData, setCodeforcesData] = useState([]);
@@ -69,6 +70,7 @@ const PlayGround = () => {
 
     async function playGroundInput(usernamesData) {
         setIsFetchedFromApi(false);
+        setnameOfUser(usernamesData.nameOfUser);
         console.log('usernamesData: ', usernamesData);
         let onlyUsernames = usernamesData;
         delete onlyUsernames.nameOfUser;
@@ -256,10 +258,14 @@ const PlayGround = () => {
                 </button>
             </form>
 
+
             {
                 !isFetchedFromApi &&
                 <div className='flex flex-row justify-center'><Loading /></div>
             }
+            
+            
+
             {
                 (isSubmitted && isFetchedFromApi) &&
                 (codechefData !== null) &&
