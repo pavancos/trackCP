@@ -3,6 +3,7 @@ import { set, useForm } from 'react-hook-form';
 import CodechefChart from '../Charts/CodechefChart';
 import LeetcodeChart from '../Charts/LeetcodeChart';
 import CodeforcesChart from '../Charts/CodeforcesChart';
+import AtcoderChart from '../Charts/AtcoderChart';
 import Loading from '../Loading';
 import toast from 'react-hot-toast';
 
@@ -11,12 +12,14 @@ const Play = () => {
     const [selectedPlatforms, setSelectedPlatforms] = useState({
         Codechef: true,
         Leetcode: true,
-        Codeforces: true
+        Codeforces: true,
+        Atcoder: true,
     });
     const [platformData, setPlatformData] = useState({
         codechef: null,
         leetcode: null,
-        codeforces: null
+        codeforces: null,
+        atcoder: null,
     });
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [isFetchedFromApi, setIsFetchedFromApi] = useState(true);
@@ -25,12 +28,28 @@ const Play = () => {
     const platforms = [
         { id: 'Codechef', component: CodechefChart, dataState: 'codechefData' },
         { id: 'Leetcode', component: LeetcodeChart, dataState: 'leetcodeData' },
-        { id: 'Codeforces', component: CodeforcesChart, dataState: 'codeforcesData' }
-
+        { id: 'Codeforces', component: CodeforcesChart, dataState: 'codeforcesData' },
+        { id: 'Atcoder', component: AtcoderChart, dataState: 'atcoderData' },
     ];
 
     const putToast = (platform) => {
         toast.error(`Enter your ${platform} username`, {
+            style: {
+                marginTop: '-10px',
+                marginBottom: '10px',
+                borderRadius: '10px',
+                background: '#fff',
+                color: '#333',
+            },
+            iconTheme: {
+                primary: '#333',
+                secondary: '#fff',
+            },
+            icon: '🧐',
+        });
+    };
+    const putNothingToast = () => {
+        toast.error(`Select atleast one!`, {
             style: {
                 marginTop: '-10px',
                 marginBottom: '10px',
@@ -56,6 +75,8 @@ const Play = () => {
 
     const playGroundInput = async (usernamesData) => {
         setIsFetchedFromApi(false);
+        
+        
 
         const filteredUsernames = { ...usernamesData };
         delete filteredUsernames.nameOfUser;
@@ -71,9 +92,17 @@ const Play = () => {
                 putToast(platform);
             }
         });
+        console.log(selectedPlatforms);
+        
 
         let params = new URLSearchParams(filteredUsernames).toString().toLowerCase();
-        console.log(params)
+        console.log(typeof(params))
+        if(params.length === 0){
+            putNothingToast();
+            setIsFetchedFromApi(true);
+            return;
+        }
+        
         try {
             let res = await fetch(`https://cpplayground.vercel.app/all?${params}`, {
                 method: 'GET',
@@ -91,6 +120,7 @@ const Play = () => {
                 codechef: data.codechef || null,
                 leetcode: data.leetcode || null,
                 codeforces: data.codeforces || null,
+                atcoder: data.atcoder || null,
             });
             setIsSubmitted(true);
         } catch (error) {
@@ -132,11 +162,11 @@ const Play = () => {
                 {/* Select platforms */}
                 <div className="flex gap-1 flex-col mb-2">
                     <label className="labelText">Select Platforms</label>
-                    <div className="flex gap-1 flex-col mb-2 rounded-lg border border-1 shadow-sm p-1">
+                    <div className="flex gap-1 flex-row mb-2 flex-wrap sm:flex-nowrap rounded-lg border border-1 shadow-sm p-1">
                         {
                             platforms.map((plat) => {
                                 return (
-                                    <div key={plat.id} className="flex flex-row gap-2 items-center px-2">
+                                    <div key={plat.id} className="flex w-1/2 flex-row gap-2 items-center px-2">
                                         <input
                                             type="checkbox"
                                             id={plat.id}
