@@ -21,6 +21,9 @@ const formatDate = (dateString) => {
 };
 
 function CodechefChart({ codechefData }) {
+    if(codechefData === undefined) {
+        return <div></div>
+    }
     let contestsData = codechefData.contests;
     contestsData = contestsData.reverse();
     console.log('contestsData: ', contestsData);
