@@ -75,8 +75,7 @@ function Table({ data, isStudentReport, filter }) {
 
 
 
-  let filteredRowIndex = 0;
-
+  let filteredRowIndex = 0; 
 
 
   return (
