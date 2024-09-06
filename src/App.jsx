@@ -10,7 +10,7 @@ import Layout from './Layout';
 import { useEffect, useState } from 'react';
 import { fetchFromDB } from './functions/fetchFromDB/fetchFromDB';
 import PlayGround from './components/Play/PlayGround';
-import Play from './components/playgorund/Play';
+import Play from './components/playground/Play';
 
 function App() {
   const [studentsInfo, setstudentsInfo] = useState([]);
