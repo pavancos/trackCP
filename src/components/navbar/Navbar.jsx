@@ -18,6 +18,9 @@ const Navbar = () => {
           <li>
             <Link to="playground">Play Ground</Link>
           </li>
+          <li>
+            <Link to="compare">Compare</Link>
+          </li>
         </ul>
       </nav>
 

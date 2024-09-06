@@ -8,7 +8,8 @@ import Loading from '../Loading';
 import toast from 'react-hot-toast';
 import { Navigate } from 'react-router-dom';
 
-const Play = () => {
+const Play = ({ sno }) => {
+    console.log('sno: ', sno);
     const { register, handleSubmit } = useForm();
 
     const [nameOfUser, setNameOfUser] = useState('');
@@ -164,9 +165,18 @@ const Play = () => {
                 onSubmit={handleSubmit(playGroundInput)}
                 className="max-w-lg mt-5 mx-auto p-4 mb-2 border rounded-md"
             >
-                <h1 className="text-2xl font-semibold text-blue-700 text-center mb-3">
-                    Competitive Programming Report
-                </h1>
+                {
+                    sno == undefined &&
+                    <h1 className="text-2xl font-semibold text-blue-700 text-center mb-3">
+                        Competitive Programming Report
+                    </h1>
+                }
+                {
+                    sno != undefined &&
+                    <h1 className="text-2xl font-semibold text-blue-700 text-center mb-3">
+                        Person {sno + 1}
+                    </h1>
+                }
                 <div className="mb-2 pr-2">
                     <label htmlFor="nameOfUser" className="labelText">
                         Your Name
@@ -242,9 +252,13 @@ const Play = () => {
             {/* Show loading spinner while data is being fetched */}
             {!isFetchedFromApi && <div className="flex flex-row justify-center"><Loading /></div>}
             {
-                isSubmitted && isFetchedFromApi &&
-                <h1 className='text-4xl font-semibold text-blue-500 text-center'>Hello {nameOfUser}!</h1>
+                isSubmitted && isFetchedFromApi && 
+                <h1 className='text-4xl font-semibold text-blue-500 text-center mb-2'>{nameOfUser}</h1>
             }
+            {/* {
+                isSubmitted && isFetchedFromApi && (sno != undefined) &&
+                <h1 className='text-4xl font-semibold text-blue-500 text-center'>Person {sno + 1}</h1>
+            } */}
 
             {/* Render charts for platforms */}
             {isSubmitted && isFetchedFromApi && (
