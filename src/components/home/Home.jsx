@@ -58,14 +58,12 @@ function Home() {
     jsConfetti.addConfetti({
       emojis: ['📈','📊','📉','🎯','🚀','🗂️','📝','📋','🔎'],
       emojiSize: 40,
-      confettiNumber: 70,
+      confettiNumber: 10,
     }).then(() => {
       console.log('done');
     }).finally(() => {
       jsConfetti.clearCanvas();
     });
-
-    // Set z-index of the confetti canvas to 0
   }
 
   return (
@@ -108,7 +106,7 @@ function Home() {
             </button>
           </div>
           <div className="col-span-4 col-start-3 row-span-1 "
-            onClick={handleClick}
+            // onClick={handleClick}
           >
             <h1 className='text-5xl  md:text-8xl font-mono tracking-wider font-black ' >
               trackio
@@ -120,7 +118,7 @@ function Home() {
                  backdrop-blur-sm shadow-xl text-black  py-2 px-2 rounded-lg bg-white z-50
                 `}
             >
-              <a href="/compare">Student Report</a>
+              <a href="/studentreport">Student Report</a>
             </button>
 
           </div>
