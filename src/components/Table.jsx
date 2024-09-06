@@ -39,7 +39,7 @@ function Table({ data, isStudentReport, filter }) {
       codechef: [],
       codeforces: [],
     };
-  
+
     data.forEach((ele) => {
       let leetcode = ele.contests.leetcode;
       let codechef = ele.contests.codechef;
@@ -48,7 +48,7 @@ function Table({ data, isStudentReport, filter }) {
       forOurSake.codechef.push(...codechef);
       forOurSake.codeforces.push(...codeforces);
     });
-  
+
     if (filter === 'leetcode') {
       setAreLeetcode(forOurSake.leetcode.length > 0);
       if (forOurSake.leetcode.length === 0) {
@@ -72,18 +72,17 @@ function Table({ data, isStudentReport, filter }) {
       }
     }
   }, [data, filter]);
-  
-
-  
 
 
+
+  let filteredRowIndex = 0; 
 
 
   return (
     <>
       {
         ((filter === 'all' && areAll) || (filter === 'leetcode' && areLeetcode) || (filter === 'codechef' && areCodechef) || (filter === 'codeforces' && areCodeforces))
-        && 
+        &&
 
 
         <div className="overflow-x-auto">
@@ -93,7 +92,7 @@ function Table({ data, isStudentReport, filter }) {
                 {
                   !isStudentReport &&
                   <>
-                    < th className="tableTd" rowSpan={2}>Roll.No</th>
+                    <th className="tableTd" rowSpan={2}>Roll.No</th>
                     <th className="tableTd" rowSpan={2}>Name</th>
                   </>
                 }
@@ -116,7 +115,7 @@ function Table({ data, isStudentReport, filter }) {
                   <>
                     <th className="tableTd">Contest Name</th>
                     <th className="tableTd">Rank</th>
-                    <th className="tableTd">No of Problems Solved</th>
+                    <th className="tableTd">Problems Solved</th>
                     <th className="tableTd">Date</th>
                   </>
                 }
@@ -124,8 +123,8 @@ function Table({ data, isStudentReport, filter }) {
                   (filter === 'codechef' || filter === 'all') &&
                   <>
                     <th className="tableTd">Contest Name</th>
-                    <th className="tableTd">Rank</th>
-                    <th className="tableTd">No of Problems Solved</th>
+                    <th className="tableTd" >Rank</th>
+                    <th className="tableTd">Problems Solved</th>
                     <th className="tableTd">Date</th>
                   </>
                 }
@@ -134,7 +133,7 @@ function Table({ data, isStudentReport, filter }) {
                   <>
                     <th className="tableTd">Contest Name</th>
                     <th className="tableTd">Rank</th>
-                    <th className="tableTd">No of Problems Solved</th>
+                    <th className="tableTd">Problems Solved</th>
                     <th className="tableTd">Date</th>
                   </>
                 }
@@ -162,6 +161,8 @@ function Table({ data, isStudentReport, filter }) {
                     const codeforcesContest = contests.codeforces[rowIndex] || {};
 
                     const userBgColor = studentIndex % 2 === 0 ? 'bg-white' : 'bg-gray-100';
+                    // const userBgColor = filteredRowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-100';
+                    // filteredRowIndex += 1;
 
                     return (
                       <tr key={`${studentIndex}-${rowIndex}`} className={userBgColor}>
@@ -176,7 +177,7 @@ function Table({ data, isStudentReport, filter }) {
                         {
                           (filter === 'leetcode' || filter === 'all') &&
                           <>
-                            <td className="tableTd">{leetcodeContest.contest?.title}</td>
+                            <td className="tableTd text-nowrap">{leetcodeContest.contest?.title}</td>
                             <td className="tableTd">{leetcodeContest.ranking}</td>
                             <td className="tableTd">{leetcodeContest.problemsSolved}</td>
                             <td className="tableTd">
@@ -191,7 +192,7 @@ function Table({ data, isStudentReport, filter }) {
                         {
                           (filter === 'codechef' || filter === 'all') &&
                           <>
-                            <td className="tableTd">{codechefContest.name || '  '}</td>
+                            <td className="tableTd text-nowrap">{codechefContest.name || '  '}</td>
                             <td className="tableTd">{codechefContest.rank || '  '}</td>
                             <td className="tableTd">{codechefContest.noOfProblems || '  '}</td>
                             <td className="tableTd">
@@ -202,7 +203,7 @@ function Table({ data, isStudentReport, filter }) {
                         {
                           (filter === 'codeforces' || filter === 'all') &&
                           <>
-                            <td className="tableTd">{codeforcesContest.contestName || '  '}</td>
+                            <td className="tableTd text-nowrap">{codeforcesContest.contestName || '  '}</td>
                             <td className="tableTd">{codeforcesContest.rank || '  '}</td>
                             <td className='tableTd'>{codeforcesContest.problemsSolved || '  '}</td>
                             <td className="tableTd">
