@@ -3,131 +3,73 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import './Home.css'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import JSConfetti from 'js-confetti'
 
 
 function Home() {
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    // hide bubbles
+    gsap.set('.bubble',
+      {
+        opacity: 0,
+        y: 90
+      });
 
-  // gsap.registerPlugin(useGSAP)
-  // gsap.registerPlugin(ScrollTrigger)
-
-  // useGSAP(() => {
-  //   gsap.to('.home', {
-  //     duration: 1,
-  //     opacity: 1,
-  //     delay: 1,
-  //     x: 20,
-  //     y: 20,
-  //   })
-
-  // })
-  // useEffect(() => {
-  //   const contentWidth = document.querySelector('.hs h1').scrollWidth;
-  //   const viewportWidth = window.innerWidth;
-
-  //   gsap.to(".hs h1", {
-  //     x: -(contentWidth - viewportWidth) - 10,
-  //     scrollTrigger: {
-  //       trigger: "#page2",
-  //       scroller: "body",
-  //       // markers: true,
-  //       start: "top 40%",
-  //       end: () => `+=${contentWidth - viewportWidth}`,
-  //       scrub: 1,
-  //       pin: true,
-  //     }
-  //   });
-
-  //   gsap.from(".page3", {
-  //     opacity: 0,
-  //     y: -20,
-  //     duration: 2,
-  //     delay: 1,
-  //     scrollTrigger: {
-  //       trigger: "#page3 h1",
-  //       scroller: "body",
-  //       // markers: true,
-  //       start: "top 10%",
-  //     }
-  //   });
-  // }, []);
-  const jsConfetti = new JSConfetti()
-
-  const handleClick = () => {
-    const jsConfetti = new JSConfetti();
-    jsConfetti.addConfetti({
-      emojis: ['📈','📊','📉','🎯','🚀','🗂️','📝','📋','🔎'],
-      emojiSize: 40,
-      confettiNumber: 10,
-    }).then(() => {
-      console.log('done');
-    }).finally(() => {
-      jsConfetti.clearCanvas();
+    // show bubbles
+    gsap.to('.bubble', {
+      opacity: 1,
+      delay: 0.3,
+      duration: 0.6,
+      stagger: 0.3,
+      y: 10,
+      ease: 'back.out(5)',
+      // ease: 'elastic.out(0.9, 0.5)',
     });
-  }
-
+  }, [])
   return (
-    // <div>
-    //   <h1 className='home'>Hello</h1>
-    //   <div className={`w-full h-full bg-zinc-200 flex flex-col items-center pt-3 `} style={{ minHeight: "100vh" }}>
-    //     <div className={`flex items-center gap-3 bg-white p-7 rounded-md m-3`}>
-    //       <h1 className='text-justify'>Under Maintanance! We are currently improving this page. Meanwhile, checkout Batch Report and Student Report.</h1>
-    //     </div>
-    //   </div>
-    //   <div className='page'>
-    //   </div>
-    //   <div id="page2" className='hs'>
-    //     <h1>Start Tracking Now 💻 Roll Number and Date Range Selection 📅 Contest Participation Overview 🏆 Multi-Platform Integration 🌐 Performance Metrics 📊 Export to xlsx 📂</h1>
-    //   </div>
-    //   <div id="page3" className='page3'>
-    //     <h1>Page 3 Content  </h1>
-    //   </div>
-    // </div>
     <>
-      <div className='h-screen flex justify-center items-center pb-48 '>
-        <div className="grid grid-cols-8 grid-rows-3 gap-0 auto-rows-fr grid-flow-row w-full h-1/2 md:w-2/3">
-          <div className="col-span-3 row-span-1  flex justify-start items-start">
+      <div className='h-screen flex justify-center items-center'>
+        <div className="grid grid-cols-8 grid-rows-3 auto-rows-fr grid-flow-row w-full h-1/2 md:w-2/3">
+          <div className="bubble col-span-3 row-span-1  flex justify-center items-start">
             <button
               className={`
-                 backdrop-blur-sm shadow-xl text-black  py-2 px-4 rounded-lg z-50  bg-white
+                 backdrop-blur-sm shadow-xl text-white  py-2 px-4 rounded-lg z-50  bg-vividBlue rotate-[3deg]
                 `}
             >
               <a href="/batchreport">Batch Report</a>
             </button>
           </div>
-          <div className="col-span-3 col-start-6 row-span-1  flex justify-center items-center ">
+          <div className="bubble col-span-3 col-start-6 row-span-1  flex justify-center items-center ">
 
             <button
               className={`
-                 backdrop-blur-sm shadow-xl text-black py-2 px-4 rounded-lg z-50 bg-white
+                 backdrop-blur-sm shadow-xl text-white py-2 px-4 rounded-lg z-50 bg-coral rotate-[-7deg]
                 `}
             >
               <a href="/playground">CP Report</a>
             </button>
           </div>
           <div className="col-span-4 col-start-3 row-span-1 "
-            // onClick={handleClick}
           >
-            <h1 className='text-5xl  md:text-8xl font-mono tracking-wider font-black ' >
-              trackio
+            <h1 className='main-heading text-5xl text-center font-medium sm:text-6xl md:text-7xl lg:text-8xl font-advent tracking-wider' >
+              Track io
             </h1>
           </div>
-          <div className="col-span-3 row-span-1  flex flex-row justify-center items-center">
+          <div className="bubble col-span-3 row-span-1  flex flex-row justify-center sm:items-center items-start">
             <button
               className={`
-                 backdrop-blur-sm shadow-xl text-black  py-2 px-2 rounded-lg bg-white z-50
+                 backdrop-blur-sm shadow-xl text-white  py-2 px-2 rounded-lg bg-softRed z-50 rotate-[-7deg]
                 `}
             >
               <a href="/studentreport">Student Report</a>
             </button>
 
           </div>
-          <div className="col-span-3 col-start-6 row-span-1  flex flex-row justify-end items-end">
+          <div className="bubble col-span-3 col-start-6 row-span-1  flex flex-row justify-center  items-start sm:items-end">
 
             <button
               className={`
-                 backdrop-blur-sm shadow-xl text-black  py-2 px-4 rounded-lg z-50 bg-white
-
+                 backdrop-blur-sm shadow-xl text-white py-2 px-4 rounded-lg z-50 bg-deepTeal rotate-[5deg]
                 `}
             >
               <a href="/compare">Compare</a>
@@ -135,6 +77,9 @@ function Home() {
           </div>
         </div>
       </div>
+
+      {/* <div className='page'></div>
+      <div className='page'></div> */}
     </>
   )
 }
