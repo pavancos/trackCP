@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import './Home.css'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import UpcomingContests from './UpcomingContests'
 
 
 function Home() {
@@ -78,8 +79,10 @@ function Home() {
         </div>
       </div>
 
-      {/* <div className='page'></div>
-      <div className='page'></div> */}
+      <UpcomingContests />
+
+      <div className='page'></div>
+      <div className='page'></div>
     </>
   )
 }

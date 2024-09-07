@@ -15,6 +15,11 @@ export default {
       },
       fontFamily: {
         advent: ['"Advent Pro"', 'sans-serif'],
+        afacad: ['Afacad', 'sans-serif'],
+        alexandria: ['Alexandria', 'sans-serif'],
+      },
+      borderRadius: {
+        '28px': '28px',
       },
     },
   },
