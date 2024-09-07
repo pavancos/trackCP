@@ -5,7 +5,18 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        lightBeige: '#ecece2', // Background color
+        softRed: 'rgba(255, 105, 105, 1)',
+        vividBlue: '#615EFC',
+        coral: '#FF885B',
+        deepTeal: 'rgba(13, 124, 102, 1)'
+      },
+      fontFamily: {
+        advent: ['"Advent Pro"', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 }
