@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import './Home.css'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import UpcomingContests from './UpcomingContests'
+import BatchRepportSection from './BatchRepportSection'
 
 
 function Home() {
@@ -79,8 +80,10 @@ function Home() {
         </div>
       </div>
 
-      <UpcomingContests />
-
+      <div style={{height:'100vh'}}>
+        <UpcomingContests />
+      </div>
+      <BatchRepportSection />
       <div className='page'></div>
       <div className='page'></div>
     </>
