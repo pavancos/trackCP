@@ -9,134 +9,33 @@ import NotFoundIcon from '../../assets/challenge.svg'
 import OpenInNewTab from '../../assets/arrow.svg'
 import Loading from '../Loading'
 import { parse } from 'postcss'
+import rightArrow from '../../assets/right-arrow.svg'
+import leftArrow from '../../assets/left-arrow.svg'
+import { useRef } from 'react'
+import disabedLeftArrow from '../../assets/disabled-left.svg'
+import disabledRightArrow from '../../assets/disabled-right.svg'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 
 function UpcomingContests() {
     const [upcoming, setUpcoming] = useState([]);
-    let ComingContestsData = [
-        {
-            "duration": 5400,
-            "end": "2024-09-08T04:00:00",
-            "event": "Weekly Contest 414",
-            "host": "leetcode.com",
-            "href": "https://leetcode.com/contest/weekly-contest-414",
-            "id": 53729394,
-            "n_problems": null,
-            "n_statistics": null,
-            "parsed_at": null,
-            "problems": null,
-            "resource": "leetcode.com",
-            "resource_id": 102,
-            "start": "2024-09-08T02:30:00"
-        },
-        {
-            "duration": 7200,
-            "end": "2024-09-11T16:30:00",
-            "event": "Starters 151",
-            "host": "codechef.com",
-            "href": "https://www.codechef.com/START151",
-            "id": 51906861,
-            "n_problems": null,
-            "n_statistics": null,
-            "parsed_at": null,
-            "problems": null,
-            "resource": "codechef.com",
-            "resource_id": 2,
-            "start": "2024-09-11T14:30:00"
-        },
-        {
-            "duration": 7200,
-            "end": "2024-09-11T16:30:00",
-            "event": "Starters 151",
-            "host": "codechef.com",
-            "href": "https://www.codechef.com/START151",
-            "id": 51906861,
-            "n_problems": null,
-            "n_statistics": null,
-            "parsed_at": null,
-            "problems": null,
-            "resource": "codechef.com",
-            "resource_id": 2,
-            "start": "2024-09-11T14:30:00"
-        },
-        {
-            "duration": 7200,
-            "end": "2024-09-11T16:30:00",
-            "event": "Starters 151",
-            "host": "codechef.com",
-            "href": "https://www.codechef.com/START151",
-            "id": 51906861,
-            "n_problems": null,
-            "n_statistics": null,
-            "parsed_at": null,
-            "problems": null,
-            "resource": "codechef.com",
-            "resource_id": 2,
-            "start": "2024-09-11T14:30:00"
-        },
-        {
-            "duration": 7200,
-            "end": "2024-09-11T16:30:00",
-            "event": "Starters 151",
-            "host": "codechef.com",
-            "href": "https://www.codechef.com/START151",
-            "id": 51906861,
-            "n_problems": null,
-            "n_statistics": null,
-            "parsed_at": null,
-            "problems": null,
-            "resource": "codechef.com",
-            "resource_id": 2,
-            "start": "2024-09-11T14:30:00"
-        },
-        {
-            "duration": 7200,
-            "end": "2024-09-11T16:30:00",
-            "event": "Starters 151",
-            "host": "codechef.com",
-            "href": "https://www.codechef.com/START151",
-            "id": 51906861,
-            "n_problems": null,
-            "n_statistics": null,
-            "parsed_at": null,
-            "problems": null,
-            "resource": "codechef.com",
-            "resource_id": 2,
-            "start": "2024-09-11T14:30:00"
-        },
-        {
-            "duration": 7200,
-            "end": "2024-09-11T16:30:00",
-            "event": "Starters 151",
-            "host": "codechef.com",
-            "href": "https://www.codechef.com/START151",
-            "id": 51906861,
-            "n_problems": null,
-            "n_statistics": null,
-            "parsed_at": null,
-            "problems": null,
-            "resource": "codechef.com",
-            "resource_id": 2,
-            "start": "2024-09-11T14:30:00"
-        },
-        {
-            "duration": 6000,
-            "end": "2024-09-14T13:40:00",
-            "event": "AtCoder Beginner Contest 371",
-            "host": "atcoder.jp",
-            "href": "https://atcoder.jp/contests/abc371",
-            "id": 53472956,
-            "n_problems": null,
-            "n_statistics": null,
-            "parsed_at": null,
-            "problems": null,
-            "resource": "atcoder.jp",
-            "resource_id": 93,
-            "start": "2024-09-14T12:00:00"
-        }
-    ]
+    const scrollRef = useRef(null);
+    const [atStart, setAtStart] = useState(true);
+    const [atEnd, setAtEnd] = useState(false);
 
+    const formatToIST = (dateString) => {
+        const gmtDate = new Date(dateString);
 
+        const istOffset = 5 * 60 * 60 * 1000 + 30 * 60 * 1000; // GMT+5:30
+        const istDate = new Date(gmtDate.getTime() + istOffset);
+
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const date = istDate.toLocaleDateString('en-IN', options);
+        const timeOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
+        const time = istDate.toLocaleTimeString('en-IN', timeOptions);
+        return { date, time };
+    };
 
     const fetchUpcommingContests = async () => {
         try {
@@ -167,21 +66,21 @@ function UpcomingContests() {
                 else if (heuristicPattern.test(contest.event)) {
                     const match = contest.event.match(heuristicPattern);
                     formattedName = `AtCoder Heuristic Contest ${match[1]}`;
-                }else{
+                } else {
                     formattedName = contest.event;
                 }
                 contest.event = formattedName;
             }
-            if(contest.platform.toLowerCase() === 'hackerearth'){
+            if (contest.platform.toLowerCase() === 'hackerearth') {
                 contest.event = contest.event.split('.')[0];
             }
             return {
                 name: contest.event,
                 Image: contest.host === 'codechef.com' ? CodechefIcon : contest.host === 'codeforces.com' ? CodeforcesIcon : contest.host === 'leetcode.com' ? LeetcodeIcon : contest.host === 'spoj.com' ? SpojIcon : contest.host === 'atcoder.jp' ? AtcoderIcon : contest.host === 'hackerearth.com' ? HackerearthIcon : NotFoundIcon,
                 platofrm: contest.platform.toLowerCase(),
-                Date: new Date(contest.start).toLocaleDateString(),
-                StartTime: new Date(contest.start).toLocaleTimeString('en-US', options),
-                EndTime: new Date(contest.end).toLocaleTimeString('en-US', options),
+                Date: formatToIST(contest.start).date,
+                StartTime: formatToIST(contest.start).time.toUpperCase(),
+                EndTime: formatToIST(contest.end).time.toUpperCase(),
                 href: contest.href
             }
         });
@@ -197,48 +96,117 @@ function UpcomingContests() {
 
     // useEffect(() => {
     //     console.log(upcoming);
-    // }, [upcoming])
+    // }, [upcoming]);
 
     useEffect(() => {
-        console.log(upcoming);
+        const scrollElement = scrollRef.current;
+
+        const handleScroll = () => {
+            if (scrollElement) {
+                const scrollLeftValue = scrollElement.scrollLeft;
+                const scrollWidthValue = scrollElement.scrollWidth - scrollElement.clientWidth;
+
+                setAtStart(scrollLeftValue === 0); // Reached start
+                setAtEnd(scrollLeftValue >= scrollWidthValue); // Reached end
+            }
+        };
+
+        if (scrollElement) {
+            scrollElement.addEventListener('scroll', handleScroll);
+            handleScroll(); // Initial check
+        }
+
+        return () => {
+            if (scrollElement) {
+                scrollElement.removeEventListener('scroll', handleScroll);
+            }
+        };
     }, [upcoming]);
 
+    const scrollLeft = () => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollBy({ left: -336, behavior: 'smooth' });
+        }
+    };
 
+    const scrollRight = () => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollBy({ left: 336, behavior: 'smooth' });
+        }
+    };
 
+    useEffect(() => {
 
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.set('.upContests', {
+            opacity: 0,
+            y: 90
+        })
+        gsap.to('.upContests', {
+            scrollTrigger: {
+                trigger: '.upContests',
+                start: 'top 80%',
+                end: 'bottom 80%',
+                // markers: true,
+                scrub: 1,
+            },
+            y: 30,
+            opacity: 1,
+            duration: 1
+        })
+    }, [])
 
 
     return (
-        <div className='ms-10 scroll-section pt-12'>
+        <div className='upContests ms-10 scroll-section pt-12'>
             <h1 className='text-5xl font-afacad font-medium mb-12'>Upcoming Contests</h1>
-            <div className="flex gap-4 overflow-x-auto py-4 rounded-xl">
+            <div ref={scrollRef} className="flex gap-4 overflow-x-auto py-4 rounded-xl scrollbar-hide">
                 <div className='flex gap-4 me-2'>
                     {
-                        upcoming===null ?
-                        <Loading></Loading>
-                        :
-                        upcoming.map((contest, index) => {
-                            return (
-                                <div key={index} className=" flex flex-col  w-80 p-6 pb-4 pe-4 bg-[#f5f5f5] rounded-28px hover:scale-[1.01] transition-all">
-                                    <img src={contest.Image} alt="icon" className="w-8 mb-2" />
-                                    <h2 className='text-2xl font-semibold mb-2'>{contest.platofrm}</h2>
-                                    <p className="text-md">
-                                        {/* <span className='font-semibold'>Contest Name: </span> */}
-                                        {contest.name}</p>
-                                    <p className="text-md"><span className='font-semibold'>Date:</span> {contest.Date}</p>
-                                    <p className="text-md"><span className='font-semibold'>Time:</span> {contest.StartTime} - {contest.EndTime}</p>
-                                    <div className='flex justify-end mt-4'>
-                                        <a href={contest.href} target="_blank" rel="noreferrer">
-                                            <div className='bg-black p-1.5 rounded-full'>
-                                                <img src={OpenInNewTab} alt="open in new tab" className="w-6 rotate-[-45deg]" />
-                                            </div>
-                                        </a>
+                        upcoming === null ?
+                            <Loading></Loading>
+                            :
+                            upcoming.map((contest, index) => {
+                                return (
+                                    <div key={index} className="flex flex-col w-80 p-6 pb-0 sm:pb-4 sm:pe-4 bg-[#f5f5f5] rounded-28px hover:scale-[1.01] transition-all">
+                                        <img src={contest.Image} alt="icon" className="w-8 mb-2" />
+                                        <h2 className='text-2xl font-semibold mb-2'>{contest.platofrm}</h2>
+                                        <p className="text-md">
+                                            {/* <span className='font-semibold'>Contest Name: </span> */}
+                                            {contest.name}</p>
+                                        <p className="text-md"><span className='font-semibold'>Date:</span> {contest.Date}</p>
+                                        <p className="text-md"><span className='font-semibold'>Time:</span> {contest.StartTime} - {contest.EndTime}</p>
+                                        <div className='flex justify-end mt-4'>
+                                            <a href={contest.href} target="_blank" rel="noreferrer">
+                                                <div className='bg-[#37373a] p-3 sm:p-2 rounded-full'>
+                                                    <img src={OpenInNewTab} alt="open in new tab" className="w-5 sm:w-4 rotate-[-45deg]" />
+                                                </div>
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
-                            )
-                        })
+                                )
+                            })
                     }
                 </div>
+            </div>
+            <div className='flex justify-end me-10 mt-12 gap-6 sm:gap-4'>
+                {
+                    atStart &&
+                    <img className='w-12 sm:w-10 bg-[#e0e0e3] p-1 rounded-full' src={disabedLeftArrow} alt="" />
+                }
+                {
+                    !atStart &&
+                    <img className='w-12 sm:w-10 bg-[#e0e0e3] p-1 rounded-full hover:cursor-pointer' src={leftArrow} alt="" onClick={scrollLeft} />
+                }
+                {
+                    !atEnd &&
+                    <img className='w-12 sm:w-10 bg-[#e0e0e3] p-1 rounded-full hover:cursor-pointer' src={rightArrow} alt="" onClick={scrollRight} />
+                }
+                {
+                    atEnd &&
+                    <img className='w-12 sm:w-10 bg-[#e0e0e3] p-1 rounded-full' src={disabledRightArrow} alt="" />
+                }
             </div>
         </div>
     )

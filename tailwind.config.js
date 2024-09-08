@@ -11,18 +11,19 @@ export default {
         softRed: 'rgba(255, 105, 105, 1)',
         vividBlue: '#615EFC',
         coral: '#FF885B',
-        deepTeal: 'rgba(13, 124, 102, 1)'
+        deepTeal: 'rgba(13, 124, 102, 1)',
       },
       fontFamily: {
         advent: ['"Advent Pro"', 'sans-serif'],
-        afacad: ['Afacad', 'sans-serif'],
-        alexandria: ['Alexandria', 'sans-serif'],
+        afacad: ['"Afacad"', 'sans-serif'],
+        alexandria: ['"Alexandria"', 'sans-serif'],
       },
       borderRadius: {
         '28px': '28px',
       },
     },
   },
-  plugins: [],
-}
-
+  plugins: [
+    require('tailwind-scrollbar-hide'), // Plugin to hide scrollbars
+  ],
+};
