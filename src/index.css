@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Advent+Pro:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400..700;1,400..700&family=Alexandria:wght@100..900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,7 +11,9 @@
 }
 
 body {
-    @apply bg-lightBeige
+    /* @apply bg-lightBeige;*/
+    background-color: #fcfcfc;
+    transition: background-color 0.5s ease;
 }
 
 .textInputBox {
@@ -27,3 +31,4 @@ body {
 .tableTd {
     @apply border border-slate-600 p-4
 }
+

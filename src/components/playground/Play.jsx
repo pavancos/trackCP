@@ -34,7 +34,7 @@ const Play = ({ sno }) => {
         { id: 'Leetcode', component: LeetcodeChart, dataState: 'leetcodeData' },
         { id: 'Codeforces', component: CodeforcesChart, dataState: 'codeforcesData' },
         { id: 'Atcoder', component: AtcoderChart, dataState: 'atcoderData' },
-    ];
+    ]; 
 
     const putToast = (platform) => {
         toast.error(`Enter your ${platform} username`, {
