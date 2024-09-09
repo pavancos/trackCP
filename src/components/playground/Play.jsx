@@ -6,9 +6,12 @@ import CodeforcesChart from '../Charts/CodeforcesChart';
 import AtcoderChart from '../Charts/AtcoderChart';
 import Loading from '../Loading';
 import toast from 'react-hot-toast';
+import { Navigate } from 'react-router-dom';
 
-const Play = () => {
+const Play = ({ sno }) => {
+    console.log('sno: ', sno);
     const { register, handleSubmit } = useForm();
+
     const [nameOfUser, setNameOfUser] = useState('');
     const [selectedPlatforms, setSelectedPlatforms] = useState({
         Codechef: true,
@@ -77,8 +80,8 @@ const Play = () => {
     const playGroundInput = async (usernamesData) => {
         setIsFetchedFromApi(false);
         setNameOfUser(usernamesData.nameOfUser);
-        
-        
+
+
 
         const filteredUsernames = { ...usernamesData };
         delete filteredUsernames.nameOfUser;
@@ -95,16 +98,16 @@ const Play = () => {
             }
         });
         console.log(selectedPlatforms);
-        
+
 
         let params = new URLSearchParams(filteredUsernames).toString().toLowerCase();
-        console.log(typeof(params))
-        if(params.length === 0){
+        console.log(typeof (params))
+        if (params.length === 0) {
             putNothingToast();
             setIsFetchedFromApi(true);
             return;
         }
-        
+
         try {
             let res = await fetch(`https://cpplayground.vercel.app/all?${params}`, {
                 method: 'GET',
@@ -117,6 +120,21 @@ const Play = () => {
             let data = await res.json();
             console.log('data: ', data);
 
+            if (selectedPlatforms.Codechef && data.codechef.message != null) {
+                throw new Error(data.codechef.message + " in Codechef");
+            }
+            if (selectedPlatforms.Leetcode && data.leetcode.error != null) {
+                setPlatformData((prev) => ({ ...prev, leetcode: null }));
+                throw new Error(data.leetcode.error);
+            }
+            if (selectedPlatforms.Codeforces && (data.codeforces.contests.length == 0)) {
+                throw new Error("No Contests Found in Codeforces");
+            }
+            if (selectedPlatforms.Atcoder && (data.atcoder.contests.length == 0)) {
+                throw new Error("No Contests Found in Atcoder");
+            }
+
+
             // Set platform data
             setPlatformData({
                 codechef: data.codechef || null,
@@ -127,6 +145,8 @@ const Play = () => {
             setIsSubmitted(true);
         } catch (error) {
             toast.error(error.message);
+            setIsSubmitted(false);
+
             console.log(error);
         } finally {
             setIsFetchedFromApi(true);
@@ -145,9 +165,18 @@ const Play = () => {
                 onSubmit={handleSubmit(playGroundInput)}
                 className="max-w-lg mt-5 mx-auto p-4 mb-2 border rounded-md"
             >
-                <h1 className="text-2xl font-semibold text-blue-700 text-center mb-3">
-                    Competitive Programming Report
-                </h1>
+                {
+                    sno == undefined &&
+                    <h1 className="text-2xl font-semibold text-blue-700 text-center mb-3">
+                        Competitive Programming Report
+                    </h1>
+                }
+                {
+                    sno != undefined &&
+                    <h1 className="text-2xl font-semibold text-blue-700 text-center mb-3">
+                        Person {sno + 1}
+                    </h1>
+                }
                 <div className="mb-2 pr-2">
                     <label htmlFor="nameOfUser" className="labelText">
                         Your Name
@@ -223,9 +252,13 @@ const Play = () => {
             {/* Show loading spinner while data is being fetched */}
             {!isFetchedFromApi && <div className="flex flex-row justify-center"><Loading /></div>}
             {
-                isSubmitted && isFetchedFromApi &&
-                <h1 className='text-4xl font-semibold text-blue-500 text-center'>Hello {nameOfUser}!</h1>
-    }
+                isSubmitted && isFetchedFromApi && 
+                <h1 className='text-4xl font-semibold text-blue-500 text-center mb-2'>{nameOfUser}</h1>
+            }
+            {/* {
+                isSubmitted && isFetchedFromApi && (sno != undefined) &&
+                <h1 className='text-4xl font-semibold text-blue-500 text-center'>Person {sno + 1}</h1>
+            } */}
 
             {/* Render charts for platforms */}
             {isSubmitted && isFetchedFromApi && (
