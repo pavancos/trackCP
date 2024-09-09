@@ -11,7 +11,8 @@
 }
 
 body {
-    @apply bg-lightBeige;
+    /* @apply bg-lightBeige;*/
+    background-color: #fcfcfc;
     transition: background-color 0.5s ease;
 }
 

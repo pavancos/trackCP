@@ -36,6 +36,7 @@ function Home() {
             <button
               className={`
                  backdrop-blur-sm shadow-xl text-white  py-2 px-4 rounded-lg z-50  bg-vividBlue rotate-[3deg]
+                 hover:scale-125 hover:rotate-0 transition-all duration-300
                 `}
             >
               <a href="/batchreport">Batch Report</a>
@@ -46,6 +47,7 @@ function Home() {
             <button
               className={`
                  backdrop-blur-sm shadow-xl text-white py-2 px-4 rounded-lg z-50 bg-coral rotate-[-7deg]
+                  hover:scale-125 hover:rotate-0 transition-all duration-300
                 `}
             >
               <a href="/playground">CP Report</a>
@@ -61,6 +63,7 @@ function Home() {
             <button
               className={`
                  backdrop-blur-sm shadow-xl text-white  py-2 px-2 rounded-lg bg-softRed z-50 rotate-[-7deg]
+                  hover:scale-125 hover:rotate-0 transition-all duration-300
                 `}
             >
               <a href="/studentreport">Student Report</a>
@@ -72,6 +75,7 @@ function Home() {
             <button
               className={`
                  backdrop-blur-sm shadow-xl text-white py-2 px-4 rounded-lg z-50 bg-deepTeal rotate-[5deg]
+                  hover:scale-125 hover:rotate-0 transition-all duration-300 
                 `}
             >
               <a href="/compare">Compare</a>

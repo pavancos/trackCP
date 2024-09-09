@@ -8,6 +8,7 @@ export default {
     extend: {
       colors: {
         lightBeige: '#ecece2', // Background color
+        applebg:'#d9d6cc',
         softRed: 'rgba(255, 105, 105, 1)',
         vividBlue: '#615EFC',
         coral: '#FF885B',
