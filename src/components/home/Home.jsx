@@ -84,10 +84,12 @@ function Home() {
         </div>
       </div>
 
-      <div style={{height:'100vh'}}>
+      {/* <div style={{ height: '100vh' }}> */}
         <UpcomingContests />
+      {/* </div> */}
+      <div>
+        <BatchRepportSection />
       </div>
-      <BatchRepportSection />
       <div className='page'></div>
       <div className='page'></div>
     </>

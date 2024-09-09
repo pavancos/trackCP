@@ -21,6 +21,7 @@ export default {
       },
       borderRadius: {
         '28px': '28px',
+        '20px': '20px',
       },
     },
   },
