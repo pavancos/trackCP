@@ -13,7 +13,7 @@
 body {
     /* @apply bg-lightBeige;*/
     background-color: #fcfcfc;
-    transition: background-color 0.5s ease;
+    transition: background-color 0.5s ease-in-out;
 }
 
 .textInputBox {
