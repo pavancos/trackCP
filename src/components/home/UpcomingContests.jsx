@@ -169,7 +169,7 @@ function UpcomingContests() {
                             :
                             upcoming.map((contest, index) => {
                                 return (
-                                    <div key={index} className="flex flex-col w-80 p-6 pb-0 sm:pb-4 sm:pe-4 bg-[#f5f5f5] rounded-28px hover:scale-[1.01] transition-all">
+                                    <div key={index} className="flex flex-col w-80 p-6 pb-4 sm:pe-4 bg-[#f5f5f5] rounded-28px hover:scale-[1.01] transition-all">
                                         <img src={contest.Image} alt="icon" className="w-8 mb-2" />
                                         <h2 className='text-2xl font-semibold mb-2'>{contest.platofrm}</h2>
                                         <p className="text-md">
