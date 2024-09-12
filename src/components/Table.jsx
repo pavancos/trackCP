@@ -83,8 +83,6 @@ function Table({ data, isStudentReport, filter }) {
       {
         ((filter === 'all' && areAll) || (filter === 'leetcode' && areLeetcode) || (filter === 'codechef' && areCodechef) || (filter === 'codeforces' && areCodeforces))
         &&
-
-
         <div className="overflow-x-auto">
           <table className="table-auto border-collapse border border-slate-500 min-w-full">
             <thead className=''>
