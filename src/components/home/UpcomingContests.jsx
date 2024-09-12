@@ -97,7 +97,7 @@ function UpcomingContests() {
 
     useEffect(() => {
         fetchUpcommingContests().then(data => {
-            console.log(data);
+            // console.log(data);
             setUpcoming(data);
         });
     }, [])

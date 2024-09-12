@@ -1,5 +1,8 @@
 function filterLeetcode(fromDate, toDate, contestsData) {
     // console.log('contestsData: ', contestsData);
+    if(contestsData === undefined){
+        return [];
+    }
     let startDate = new Date(fromDate);
     let endDate = new Date(toDate);
     let filteredContests = contestsData.filter((contest) => {
@@ -23,8 +26,6 @@ function filterCodechef(fromDate, toDate, contestsData) {
     });
     return filteredContests
 }
-
-
 
 function filterCodeforces(fromDate, toDate, contestsData) {
     let startDate = new Date(fromDate);

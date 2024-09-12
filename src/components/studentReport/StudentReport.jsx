@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form';
 import { Suspense, useState } from 'react';
 import Loading from '../Loading'
@@ -6,6 +6,9 @@ const Table = React.lazy(() => import('../Table'));
 import toast from 'react-hot-toast';
 
 const UserForm = ({ studentsInfo, isFetchedFromAPI }) => {
+    // useEffect(()=>{
+    //     console.log("Student Info: ",studentsInfo);
+    // })
     const [whtplatform, setplatform] = useState('all');
 
 
@@ -35,7 +38,7 @@ const UserForm = ({ studentsInfo, isFetchedFromAPI }) => {
         console.log('data: ', data);
         // data.rollNo = data.rollNo.toUpperCase();
         let studentDetails = studentsInfo.find((student) => student.roll === data.rollno);
-        console.log('studentDetails: ', studentDetails);
+        // console.log('studentDetails: ', studentDetails);
         if (!studentDetails) {
             setUserData([]);
             setIsSubmitted(true);
