@@ -39,11 +39,11 @@ function UpcomingContests() {
 
     const fetchUpcommingContests = async () => {
         try {
-            const url = 'https://getdata-contests.vercel.app/getUpcomingContests';
+            const url = 'https://getdata-contests.vercel.app/getLatestContest';
             const response = await fetch(url);
             const data = await response.json();
             if (response.ok) {
-                return parseTheData(data);
+                return parseTheData(data.result);
             } else {
                 throw new Error(data);
             }
@@ -83,6 +83,14 @@ function UpcomingContests() {
                 EndTime: formatToIST(contest.end).time.toUpperCase(),
                 href: contest.href
             }
+        });
+        // Filter the contests which are only upto 2 weeks from now
+        ConvertedContestsData = ConvertedContestsData.filter(contest => {
+            const contestDate = new Date(contest.Date);
+            const today = new Date();
+            const diffTime = Math.abs(contestDate - today);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays <= 14;
         });
         return ConvertedContestsData;
     }
