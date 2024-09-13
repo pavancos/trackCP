@@ -55,10 +55,25 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
             icon: '🚫',
         });
     }
+    const putErrToast = (err) => {
+        toast.error(err, {
+            style: {
+                marginTop: '-10px',
+                marginBottom: '10px',
+                borderRadius: '10px',
+                background: '#fff',
+                color: '#333',
+            },
+            iconTheme: {
+                primary: '#333',
+                secondary: '#fff',
+            },
+            icon: '🚫',
+        });
+    }
 
     async function handleFormSubmit(dataFromForm) {
         try{
-
             console.log('dataFromForm: ', dataFromForm);
             let studentsData;
             if(dataFromForm.batch=='batch21'){
@@ -71,6 +86,12 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
             // let toRoll = dataFromForm.toroll;
             let fromRoll = fromRollForm;
             let toRoll = toRollForm;
+
+            if(fromRoll>toRoll){
+                putErrToast('Enter Valid Roll No Range');
+                throw new Error('Enter Valid Roll No Range');
+            }
+            
             let students = studentsData.filter((student) => {
                 let roll = student.roll;
                 let fromRollFormatted = fromRoll.toUpperCase();
@@ -126,6 +147,7 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
             setHasCodeforces(HasCodeforces);
         }catch(error){
             console.log(error);
+            // putErrToast('Something went wrong');
         }
     }
 
@@ -140,9 +162,6 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
             setToRoll('22501A05J8');
         }
     }, [batchNumber]);
-
-
-
     return (
         <div className="mt-6 m-3">
             <form onSubmit={handleSubmit(handleFormSubmit)} className="max-w-md mx-auto p-4 mb-2 border rounded-md ">
