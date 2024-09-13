@@ -67,8 +67,10 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
                 studentsData = studentsInfo.Batch22Data;
             }
             // FILTER STUDENTS ACCORDING TO ROLL NO 
-            let fromRoll = dataFromForm.fromroll;
-            let toRoll = dataFromForm.toroll;
+            // let fromRoll = dataFromForm.fromroll;
+            // let toRoll = dataFromForm.toroll;
+            let fromRoll = fromRollForm;
+            let toRoll = toRollForm;
             let students = studentsData.filter((student) => {
                 let roll = student.roll;
                 let fromRollFormatted = fromRoll.toUpperCase();
