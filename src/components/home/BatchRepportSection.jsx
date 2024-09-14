@@ -14,7 +14,7 @@ function BatchRepportSection() {
                 trigger: '.pg-1',
                 start: 'top 40%',
                 end: 'bottom 50%',
-                // markers: true,
+                markers: true,
                 onEnter: () => {
                     document.body.style.backgroundColor = '#3FA2F6';
                 },
