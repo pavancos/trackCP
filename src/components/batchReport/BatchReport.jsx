@@ -1,16 +1,25 @@
 import React, { useEffect } from 'react'
 import { useState, Suspense } from 'react'
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import ExportToXlxs from '../../functions/ExportToXlxs';
 import { filterCodechef, filterCodeforces, filterLeetcode } from '../../functions/filterLogics/filterLogics';
 import Loading from '../Loading'
 const Table = React.lazy(() => import('../Table'));
 import toast from 'react-hot-toast';
 import { data } from 'autoprefixer';
+import { getUniqueContests } from '../../functions/uniqueContests/UniqueContests';
 // import notify from '../toasts/notify';
 
 function BatchReport({ studentsInfo, isFetchedFromAPI }) {
     console.log('studentsInfo: ', studentsInfo);
+
+
+    // for the getUniqueContests
+    const [uniqueCodechefContestNames, setUniqueCodechefContestNames] = useState([]);
+    const [uniqueLeetcodeContestNames, setUniqueLeetcodeContestNames] = useState([]);
+    const [uniqueCodeforcesContestNames, setUniqueCodeforcesContestNames] = useState([]);
+    const [uniqueContests, setUniqueContests] = useState({});
+
 
     // const [studentInfo, setStudentInfo] = useState([]);
 
@@ -73,12 +82,12 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
     }
 
     async function handleFormSubmit(dataFromForm) {
-        try{
+        try {
             console.log('dataFromForm: ', dataFromForm);
             let studentsData;
-            if(dataFromForm.batch=='batch21'){
+            if (dataFromForm.batch == 'batch21') {
                 studentsData = studentsInfo.Batch21Data;
-            }else{
+            } else {
                 studentsData = studentsInfo.Batch22Data;
             }
             // FILTER STUDENTS ACCORDING TO ROLL NO 
@@ -87,23 +96,23 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
             let fromRoll = fromRollForm;
             let toRoll = toRollForm;
 
-            if(fromRoll>toRoll){
+            if (fromRoll > toRoll) {
                 putErrToast('Enter Valid Roll No Range');
                 throw new Error('Enter Valid Roll No Range');
             }
-            
+
             let students = studentsData.filter((student) => {
                 let roll = student.roll;
                 let fromRollFormatted = fromRoll.toUpperCase();
                 let toRollFormatted = toRoll.toUpperCase();
                 return roll >= fromRollFormatted && roll <= toRollFormatted;
             });
-            
+
             // console.log('students: ', students);
-            
+
             let filteredContests = await students.map(async (student) => {
                 // console.log('student: ', student);
-                
+
                 return {
                     student,
                     contests: {
@@ -116,15 +125,15 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
             filteredContests = await Promise.all(filteredContests);
             console.log('filteredContests: ', filteredContests);
             // await new Promise((resolve) => setTimeout(resolve, 2000));
-            setFilteredContests(filteredContests);
-    
+            let newUpcomingContests = await getUniqueContests(filteredContests, setUniqueContests, setUniqueCodechefContestNames, setUniqueLeetcodeContestNames, setUniqueCodeforcesContestNames);
+            setUniqueContests(newUpcomingContests);
             // Check if there are any contests
             const hasContests = filteredContests.some(contest =>
                 contest.contests.codechef.length > 0 ||
                 contest.contests.codeforces.length > 0 ||
                 contest.contests.leetcode.length > 0
             );
-    
+
             setAreThereAnyContests(hasContests);
             setFilteredContests(filteredContests);
             setIsSubmitted(true);
@@ -132,6 +141,9 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
             if (!hasContests) {
                 putToast();
             }
+
+            console.log('uniqueContests: ', uniqueContests);
+
             // Check if there are any contests for asked platform
             const HasLeetcode = filteredContests.some(contest =>
                 contest.contests.leetcode.length > 0
@@ -145,11 +157,18 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
                 contest.contests.codeforces.length > 0
             );
             setHasCodeforces(HasCodeforces);
-        }catch(error){
+        } catch (error) {
             console.log(error);
             // putErrToast('Something went wrong');
         }
     }
+
+    useEffect(()=>{
+        console.log('uniqueContests: ', uniqueContests);
+        console.log('uniqueCodechefContestNames: ', uniqueCodechefContestNames);
+        console.log('uniqueLeetcodeContestNames: ', uniqueLeetcodeContestNames);
+        console.log('uniqueCodeforcesContestNames: ', uniqueCodeforcesContestNames);
+    },[uniqueCodechefContestNames]);
 
     useEffect(() => {
         console.log("batchNumber: ", batchNumber);
@@ -211,7 +230,7 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
                             type="text" id="fromroll" value={fromRollForm}
                             className='textInputBox' {...register('fromroll')}
                             onInput={(e) => e.target.value = e.target.value.toUpperCase()}
-                            onChange={(e)=>{setFromRoll(e.target.value)}}
+                            onChange={(e) => { setFromRoll(e.target.value) }}
                         />
                     </div>
                     <div className="mb-4 w-1/2 pl-2">
@@ -221,7 +240,7 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
                             className='textInputBox'
                             {...register('toroll')}
                             onInput={(e) => e.target.value = e.target.value.toUpperCase()}
-                            onChange={(e)=>{setToRoll(e.target.value)}}
+                            onChange={(e) => { setToRoll(e.target.value) }}
                         />
                     </div>
                 </div>

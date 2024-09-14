@@ -24,4 +24,6 @@ async function fetch22BatchData(setBatch22Data) {
 }
 
 
+
+
 export { fetchFromDB, fetch21BatchData, fetch22BatchData };
