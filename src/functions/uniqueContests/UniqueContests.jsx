@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 
-async function getUniqueContests(filteredContests, setUniqueCodechefContestNames, setUniqueLeetcodeContestNames, setUniqueCodeforcesContestNames, setUniqueContests,setLeetcodeParticipants) {
+async function getUniqueContests(filteredContests, setUniqueCodechefContestNames, setUniqueLeetcodeContestNames, setUniqueCodeforcesContestNames, setUniqueContests,setLeetcodeParticipants,setCodechefParticipants,setCodeforcesParticipants) {
 
     let codechefContestsNames = await getCodechefUniqueContests(filteredContests);
     // console.log('codechefContestsNames: ', codechefContestsNames);
@@ -63,7 +63,8 @@ async function getUniqueContests(filteredContests, setUniqueCodechefContestNames
     }
     // console.log('newUniqueContests: ', newUniqueContests);
     await getLeetcodeParticipants(filteredContests, newUniqueContests, leetcodeContests,setLeetcodeParticipants);
-    await getCodechefParticipants(filteredContests, newUniqueContests, codechefContests, setCodechefarticipants);
+    await getCodechefParticipants(filteredContests, newUniqueContests, codechefContests, setCodechefParticipants);
+    await getCodeforcesParticipants(filteredContests, newUniqueContests, codeforcesContests, setCodeforcesParticipants);
     console.log('newUniqueContests: ', newUniqueContests);
     
     setUniqueContests(newUniqueContests);
@@ -128,11 +129,9 @@ async function getCodeforcesUniqueContests(filteredContests) {
 }
 
 async function getLeetcodeParticipants(filteredContests, newUniqueContests, leetcodeContests, setLeetcodeParticipants) {
-    console.log('leetcodeContests: ', leetcodeContests);
-    console.log('newUniqueContests: ', newUniqueContests);
-    console.log('filteredContests: ', filteredContests);
-
-    let leetcodeParticipation = [];
+    // console.log('leetcodeContests: ', leetcodeContests);
+    // console.log('newUniqueContests: ', newUniqueContests);
+    // console.log('filteredContests: ', filteredContests);
     let newLeetcodeContests = leetcodeContests.map((cont) => {
         // console.log('cont: ', cont);
         let participation = [];
@@ -167,13 +166,79 @@ async function getLeetcodeParticipants(filteredContests, newUniqueContests, leet
             }
         }
     })
-    console.log('newLeetcodeContests: ', newLeetcodeContests);
+    // console.log('newLeetcodeContests: ', newLeetcodeContests);
     setLeetcodeParticipants(newLeetcodeContests);
     newUniqueContests.leetcode = newLeetcodeContests;
 }
 
-// async function getCodechefParticipants(filteredContests, newUniqueContests, codechefContests, setCodechefarticipants){
+async function getCodechefParticipants(filteredContests, newUniqueContests, codechefContests, setCodechefParticipants){
+    let newCodechefContests = codechefContests.map((cont)=>{
+        let participation = [];
+        let contestTitle = cont.contest.title;
+        // console.log('contestTitle: ', contestTitle);
+        for(let i=0;i<filteredContests.length;i++){
+            if(filteredContests[i].contests.codechef != []){
+                let filteredCodechefContests = filteredContests[i].contests.codechef;
+                let student = filteredContests[i].student;
+                let codechefUsername = student.codechef.username;
+                let studentData = {
+                    name: student.name,
+                    roll: student.roll,
+                    username: codechefUsername,
+                    performance: {}
+                }
+                let contestPerformance = filteredCodechefContests.filter((c)=>c.name === contestTitle);
+                if(contestPerformance.length > 0){
+                    studentData.performance = contestPerformance[0];
+                    participation.push(studentData);
+                }
+            }
+        }
+        return{
+            contest:{
+                title: contestTitle,
+                participants: participation
+            }
+        }
+        
+    })
+    // console.log('newCodechefContests: ', newCodechefContests);
+    setCodechefParticipants(newCodechefContests);
+    newUniqueContests.codechef = newCodechefContests;
+}
 
-// }
+async function getCodeforcesParticipants(filteredContests, newUniqueContests, codeforcesContests){
+    let newCodeforcesContests = codeforcesContests.map((cont)=>{
+        let participation = [];
+        let contestTitle = cont.contest.title;
+        for(let i=0;i<filteredContests.length;i++){
+            if(filteredContests[i].contests.codeforces != []){
+                let filteredCodeforcesContests = filteredContests[i].contests.codeforces;
+                let student = filteredContests[i].student;
+                let codeforcesUsername = student.codeforces.username;
+                let studentData = {
+                    name: student.name,
+                    roll: student.roll,
+                    username: codeforcesUsername,
+                    performance: {}
+                }
+                let contestPerformance = filteredCodeforcesContests.filter((c)=>c.contestName === contestTitle);
+                if(contestPerformance.length > 0){
+                    studentData.performance = contestPerformance[0];
+                    participation.push(studentData);
+                }
+            }
+        }
+        return{
+            contest:{
+                title: contestTitle,
+                participants: participation
+            }
+        }
+    })
+    // console.log('newCodeforcesContests: ', newCodeforcesContests);
+    newUniqueContests.codeforces = newCodeforcesContests;
+}
+
 
 export { getUniqueContests };

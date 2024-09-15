@@ -21,6 +21,8 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
     const [uniqueContests, setUniqueContests] = useState({});
 
     const [leetcodeParticipants, setLeetcodeParticipants] = useState([]);
+    const [codechefParticipants, setCodechefParticipants] = useState([]);
+    const [codeforcesParticipants, setCodeforcesParticipants] = useState([]);
 
 
     // const [studentInfo, setStudentInfo] = useState([]);
@@ -126,7 +128,7 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
             });
             filteredContests = await Promise.all(filteredContests);
             // console.log('filteredContests: ', filteredContests);
-            getUniqueContests(filteredContests, setUniqueCodechefContestNames, setUniqueLeetcodeContestNames, setUniqueCodeforcesContestNames,setUniqueContests,setLeetcodeParticipants);
+            getUniqueContests(filteredContests, setUniqueCodechefContestNames, setUniqueLeetcodeContestNames, setUniqueCodeforcesContestNames,setUniqueContests,setLeetcodeParticipants, setCodechefParticipants, setCodeforcesParticipants);
             // Check if there are any contests
             const hasContests = filteredContests.some(contest =>
                 contest.contests.codechef.length > 0 ||
@@ -165,11 +167,11 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
 
     useEffect(()=>{
         console.log('uniqueContests: ', uniqueContests);
-        console.log('uniqueCodechefContestNames: ', uniqueCodechefContestNames);
+        // console.log('uniqueCodechefContestNames: ', uniqueCodechefContestNames);
         // console.log('uniqueLeetcodeContestNames: ', uniqueLeetcodeContestNames);
         // console.log('uniqueCodeforcesContestNames: ', uniqueCodeforcesContestNames);
         // console.log('Leet Code Participants',leetcodeParticipants);
-    },[uniqueCodechefContestNames]);
+    },[uniqueContests]);
 
     useEffect(() => {
         // console.log("batchNumber: ", batchNumber);
