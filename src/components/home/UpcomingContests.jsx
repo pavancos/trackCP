@@ -16,6 +16,8 @@ import disabedLeftArrow from '../../assets/disabled-left.svg'
 import disabledRightArrow from '../../assets/disabled-right.svg'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 
 function UpcomingContests() {
@@ -23,6 +25,7 @@ function UpcomingContests() {
     const scrollRef = useRef(null);
     const [atStart, setAtStart] = useState(true);
     const [atEnd, setAtEnd] = useState(false);
+    const [isFetchedUpcomingContests, setIsFetchedUpcomingContests] = useState(false);
 
     const formatToIST = (dateString) => {
         const gmtDate = new Date(dateString);
@@ -50,6 +53,9 @@ function UpcomingContests() {
         } catch (err) {
             console.error(err);
             return null;
+        }
+        finally {
+            setIsFetchedUpcomingContests(true);
         }
     }
     const parseTheData = (data) => {
@@ -172,8 +178,44 @@ function UpcomingContests() {
             <div ref={scrollRef} className="flex gap-4 overflow-x-auto py-4 rounded-xl scrollbar-hide">
                 <div className='flex gap-4 me-2'>
                     {
-                        upcoming === null ?
-                            <Loading></Loading>
+                        isFetchedUpcomingContests === false ?
+                            <>
+                                <div className="flex flex-col w-80 p-6 pb-4 sm:pe-4 bg-[#f5f5f5] rounded-28px hover:scale-[1.01] transition-all">
+                                    <h2 className='text-2xl font-semibold mb-2'>{<Skeleton />}</h2>
+                                    <p className="text-md">
+                                        {/* <span className='font-semibold'>Contest Name: </span> */}
+                                        {<Skeleton />}</p>
+                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />}</p>
+                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
+                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
+                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
+                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
+                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
+                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
+                                </div>
+                                <div className="flex flex-col w-80 p-6 pb-4 sm:pe-4 bg-[#f5f5f5] rounded-28px hover:scale-[1.01] transition-all">
+                                    <h2 className='text-2xl font-semibold mb-2'>{<Skeleton />}</h2>
+                                    <p className="text-md">
+                                        {/* <span className='font-semibold'>Contest Name: </span> */}
+                                        {<Skeleton />}</p>
+                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />}</p>
+                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
+                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
+                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
+                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
+                                </div>
+                                <div className="flex flex-col w-80 p-6 pb-4 sm:pe-4 bg-[#f5f5f5] rounded-28px hover:scale-[1.01] transition-all">
+                                    <h2 className='text-2xl font-semibold mb-2'>{<Skeleton />}</h2>
+                                    <p className="text-md">
+                                        {/* <span className='font-semibold'>Contest Name: </span> */}
+                                        {<Skeleton />}</p>
+                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />}</p>
+                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
+                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
+                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
+                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
+                                </div>
+                            </>
                             :
                             upcoming.map((contest, index) => {
                                 return (
