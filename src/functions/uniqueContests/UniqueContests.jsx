@@ -65,7 +65,7 @@ async function getUniqueContests(filteredContests, setUniqueCodechefContestNames
     await getLeetcodeParticipants(filteredContests, newUniqueContests, leetcodeContests,setLeetcodeParticipants);
     await getCodechefParticipants(filteredContests, newUniqueContests, codechefContests, setCodechefParticipants);
     await getCodeforcesParticipants(filteredContests, newUniqueContests, codeforcesContests, setCodeforcesParticipants);
-    console.log('newUniqueContests: ', newUniqueContests);
+    // console.log('newUniqueContests: ', newUniqueContests);
     
     setUniqueContests(newUniqueContests);
 }

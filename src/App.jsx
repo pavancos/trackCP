@@ -12,6 +12,7 @@ import { fetchFromDB,fetch21BatchData,fetch22BatchData } from './functions/fetch
 import PlayGround from './components/Play/PlayGround';
 import Play from './components/playground/Play';
 import Compare from './components/compare/Compare';
+import ContestAnalysis from './components/contestanalysis/ContestAnalysis';
 
 function App() {
   const [studentsInfo, setstudentsInfo] = useState([]);
@@ -71,6 +72,13 @@ function App() {
         {
           path:'play',
           element:<PlayGround/>
+        },
+        {
+          path:'contestanalysis',
+          element:<ContestAnalysis
+          studentsInfo={{Batch21Data,Batch22Data}}
+          isFetchedFromAPI={isFetchedFromAPI}
+          />
         }
       ]
     },

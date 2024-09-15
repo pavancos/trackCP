@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
-function Table({ data, isStudentReport, filter }) {
+function Table({ data, isStudentReport, filter="all" }) {
   const [areAll, setAreAll] = useState('all');
   const [areLeetcode, setAreLeetcode] = useState();
   const [areCodechef, setAreCodechef] = useState();

@@ -21,6 +21,10 @@ const Navbar = () => {
           <li>
             <Link to="compare">Compare</Link>
           </li>
+          <li>
+            <Link to="contestanalysis">Contest Analysis</Link>
+          </li>
+
         </ul>
       </nav>
 
