@@ -1,29 +1,31 @@
 import React, { useState } from 'react';
 
 
-async function getUniqueContests(filteredContests, setUniqueCodechefContestNames, setUniqueLeetcodeContestNames, setUniqueCodeforcesContestNames, setUniqueContests) {
+async function getUniqueContests(filteredContests, setUniqueCodechefContestNames, setUniqueLeetcodeContestNames, setUniqueCodeforcesContestNames, setUniqueContests,setLeetcodeParticipants) {
 
     let codechefContestsNames = await getCodechefUniqueContests(filteredContests);
-    console.log('codechefContestsNames: ', codechefContestsNames);
+    // console.log('codechefContestsNames: ', codechefContestsNames);
     let leetcodeContestsNames = await getLeetcodeUniqueContests(filteredContests);
-    console.log('leetcodeContestsNames: ', leetcodeContestsNames);
+    // console.log('leetcodeContestsNames: ', leetcodeContestsNames);
     let codeforcesContestsNames = await getCodeforcesUniqueContests(filteredContests);
-    console.log('codeforcesContestsNames: ', codeforcesContestsNames);
+    // console.log('codeforcesContestsNames: ', codeforcesContestsNames);
 
 
-    setUniqueCodechefContestNames(Array.from(codechefContestsNames));
-    setUniqueLeetcodeContestNames(Array.from(leetcodeContestsNames));
-    setUniqueCodeforcesContestNames(Array.from(codeforcesContestsNames));
+    // setUniqueCodechefContestNames(Array.from(codechefContestsNames));
+    // setUniqueLeetcodeContestNames(Array.from(leetcodeContestsNames));
+    // setUniqueCodeforcesContestNames(Array.from(codeforcesContestsNames));
 
     let codechefContestNamesArray = Array.from(codechefContestsNames);
     let leetcodeContestNamesArray = Array.from(leetcodeContestsNames);
-    let codeforcesContestNamesArray = Array.from(codeforcesContestsNames); 
-
+    let codeforcesContestNamesArray = Array.from(codeforcesContestsNames);
+    setUniqueCodechefContestNames(codechefContestNamesArray);
+    setUniqueLeetcodeContestNames(leetcodeContestNamesArray);
+    setUniqueCodeforcesContestNames(codeforcesContestNamesArray);
     let codechefContests = [];
     let leetcodeContests = [];
     let codeforcesContests = [];
 
-    for(let i=0; i<codechefContestNamesArray.length; i++){
+    for (let i = 0; i < codechefContestNamesArray.length; i++) {
         codechefContests.push({
             contest: {
                 title: codechefContestNamesArray[i]
@@ -31,7 +33,7 @@ async function getUniqueContests(filteredContests, setUniqueCodechefContestNames
         });
     }
 
-    for(let i=0; i<leetcodeContestNamesArray.length; i++){
+    for (let i = 0; i < leetcodeContestNamesArray.length; i++) {
         leetcodeContests.push({
             contest: {
                 title: leetcodeContestNamesArray[i]
@@ -39,24 +41,36 @@ async function getUniqueContests(filteredContests, setUniqueCodechefContestNames
         });
     }
 
-    for(let i=0; i<codeforcesContestNamesArray.length; i++){
+    for (let i = 0; i < codeforcesContestNamesArray.length; i++) {
         codeforcesContests.push({
             contest: {
                 title: codeforcesContestNamesArray[i]
             }
         });
     }
+    // leetcodeContests[0].contest.title
+    // leetcodeContests[0].contest.participants
+
+
+
     // console.log('codechefContests: ', codechefContests);
     // console.log('leetcodeContests: ', leetcodeContests);
     // console.log('codeforcesContests: ', codeforcesContests);
-    const newUpcomingContests= {
+    const newUniqueContests = {
         leetcode: leetcodeContests,
         codechef: codechefContests,
         codeforces: codeforcesContests
     }
-    console.log('newUpcomingContests: ', newUpcomingContests);
-    return newUpcomingContests;
+    // console.log('newUniqueContests: ', newUniqueContests);
+    await getLeetcodeParticipants(filteredContests, newUniqueContests, leetcodeContests,setLeetcodeParticipants);
+    await getCodechefParticipants(filteredContests, newUniqueContests, codechefContests, setCodechefarticipants);
+    console.log('newUniqueContests: ', newUniqueContests);
+    
+    setUniqueContests(newUniqueContests);
 }
+
+// uniqueContests.leetcode[0].contest.title
+// uniqueContests.codechef[0].contest.paticipants
 
 async function getCodechefUniqueContests(filteredContests) {
     let newFilteredContests = filteredContests.map((contest) => {
@@ -112,5 +126,54 @@ async function getCodeforcesUniqueContests(filteredContests) {
     // console.log('uniqueCodeforcesContests: ', uniqueCodeforcesContests);
     return uniqueCodeforcesContests;
 }
+
+async function getLeetcodeParticipants(filteredContests, newUniqueContests, leetcodeContests, setLeetcodeParticipants) {
+    console.log('leetcodeContests: ', leetcodeContests);
+    console.log('newUniqueContests: ', newUniqueContests);
+    console.log('filteredContests: ', filteredContests);
+
+    let leetcodeParticipation = [];
+    let newLeetcodeContests = leetcodeContests.map((cont) => {
+        // console.log('cont: ', cont);
+        let participation = [];
+        let contestTitle = cont.contest.title;
+        for (let i = 0; i < filteredContests.length; i++) {
+            if (filteredContests[i].contests.leetcode != []) {
+                let filteredLeetcodeContests = filteredContests[i].contests.leetcode;
+                // console.log('filteredLeetcodeContests: ', filteredLeetcodeContests);
+                // console.log('filteredLeetcodeContests: ', filteredLeetcodeContests);
+                let student = filteredContests[i].student;
+                let leetcodeUsername = student.leetcode.username;
+                // console.log('leetcodeUsername: ', leetcodeUsername);
+                let studentData = {
+                    name: student.name,
+                    roll: student.roll,
+                    username: leetcodeUsername,
+                    performance: {}
+                }
+                // console.log('studentData: ', studentData);
+                let contestPerformance = filteredLeetcodeContests.filter((c) => c.contest.title === contestTitle);
+                if (contestPerformance.length > 0) {
+                    studentData.performance = contestPerformance[0];
+                    participation.push(studentData);
+                }
+
+            }
+        }
+        return {
+            contest: {
+                title: contestTitle,
+                participants: participation
+            }
+        }
+    })
+    console.log('newLeetcodeContests: ', newLeetcodeContests);
+    setLeetcodeParticipants(newLeetcodeContests);
+    newUniqueContests.leetcode = newLeetcodeContests;
+}
+
+// async function getCodechefParticipants(filteredContests, newUniqueContests, codechefContests, setCodechefarticipants){
+
+// }
 
 export { getUniqueContests };

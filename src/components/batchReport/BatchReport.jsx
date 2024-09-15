@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useState, Suspense } from 'react'
-import { set, useForm } from 'react-hook-form';
+import { get, set, useForm } from 'react-hook-form';
 import ExportToXlxs from '../../functions/ExportToXlxs';
 import { filterCodechef, filterCodeforces, filterLeetcode } from '../../functions/filterLogics/filterLogics';
 import Loading from '../Loading'
@@ -19,6 +19,8 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
     const [uniqueLeetcodeContestNames, setUniqueLeetcodeContestNames] = useState([]);
     const [uniqueCodeforcesContestNames, setUniqueCodeforcesContestNames] = useState([]);
     const [uniqueContests, setUniqueContests] = useState({});
+
+    const [leetcodeParticipants, setLeetcodeParticipants] = useState([]);
 
 
     // const [studentInfo, setStudentInfo] = useState([]);
@@ -123,10 +125,8 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
                 };
             });
             filteredContests = await Promise.all(filteredContests);
-            console.log('filteredContests: ', filteredContests);
-            // await new Promise((resolve) => setTimeout(resolve, 2000));
-            let newUpcomingContests = await getUniqueContests(filteredContests, setUniqueContests, setUniqueCodechefContestNames, setUniqueLeetcodeContestNames, setUniqueCodeforcesContestNames);
-            setUniqueContests(newUpcomingContests);
+            // console.log('filteredContests: ', filteredContests);
+            getUniqueContests(filteredContests, setUniqueCodechefContestNames, setUniqueLeetcodeContestNames, setUniqueCodeforcesContestNames,setUniqueContests,setLeetcodeParticipants);
             // Check if there are any contests
             const hasContests = filteredContests.some(contest =>
                 contest.contests.codechef.length > 0 ||
@@ -166,12 +166,13 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
     useEffect(()=>{
         console.log('uniqueContests: ', uniqueContests);
         console.log('uniqueCodechefContestNames: ', uniqueCodechefContestNames);
-        console.log('uniqueLeetcodeContestNames: ', uniqueLeetcodeContestNames);
-        console.log('uniqueCodeforcesContestNames: ', uniqueCodeforcesContestNames);
+        // console.log('uniqueLeetcodeContestNames: ', uniqueLeetcodeContestNames);
+        // console.log('uniqueCodeforcesContestNames: ', uniqueCodeforcesContestNames);
+        // console.log('Leet Code Participants',leetcodeParticipants);
     },[uniqueCodechefContestNames]);
 
     useEffect(() => {
-        console.log("batchNumber: ", batchNumber);
+        // console.log("batchNumber: ", batchNumber);
         if (batchNumber == 'batch21') {
             setFromRoll('21501A0501');
             setToRoll('21501A05J7');
