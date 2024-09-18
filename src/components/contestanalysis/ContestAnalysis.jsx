@@ -21,7 +21,7 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
     const [uniqueCodechefContestNames, setUniqueCodechefContestNames] = useState([]);
     const [uniqueLeetcodeContestNames, setUniqueLeetcodeContestNames] = useState([]);
     const [uniqueCodeforcesContestNames, setUniqueCodeforcesContestNames] = useState([]);
-    const [uniqueContests, setUniqueContests] = useState({});
+    const [uniqueContests, setUniqueContests] = useState(null);
 
     const [leetcodeParticipants, setLeetcodeParticipants] = useState([]);
     const [codechefParticipants, setCodechefParticipants] = useState([]);
@@ -30,6 +30,8 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
     const [isFiltered, setIsFiltered] = useState(false);
     const [combinedContests, setCombinedContests] = useState([]);
     const [tableData, setTableData] = useState([]);
+
+    const [areThereAnyContests, setAreThereAnyContests] = useState(false);
 
 
 
@@ -88,16 +90,27 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
             return {
                 student,
                 contests: {
-                    leetcode: filterLeetcode(oneWeekAgoFormatted, todayFormatted, student.leetcode?.data?.userContestRankingHistory || []),
-                    codechef: filterCodechef(oneWeekAgoFormatted, todayFormatted, student.codechef?.newAllRating || []),
-                    codeforces: filterCodeforces(oneWeekAgoFormatted, todayFormatted, student.codeforces?.attendedContests || [])
+                    leetcode: filterLeetcode(dataFromForm.from, dataFromForm.to, student.leetcode?.data?.userContestRankingHistory || []),
+                    codechef: filterCodechef(dataFromForm.from, dataFromForm.to, student.codechef?.newAllRating || []),
+                    codeforces: filterCodeforces(dataFromForm.from, dataFromForm.to, student.codeforces?.attendedContests || [])
                 }
             };
         });
         filteredContests = await Promise.all(filteredContests);
         console.log(' filteredContests: ', filteredContests);
+        const hasContests = filteredContests.some(contest =>
+            contest.contests.codechef.length > 0 ||
+            contest.contests.codeforces.length > 0 ||
+            contest.contests.leetcode.length > 0
+        );        
+        setAreThereAnyContests(hasContests);
+        if (!hasContests) {
+            putErrToast('No Contests Found');
+            setIsSubmitted(false);
+            return;
+        }
         await getUniqueContests(filteredContests, setUniqueCodechefContestNames, setUniqueLeetcodeContestNames, setUniqueCodeforcesContestNames, setUniqueContests, setLeetcodeParticipants, setCodechefParticipants, setCodeforcesParticipants);
-        console.log(uniqueContests);
+        console.log('uniqueContests: ', uniqueContests);        
         setIsSubmitted(true);
     }
 
@@ -122,47 +135,47 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
             newUniqueContests = [...uniqueContests.leetcode];
         }
         if (uniqueContests.codechef.length > 0) {
-            let codechefContest=uniqueContests.codechef[0];
+            let codechefContest = uniqueContests.codechef[0];
             // console.log('codechefContest: ', codechefContest);
-            let newParticipants=codechefContest.contest.participants.map((participant)=>{
+            let newParticipants = codechefContest.contest.participants.map((participant) => {
                 // console.log(participant);
-                return{
-                    name:participant.name,
-                    roll:participant.roll,
-                    performance:{
-                        ranking:participant.performance.rank,
-                        problemsSolved:participant.performance.problemsSolved.length,
+                return {
+                    name: participant.name,
+                    roll: participant.roll,
+                    performance: {
+                        ranking: participant.performance.rank,
+                        problemsSolved: participant.performance.problemsSolved.length,
                     }
                 }
             })
-            let newcontest =[{
-                contest:{
-                    title:codechefContest.contest.title,
-                    participants:newParticipants
+            let newcontest = [{
+                contest: {
+                    title: codechefContest.contest.title,
+                    participants: newParticipants
                 }
             }]
             newUniqueContests = [...newUniqueContests, ...newcontest];
         }
         if (uniqueContests.codeforces.length > 0) {
-            let codeforcesContest=uniqueContests.codeforces[0];
+            let codeforcesContest = uniqueContests.codeforces[0];
             console.log('codeforcesContest: ', codeforcesContest);
-            let newParticipants=codeforcesContest.contest.participants.map((participant)=>{
+            let newParticipants = codeforcesContest.contest.participants.map((participant) => {
                 // console.log(participant);
-                return{
-                    name:participant.name,
-                    roll:participant.roll,
-                    performance:{
-                        ranking:participant.performance.rank,
-                        problemsSolved:participant.performance.problemsSolved,
+                return {
+                    name: participant.name,
+                    roll: participant.roll,
+                    performance: {
+                        ranking: participant.performance.rank,
+                        problemsSolved: participant.performance.problemsSolved,
                     }
                 }
             })
             console.log('newParticipants: ', newParticipants);
 
-            let newcontest =[{
-                contest:{
-                    title:codeforcesContest.contest.title,
-                    participants:newParticipants
+            let newcontest = [{
+                contest: {
+                    title: codeforcesContest.contest.title,
+                    participants: newParticipants
                 }
             }]
 
@@ -185,6 +198,29 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
             <div className="mt-6 m-3">
                 <form onSubmit={handleSubmit(handleContestAnalysisSubmit)} className="max-w-md mx-auto p-4 mb-2 border rounded-md ">
                     <h1 className="text-2xl font-semibold text-blue-700 text-center mb-3">Contest Analysis</h1>
+                    <div className="flex-row flex justify-between">
+                        <div className="mb-4 w-1/2 pr-2">
+                            <label htmlFor="from" className="labelText">From</label>
+                            <input
+                                type="date"
+                                id="from"
+                                defaultValue={oneWeekAgoFormatted}
+                                max={todayDate}
+                                className="textInputBox"
+                                {...register('from')}
+                            />
+                        </div>
+                        <div className="mb-4 w-1/2 pl-2">
+                            <label htmlFor="to" className="labelText">To</label>
+                            <input
+                                type="date" id="to"
+                                defaultValue={todayFormatted}
+                                max={todayDate}
+                                className="textInputBox"
+                                {...register('to')}
+                            />
+                        </div>
+                    </div>
                     {/* Select which Batch */}
                     <div>
                         <label className="labelText">Select Batch</label>
@@ -294,7 +330,7 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
                 </div>
             }
             {
-                isFiltered && 
+                isFiltered &&
                 <AnalysisTable tableData={tableData} />
             }
         </>
