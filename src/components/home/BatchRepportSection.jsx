@@ -90,6 +90,13 @@ function BatchRepportSection() {
             }
         });
 
+        // Cleanup function to reset the background when the component unmounts
+        return () => {
+            document.body.style.backgroundColor = ''; // Reset to default or intended background
+            ScrollTrigger.getAll().forEach(trigger => trigger.kill()); // Clear all scroll triggers
+            // console.log("Unmounted");
+        };
+
     }, [])
 
     return (
