@@ -177,7 +177,8 @@ async function getCodechefParticipants(filteredContests, newUniqueContests, code
         let contestTitle = cont.contest.title;
         // console.log('contestTitle: ', contestTitle);
         for(let i=0;i<filteredContests.length;i++){
-            if(filteredContests[i].contests.codechef != []){
+            if(filteredContests[i].contests.codechef != [] && filteredContests[i].student.codechef != null ){
+                // console.log('filteredContests[i].contests.codechef: ', filteredContests[i].contests.codechef);
                 let filteredCodechefContests = filteredContests[i].contests.codechef;
                 let student = filteredContests[i].student;
                 let codechefUsername = student.codechef.username;
