@@ -43,7 +43,7 @@ const AnalysisTable = ({ tableData }) => {
             record[dataIndex]
                 ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
                 : '',
-        onFilterDropdownVisibleChange: visible => {
+                onFilterDropdownOpenChange: visible => {
             if (visible) {
                 setTimeout(() => searchInput.select(), 100);
             }
@@ -78,30 +78,43 @@ const AnalysisTable = ({ tableData }) => {
             dataIndex: 'roll',
             key: 'roll',
             ...getColumnSearchProps('roll'),
+            sorter: (a, b) => a.roll - b.roll,
+            onHeaderCell: () => ({
+                style: { backgroundColor: '#e9edf4',}
+            }),
         },
         {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
             ...getColumnSearchProps('name'),
+            onHeaderCell: () => ({
+                style: { backgroundColor: '#e9edf4' },
+            }),
         },
         {
             title: 'Ranking',
             dataIndex: ['performance', 'ranking'],
             key: 'ranking',
             sorter: (a, b) => a.performance.ranking - b.performance.ranking,
+            onHeaderCell: () => ({
+                style: { backgroundColor: '#e9edf4' },
+            }),
         },
         {
             title: 'Problems Solved',
             dataIndex: ['performance', 'problemsSolved'],
             key: 'problemsSolved',
             sorter: (a, b) => a.performance.problemsSolved - b.performance.problemsSolved,
+            onHeaderCell: () => ({
+                style: { backgroundColor: '#e9edf4' },
+            }),
         }
     ];
 
     return (
         <div className='overflow-x-auto m-2'>
-            <Table columns={columns} dataSource={tableData} rowKey="roll" />;
+            <Table columns={columns} dataSource={tableData} rowKey="roll" pagination={false} />
         </div>
     )
 };

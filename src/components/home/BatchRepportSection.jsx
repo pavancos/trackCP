@@ -13,8 +13,8 @@ function BatchRepportSection() {
             scrollTrigger: {
                 trigger: '.pg-1',
                 start: 'top 40%',
-                end: 'bottom 50%',
-                markers: true,
+                end: 'bottom 40%',
+                // markers: true,
                 onEnter: () => {
                     document.body.style.backgroundColor = '#3FA2F6';
                 },
@@ -33,7 +33,7 @@ function BatchRepportSection() {
             scrollTrigger: {
                 trigger: '.pg-2',
                 start: 'top 40%',
-                end: 'bottom 50%',
+                end: 'bottom 40%',
                 // markers: true,
                 onEnter: () => {
                     document.body.style.backgroundColor = '#fcad00';
@@ -45,7 +45,7 @@ function BatchRepportSection() {
                     document.body.style.backgroundColor = '#fcad00';
                 },
                 onLeaveBack: () => {
-                    document.body.style.backgroundColor = '3FA2F6';
+                    document.body.style.backgroundColor = '#3FA2F6';
                 }
             }
         });
@@ -53,19 +53,19 @@ function BatchRepportSection() {
             scrollTrigger: {
                 trigger: '.pg-3',
                 start: 'top 40%',
-                end: 'bottom 50%',
+                end: 'bottom 40%',
                 // markers: true,
                 onEnter: () => {
                     document.body.style.backgroundColor = '#51be3d';
                 },
                 onLeave: () => {
-                    document.body.style.backgroundColor = 'f16e5f';
+                    document.body.style.backgroundColor = '#f16e5f';
                 },
                 onEnterBack: () => {
                     document.body.style.backgroundColor = '#51be3d';
                 },
                 onLeaveBack: () => {
-                    document.body.style.backgroundColor = 'fcad00';
+                    document.body.style.backgroundColor = '#fcad00';
                 }
             }
         });
@@ -73,7 +73,7 @@ function BatchRepportSection() {
             scrollTrigger: {
                 trigger: '.pg-4',
                 start: 'top 40%',
-                end: 'bottom 50%',
+                end: 'bottom 40%',
                 // markers: true,
                 onEnter: () => {
                     document.body.style.backgroundColor = '#f16e5f';
@@ -85,7 +85,7 @@ function BatchRepportSection() {
                     document.body.style.backgroundColor = '#f16e5f';
                 },
                 onLeaveBack: () => {
-                    document.body.style.backgroundColor = '51be3d';
+                    document.body.style.backgroundColor = '#51be3d';
                 }
             }
         });

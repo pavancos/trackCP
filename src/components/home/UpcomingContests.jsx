@@ -181,39 +181,28 @@ function UpcomingContests() {
                         isFetchedUpcomingContests === false ?
                             <>
                                 <div className="flex flex-col w-80 p-6 pb-4 sm:pe-4 bg-[#f5f5f5] rounded-28px hover:scale-[1.01] transition-all">
-                                    <h2 className='text-2xl font-semibold mb-2'>{<Skeleton />}</h2>
-                                    <p className="text-md">
-                                        {/* <span className='font-semibold'>Contest Name: </span> */}
-                                        {<Skeleton />}</p>
-                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />}</p>
-                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
-                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
-                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
-                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
-                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
-                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
+                                    <h2 className='text-2xl font-semibold p-1 px-0'>{<Skeleton />}</h2>
+                                    <p className="text-md p-2 pb-0 px-0"><span className='font-semibold'></span> {<Skeleton />}</p>
+                                    <p className="text-md p-2 pb-0 px-0"><span className='font-semibold'></span> {<Skeleton />} </p>
+                                    <p className="text-md p-2 pb-0 px-0"><span className='font-semibold'></span> {<Skeleton />} </p>
+                                    <p className="text-md p-2 pb-0 px-0"><span className='font-semibold'></span> {<Skeleton />} </p>
+                                    <p className="text-md p-2 pb-2 px-0"><span className='font-semibold'></span> {<Skeleton />} </p>
                                 </div>
                                 <div className="flex flex-col w-80 p-6 pb-4 sm:pe-4 bg-[#f5f5f5] rounded-28px hover:scale-[1.01] transition-all">
-                                    <h2 className='text-2xl font-semibold mb-2'>{<Skeleton />}</h2>
-                                    <p className="text-md">
-                                        {/* <span className='font-semibold'>Contest Name: </span> */}
-                                        {<Skeleton />}</p>
-                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />}</p>
-                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
-                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
-                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
-                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
+                                    <h2 className='text-2xl font-semibold p-1 px-0'>{<Skeleton />}</h2>
+                                    <p className="text-md p-2 pb-0 px-0"><span className='font-semibold'></span> {<Skeleton />}</p>
+                                    <p className="text-md p-2 pb-0 px-0"><span className='font-semibold'></span> {<Skeleton />} </p>
+                                    <p className="text-md p-2 pb-0 px-0"><span className='font-semibold'></span> {<Skeleton />} </p>
+                                    <p className="text-md p-2 pb-0 px-0"><span className='font-semibold'></span> {<Skeleton />} </p>
+                                    <p className="text-md p-2 pb-2 px-0"><span className='font-semibold'></span> {<Skeleton />} </p>
                                 </div>
                                 <div className="flex flex-col w-80 p-6 pb-4 sm:pe-4 bg-[#f5f5f5] rounded-28px hover:scale-[1.01] transition-all">
-                                    <h2 className='text-2xl font-semibold mb-2'>{<Skeleton />}</h2>
-                                    <p className="text-md">
-                                        {/* <span className='font-semibold'>Contest Name: </span> */}
-                                        {<Skeleton />}</p>
-                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />}</p>
-                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
-                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
-                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
-                                    <p className="text-md"><span className='font-semibold'></span> {<Skeleton />} </p>
+                                    <h2 className='text-2xl font-semibold p-1 px-0'>{<Skeleton />}</h2>
+                                    <p className="text-md p-2 pb-0 px-0"><span className='font-semibold'></span> {<Skeleton />}</p>
+                                    <p className="text-md p-2 pb-0 px-0"><span className='font-semibold'></span> {<Skeleton />} </p>
+                                    <p className="text-md p-2 pb-0 px-0"><span className='font-semibold'></span> {<Skeleton />} </p>
+                                    <p className="text-md p-2 pb-0 px-0"><span className='font-semibold'></span> {<Skeleton />} </p>
+                                    <p className="text-md p-2 pb-2 px-0"><span className='font-semibold'></span> {<Skeleton />} </p>
                                 </div>
                             </>
                             :
