@@ -5,6 +5,7 @@ import './Home.css'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import UpcomingContests from './UpcomingContests'
 import BatchRepportSection from './BatchRepportSection'
+import HomeFooter from './HomeFooter'
 
 
 function Home() {
@@ -14,7 +15,7 @@ function Home() {
     gsap.set('.bubble',
       {
         opacity: 0,
-        y: 90
+        y: 30
       });
 
     // show bubbles
@@ -90,8 +91,7 @@ function Home() {
       <div>
         <BatchRepportSection />
       </div>
-      <div className='page'></div>
-      <div className='page'></div>
+      <HomeFooter/>
     </>
   )
 }

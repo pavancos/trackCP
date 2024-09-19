@@ -193,21 +193,21 @@ function BatchRepportSection() {
                     <div className='bg-[#fcfcfc] rounded-20px md:rounded-28px w-full md:w-1/2 p-6 md:p-10'>
                         <h1 className='text-[#1e1e1f] text-3xl lg:text-4xl xl:text-5xl font-bold'>Multi-user, Multi-platform</h1>
                         <h1 className='text-[#f16e5f] text-3xl lg:text-4xl xl:text-5xl font-bold mt-2'>One view, complete analysis.</h1>
-                        <h1 className='text-[#f16e5f] text-3xl lg:text-4xl xl:text-5xl font-bold mt-2'>Multiple contest stats at once.</h1>
+                        <h1 className='text-[#f16e5f] text-3xl lg:text-4xl xl:text-5xl font-bold mt-2'>Multiple contest stats.</h1>
                     </div>
                     <div className='bg-[#282828] rounded-20px md:rounded-28px w-full md:w-1/2 p-6 md:p-10'>
                         <h1 className='text-[#e0e0e0] text-3xl lg:text-4xl xl:text-5xl font-bold'>Comprehensive Comparison</h1>
-                        <h1 className='text-[#f16e5f] text-3xl lg:text-4xl xl:text-5xl font-bold mt-2'>Analyze in one unified view.</h1>
+                        <h1 className='text-[#f16e5f] text-3xl lg:text-4xl xl:text-5xl font-bold mt-2'>Analyze in unified view.</h1>
                         <h1 className='text-[#f16e5f] text-3xl lg:text-4xl xl:text-5xl font-bold mt-2'>Visualize Progress.</h1>
-                        <h1 className='text-[#f16e5f] text-3xl lg:text-4xl xl:text-5xl font-bold mt-2'>Interactive Dotted Graphs.</h1>
+                        {/* <h1 className='text-[#f16e5f] text-3xl lg:text-4xl xl:text-5xl font-bold mt-2'>Interactive Dotted Graphs.</h1> */}
                     </div>
                 </div>
                 <div className='flex flex-col md:flex-row mt-0 md:mt-4'>
                     <div className='bg-[#282828] rounded-20px md:rounded-28px w-full p-6 md:p-10'>
                         <h1 className='text-[#e0e0e0] text-3xl lg:text-4xl xl:text-5xl font-bold'>Performance Analysis</h1>
                         <h1 className='text-[#f16e5f] text-3xl lg:text-4xl xl:text-5xl font-bold mt-2'>Dot graphs for all selected users.</h1>
-                        <h1 className='text-[#f16e5f] text-3xl lg:text-4xl xl:text-5xl font-bold mt-2'>Track rankings and contest participation.</h1>
-                        <h1 className='text-[#f16e5f] text-3xl lg:text-4xl xl:text-5xl font-bold mt-2'>See trends and outliers in user performance.</h1>
+                        <h1 className='text-[#f16e5f] text-3xl lg:text-4xl xl:text-5xl font-bold mt-2'>Track rankings & contest participation.</h1>
+                        <h1 className='text-[#f16e5f] text-3xl lg:text-4xl xl:text-5xl font-bold mt-2'>See trends in user performance.</h1>
                     </div>
                 </div>
             </div>
