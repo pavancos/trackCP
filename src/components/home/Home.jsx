@@ -55,8 +55,8 @@ function Home() {
           </div>
           <div className="col-span-4 col-start-3 row-span-1 "
           >
-            <h1 className='main-heading text-5xl text-center font-medium sm:text-6xl md:text-7xl lg:text-8xl font-advent tracking-wider' >
-              Track io
+            <h1 className='main-heading text-5xl text-center font-medium sm:text-6xl md:text-7xl lg:text-7xl font-advent tracking-wider' >
+              Track Code
             </h1>
           </div>
           <div className="bubble col-span-3 row-span-1  flex flex-row justify-center sm:items-center items-start">

@@ -330,7 +330,7 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
                 </div>
             }
             {
-                isFiltered &&
+                isFiltered && isSubmitted &&
                 <AnalysisTable tableData={tableData} />
             }
         </>

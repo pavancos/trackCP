@@ -54,3 +54,20 @@ body {
     opacity: 0;
     visibility: hidden;
 }
+
+/* .table-bordered .ant-table-cell {
+    border: 0.1px solid #475569 !important;
+} */
+
+/* .table-bordered .ant-table-cell {
+    border: 2px solid #475569;
+} */
+/* .table-bordered .ant-table-tbody > tr > td {
+    border: 4px solid #475569;
+} */
+.ant-table-wrapper table {
+    border-collapse: collapse !important;
+}
+
+
+
