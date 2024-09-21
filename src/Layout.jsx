@@ -5,6 +5,7 @@ import { Toaster } from 'react-hot-toast';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import BackToTop from './assets/Top.svg';
+import MobileNav from './components/navbar/MobileNav';
 
 function Layout() {
   const location = useLocation();
@@ -41,7 +42,10 @@ function Layout() {
     <div>
       {
         !isHomePage &&
-        <Navbar />
+        <>
+          <Navbar />
+          <MobileNav />
+        </>
       }
       {/* Add Dynamic Content Here */}
       <div style={{ minHeight: '100vh' }}>
@@ -53,7 +57,7 @@ function Layout() {
         <Footer />
       }
       {
-        
+
         !isHomePage &&
         <button
           onClick={handleScrollToTop}
