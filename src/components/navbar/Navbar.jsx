@@ -16,10 +16,10 @@ const Navbar = () => {
             <Link to="studentreport">Student Report</Link>
           </li>
           <li>
-            <Link to="playground">Play Ground</Link>
+            <Link to="compare">Compare</Link>
           </li>
           <li>
-            <Link to="compare">Compare</Link>
+            <Link to="playground">CP Report</Link>
           </li>
           <li>
             <Link to="contestanalysis">Contest Analysis</Link>
