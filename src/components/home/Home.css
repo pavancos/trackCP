@@ -29,3 +29,17 @@ body {
     /* font-family: "New Amsterdam", sans-serif; */
     font-size: 12rem;
 }
+.sticker{
+    position: absolute;
+    pointer-events: none; 
+    transform: translate(-50%, -50%); 
+    z-index: -100;
+}
+.footer-names{
+    position: relative;
+    top: -90px;
+}
+.stickersDiv{
+    /* position: relative; */
+    overflow: hidden;
+}
