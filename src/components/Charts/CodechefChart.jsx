@@ -64,7 +64,7 @@ function CodechefChart({ codechefData }) {
     return (
         <div>
             <h1 className='text-2xl font-semibold text-blue-500'>Code Chef</h1>
-            <h1>Username: {codechefData.username}</h1>
+            <h1>Username: <a href={`https://www.codechef.com/users/${codechefData.username}`} target="_blank" rel="noopener noreferrer">{codechefData.username}</a> </h1>
             <h1>Total Contests Participated: {problemsData.Contests} </h1>
            {/* <div className='flex flex-col md:flex-row justify-center'> */}
            <div className='hidden sm:flex sm:justify-center'>

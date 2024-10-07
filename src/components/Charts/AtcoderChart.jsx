@@ -38,7 +38,7 @@ function AtcoderChart({ atcoderData }) {
     return (
         <div>
             <h1 className='text-2xl font-semibold text-blue-500'>Atcoder</h1>
-            <h1>Username: {atcoderData.username}</h1>
+            <h1>Username: <a href={`https://atcoder.jp/users/${atcoderData.username}`} target="_blank" rel="noopener noreferrer">{atcoderData.username}</a> </h1>
             <p>Total Contests Participated: {totalContestsParticipated}</p>
             <div className='hidden sm:flex sm:justify-center'>
                 <LineChart width={700} height={400} data={contestsData}

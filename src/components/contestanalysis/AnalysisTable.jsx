@@ -93,6 +93,16 @@ const AnalysisTable = ({ tableData }) => {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
+            // TO be changed for each platform
+            render: (text, record) => {
+                // console.log('text', text);
+                // console.log("record",record)
+                return (
+                    <a href={`/profile/${record.username}`} target="_blank" rel="noopener noreferrer" >
+                        {text}
+                    </a>
+                )
+            },
             // ...getColumnSearchProps('name'),
             onHeaderCell: () => ({
                 style: {

@@ -55,7 +55,7 @@ function CodeforcesChart({ codeforcesData }) {
   return (
     <div>
       <h1 className='text-2xl font-semibold text-blue-500'>Codeforces</h1>
-      <h1>Username: {codeforcesData.username}</h1>
+      <h1>Username: <a href={`https://codeforces.com/profile/${codeforcesData.username}/`} target="_blank" rel="noopener noreferrer">{codeforcesData.username}</a> </h1>
       <p>Total Problems Solved: {totalProblemsSolved}</p>
       <p>Total Contests Participated: {totalContestsParticipated}</p>
 

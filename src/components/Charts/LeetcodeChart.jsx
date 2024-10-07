@@ -50,7 +50,7 @@ function LeetcodeChart({ leetcodeData }) {
     return (
         <div>
             <h1 className='text-2xl font-semibold text-blue-500'>Leetcode</h1>
-            <h1>Username: {leetcodeData.username}</h1>
+            <h1>Username: <a href={`https://leetcode.com/u/${leetcodeData.username}/`} target="_blank" rel="noopener noreferrer">{leetcodeData.username}</a> </h1>
             <h1>Total Problems Solved: {totalProblemsSolved}</h1>
             <h1>Total Contests Participated: {totalContestsParticipated}</h1>
             <div className='hidden sm:flex sm:justify-center'>
