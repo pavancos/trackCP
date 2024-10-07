@@ -61,7 +61,7 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
     }
     async function handleContestAnalysisSubmit(dataFromForm) {
         console.log('dataFromForm: ', dataFromForm);
-        console.log("Contest Analysis Submitted");
+        // console.log("Contest Analysis Submitted");
         let studentsData;
         if (batchNumber == 'batch21') {
             studentsData = studentsInfo.Batch21Data;
@@ -102,7 +102,7 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
             contest.contests.codechef.length > 0 ||
             contest.contests.codeforces.length > 0 ||
             contest.contests.leetcode.length > 0
-        );        
+        );
         setAreThereAnyContests(hasContests);
         if (!hasContests) {
             putErrToast('No Contests Found');
@@ -110,7 +110,7 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
             return;
         }
         await getUniqueContests(filteredContests, setUniqueCodechefContestNames, setUniqueLeetcodeContestNames, setUniqueCodeforcesContestNames, setUniqueContests, setLeetcodeParticipants, setCodechefParticipants, setCodeforcesParticipants);
-        console.log('uniqueContests: ', uniqueContests);        
+        console.log('uniqueContests: ', uniqueContests);
         setIsSubmitted(true);
     }
 
@@ -135,51 +135,58 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
             newUniqueContests = [...uniqueContests.leetcode];
         }
         if (uniqueContests.codechef.length > 0) {
-            let codechefContest = uniqueContests.codechef[0];
-            // console.log('codechefContest: ', codechefContest);
-            let newParticipants = codechefContest.contest.participants.map((participant) => {
-                // console.log(participant);
-                return {
-                    name: participant.name,
-                    roll: participant.roll,
-                    performance: {
-                        ranking: participant.performance.rank,
-                        problemsSolved: participant.performance.problemsSolved.length,
+            console.log('uniqueContests.codechef: ', uniqueContests.codechef);
+            let newCodechefContests = uniqueContests.codechef.map((con) => {
+                let codechefContest = con;
+                // console.log('codechefContest: ', codechefContest);
+                let newParticipants = codechefContest.contest.participants.map((participant) => {
+                    // console.log(participant);
+                    return {
+                        name: participant.name,
+                        roll: participant.roll,
+                        performance: {
+                            ranking: participant.performance.rank,
+                            problemsSolved: participant.performance.problemsSolved.length,
+                        }
                     }
-                }
+                })
+                let newcontest = [{
+                    contest: {
+                        title: codechefContest.contest.title,
+                        platform:"codechef",
+                        participants: newParticipants
+                    }
+                }]
+                newUniqueContests = [...newUniqueContests, ...newcontest];
             })
-            let newcontest = [{
-                contest: {
-                    title: codechefContest.contest.title,
-                    participants: newParticipants
-                }
-            }]
-            newUniqueContests = [...newUniqueContests, ...newcontest];
         }
         if (uniqueContests.codeforces.length > 0) {
-            let codeforcesContest = uniqueContests.codeforces[0];
-            console.log('codeforcesContest: ', codeforcesContest);
-            let newParticipants = codeforcesContest.contest.participants.map((participant) => {
-                // console.log(participant);
-                return {
-                    name: participant.name,
-                    roll: participant.roll,
-                    performance: {
-                        ranking: participant.performance.rank,
-                        problemsSolved: participant.performance.problemsSolved,
+            let newCodeforces = uniqueContests.codeforces.map((con) => {
+                let codeforcesContest = con;
+                // console.log('codeforcesContest: ', codeforcesContest);
+                let newParticipants = codeforcesContest.contest.participants.map((participant) => {
+                    // console.log(participant);
+                    return {
+                        name: participant.name,
+                        roll: participant.roll,
+                        performance: {
+                            ranking: participant.performance.rank,
+                            problemsSolved: participant.performance.problemsSolved,
+                        }
                     }
-                }
+                })
+                console.log('newParticipants: ', newParticipants);
+
+                let newcontest = [{
+                    contest: {
+                        title: codeforcesContest.contest.title,
+                        platform:"codeforces",
+                        participants: newParticipants
+                    }
+                }]
+
+                newUniqueContests = [...newUniqueContests, ...newcontest];
             })
-            console.log('newParticipants: ', newParticipants);
-
-            let newcontest = [{
-                contest: {
-                    title: codeforcesContest.contest.title,
-                    participants: newParticipants
-                }
-            }]
-
-            newUniqueContests = [...newUniqueContests, ...newcontest];
         }
         // console.log('newUniqueContests: ', newUniqueContests);
         setCombinedContests(newUniqueContests);

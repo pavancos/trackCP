@@ -44,7 +44,8 @@ function Layout() {
         !isHomePage &&
         <>
           <Navbar />
-          <MobileNav />
+          {/* For Mobile Navbar */}
+          {/* <MobileNav /> */}
         </>
       }
       {/* Add Dynamic Content Here */}

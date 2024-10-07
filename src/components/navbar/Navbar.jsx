@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom'
 
 const Navbar = () => {
   return (
-    <header className={`hidden md:flex bg-blue-100 w-full flex-col gap-6 md:gap-0 md:flex-row justify-between items-center py-4 px-2 md:px-6 `}>
+    // For Mobile View
+    // <header className={`hidden md:flex bg-blue-100 w-full flex-col gap-6 md:gap-0 md:flex-row justify-between items-center py-4 px-2 md:px-6 `}>
+    // Desktop View
+    <header className={`flex bg-blue-100 w-full flex-col gap-6 md:gap-0 md:flex-row justify-between items-center py-4 px-2 md:px-6 `}>
       <Link to="/">
         <h3 className='text-blue-700  text-2xl font-mono'>track code</h3>
       </Link>
