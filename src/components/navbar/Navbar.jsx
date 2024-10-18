@@ -16,7 +16,7 @@ const Navbar = () => {
             <Link to="studentreport">Student Report</Link>
           </li>
           <li>
-            <Link to="playground">Play Ground</Link>
+            <Link to="playground">CP Report</Link>
           </li>
           <li>
             <Link to="compare">Compare</Link>
