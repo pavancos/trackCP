@@ -5,6 +5,7 @@ import { Toaster } from 'react-hot-toast';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import BackToTop from './assets/Top.svg';
+import Menu from './components/navbar/menu/Menu';
 
 function Layout() {
   const location = useLocation();
@@ -19,6 +20,8 @@ function Layout() {
       setShowButton(false);
     }
   };
+
+
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -37,23 +40,61 @@ function Layout() {
   };
 
   const isHomePage = location.pathname === '/';
+
+
+  const [hamburgerIsOpen, setHamburgerIsOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setHamburgerIsOpen(!hamburgerIsOpen);
+  };
+
+  useEffect(() => {
+    if (hamburgerIsOpen) {
+      document.body.classList.add('no-scroll');
+    } else {
+      document.body.classList.remove('no-scroll');
+    }
+    return () => {
+      document.body.classList.remove('no-scroll');
+    };
+  }, [hamburgerIsOpen]);
   return (
-    <div>
+    <div
+      style={{
+        overflow: 'hidden'
+      }}
+    >
       {
         !isHomePage &&
-        <Navbar />
+        <div>
+          <Navbar
+            toggleMenu={toggleMenu}
+            hamburgerIsOpen={hamburgerIsOpen}
+          />
+          {
+            hamburgerIsOpen &&
+            <Menu
+            toggleMenu={toggleMenu}
+            />
+          }
+        </div>
       }
       {/* Add Dynamic Content Here */}
-      <div style={{ minHeight: '100vh' }}>
-        <Outlet />
-      </div>
+
+      {
+        hamburgerIsOpen == false &&
+
+        <div style={{ minHeight: '100vh' }}>
+          <Outlet />
+        </div>
+      }
       <Toaster />
       {
-        !isHomePage &&
+        !isHomePage && hamburgerIsOpen == false &&
         <Footer />
       }
       {
-        
+
         !isHomePage &&
         <button
           onClick={handleScrollToTop}

@@ -1,14 +1,37 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import './Navbar.css';
 
-const Navbar = () => {
+const Navbar = ({ toggleMenu, hamburgerIsOpen }) => {
+
   return (
-    <header className={` bg-blue-100 flex w-full flex-col gap-6 md:gap-0 md:flex-row justify-between items-center py-4 px-2 md:px-6 `}>
-      <Link to="/">
-        <h3 className='text-blue-700  text-2xl font-mono'>track code</h3>
-      </Link>
-      <nav className='flex'>
-        <ul className='flex flex-row justify-evenly gap-8'>
+    <header className={`bg-blue-100 flex w-full flex-row gap-6 md:gap-0 md:flex-row items-center py-4 px-2 md:px-6
+      ${!hamburgerIsOpen ? 'justify-between' : 'justify-end'}
+    `}>
+
+      {
+        hamburgerIsOpen == false &&
+        <Link to="/">
+          <h3 className="text-blue-700 text-2xl font-mono pl-3 sm:pl-0">
+            track code
+          </h3>
+        </Link>
+      }
+
+      {/* Hamburger Menu Icon */}
+      <div className={`sm:hidden cursor-pointer mr-3 
+      
+       ${hamburgerIsOpen?'mt-2.5':'mt-0'} 
+      `}
+        onClick={toggleMenu}>
+        <div className={`menu-icon ${hamburgerIsOpen ? 'open' : ''}`}>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+
+      <nav className="hidden sm:flex">
+        <ul className="flex flex-row justify-evenly gap-8">
           <li>
             <Link to="batchreport">Batch Report</Link>
           </li>
@@ -24,12 +47,10 @@ const Navbar = () => {
           <li>
             <Link to="contestanalysis">Contest Analysis</Link>
           </li>
-
         </ul>
       </nav>
-
     </header>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
