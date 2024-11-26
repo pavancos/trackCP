@@ -29,3 +29,11 @@ body {
     /* font-family: "New Amsterdam", sans-serif; */
     font-size: 12rem;
 }
+
+@media screen and (max-width: 500px) {
+    .footer-page {
+        font-size: 6rem;
+        margin-left: 10px;
+        height: 70vh;
+    }
+} 
