@@ -11,7 +11,7 @@ function CustomTooltip({ payload, label, active }) {
   if (active && payload && payload.length) {
     let diffOfRating = payload[0].payload.rating - payload[0].payload.oldRating;
     return (
-      <div className="custom-tooltip bg-white p-2 border border-gray-300 rounded shadow">
+      <div className="p-2 bg-white border border-gray-300 rounded shadow custom-tooltip">
         <p>
           {`Rating: ${payload[0].payload.rating}`}
           <span
@@ -24,7 +24,7 @@ function CustomTooltip({ payload, label, active }) {
         </p>
         <p>{`Rank: ${payload[0].payload.rank}`}</p>
         <p className="label">{`${payload[0].payload.date}`}</p>
-        <p className="desc text-gray-500">{`${payload[0].payload.name}`}</p>
+        <p className="text-gray-500 desc">{`${payload[0].payload.name}`}</p>
       </div>
     );
   }
@@ -55,7 +55,7 @@ function CodeforcesChart({ codeforcesData }) {
   return (
     <div>
       <h1 className='text-2xl font-semibold text-blue-500'>Codeforces</h1>
-      <h1>Username: {codeforcesData.username}</h1>
+      <h1>Username: <a href={`https://codeforces.com/profile/${codeforcesData.username}/`} target="_blank" rel="noopener noreferrer">{codeforcesData.username}</a> </h1>
       <p>Total Problems Solved: {totalProblemsSolved}</p>
       <p>Total Contests Participated: {totalContestsParticipated}</p>
 

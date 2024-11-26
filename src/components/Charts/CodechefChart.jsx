@@ -4,12 +4,12 @@ import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts'
 function CustomTooltip({ payload, label, active }) {
     if (active && payload && payload.length) {
         return (
-            <div className="custom-tooltip bg-white p-2 border border-gray-300 rounded shadow">
+            <div className="p-2 bg-white border border-gray-300 rounded shadow custom-tooltip">
                 <p>{`Rating: ${payload[0].payload.rating}`}</p>
                 <p>{`Rank: ${payload[0].payload.rank}`}</p>
                 <p className="label">{`${payload[0].payload.date}`}</p>
-                <p className="desc text-gray-500">{`${payload[0].payload.name}`}</p>
-                <p className="desc text-gray-500">{`Problems Solved: ${payload[0].payload.problemsSolved}`}</p>
+                <p className="text-gray-500 desc">{`${payload[0].payload.name}`}</p>
+                <p className="text-gray-500 desc">{`Problems Solved: ${payload[0].payload.problemsSolved}`}</p>
             </div>
         );
     }
@@ -64,9 +64,9 @@ function CodechefChart({ codechefData }) {
     return (
         <div>
             <h1 className='text-2xl font-semibold text-blue-500'>Code Chef</h1>
-            <h1>Username: {codechefData.username}</h1>
+            <h1>Username: <a href={`https://www.codechef.com/users/${codechefData.username}`} target="_blank" rel="noopener noreferrer">{codechefData.username}</a> </h1>
             <h1>Total Contests Participated: {problemsData.Contests} </h1>
-           {/* <div className='flex flex-col md:flex-row justify-center'> */}
+           {/* <div className='flex flex-col justify-center md:flex-row'> */}
            <div className='hidden sm:flex sm:justify-center'>
                 <LineChart
                     width={700}

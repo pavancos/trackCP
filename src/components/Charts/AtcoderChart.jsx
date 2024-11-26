@@ -8,10 +8,10 @@ const formatDate = (dateString) => {
 function CustomTooltip({ payload, label, active }) {
     if (active && payload && payload.length) {
         return (
-            <div className="custom-tooltip bg-white p-2 border border-gray-300 rounded shadow">
+            <div className="p-2 bg-white border border-gray-300 rounded shadow custom-tooltip">
                 <p>{`Rank: ${payload[0].payload.rank}`}</p>
                 <p className="label">{`${payload[0].payload.date}`}</p>
-                <p className="desc text-gray-500">{`${payload[0].payload.name}`}</p>
+                <p className="text-gray-500 desc">{`${payload[0].payload.name}`}</p>
             </div>
         );
     }
@@ -38,7 +38,7 @@ function AtcoderChart({ atcoderData }) {
     return (
         <div>
             <h1 className='text-2xl font-semibold text-blue-500'>Atcoder</h1>
-            <h1>Username: {atcoderData.username}</h1>
+            <h1>Username: <a href={`https://atcoder.jp/users/${atcoderData.username}`} target="_blank" rel="noopener noreferrer">{atcoderData.username}</a> </h1>
             <p>Total Contests Participated: {totalContestsParticipated}</p>
             <div className='hidden sm:flex sm:justify-center'>
                 <LineChart width={700} height={400} data={contestsData}
