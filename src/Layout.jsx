@@ -40,6 +40,7 @@ function Layout() {
   };
 
   const isHomePage = location.pathname === '/';
+  const isrewind = location.pathname === '/rewind';
 
 
   const [hamburgerIsOpen, setHamburgerIsOpen] = useState(false);
@@ -65,7 +66,7 @@ function Layout() {
       }}
     >
       {
-        !isHomePage &&
+        !isHomePage && !isrewind &&
         <div>
           <Navbar
             toggleMenu={toggleMenu}
@@ -90,7 +91,7 @@ function Layout() {
       }
       <Toaster />
       {
-        !isHomePage && hamburgerIsOpen == false &&
+        !isHomePage && hamburgerIsOpen == false && !isrewind &&
         <Footer />
       }
       {
