@@ -109,6 +109,7 @@ import ContestAnalysis from './components/contestanalysis/ContestAnalysis';
 
 // Import React-GA for Google Analytics
 import ReactGA from 'react-ga';
+import Rewind from './components/rewind/Rewind';
 
 // Initialize Google Analytics with your tracking ID
 const TRACKING_ID = 'G-QW1VSHJK2L'; // Replace with your Google Analytics tracking ID
@@ -175,6 +176,10 @@ function App() {
               isFetchedFromAPI={isFetchedFromAPI}
             />
           )
+        },
+        {
+          path:'rewind',
+          element:<Rewind/>
         }
       ]
     }
