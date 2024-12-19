@@ -23,6 +23,9 @@ export default {
         '28px': '28px',
         '20px': '20px',
       },
+      dropShadow:{
+        'left': '0px 2px 3px rgba(255,  255, 255, 0.25)',
+      }
     },
   },
   plugins: [

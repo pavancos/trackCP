@@ -43,7 +43,7 @@ function RewindLoadingGradient () {
           className='tri2 h-12'
           alt='Rewind Logo Animation'
         />
-        <h1 className='text font-semibold text-5xl ms-2 mb-20 sm:mb-4'>Rewind</h1>
+        <h1 className='text font-semibold text-5xl ms-2 mb-14 sm:mb-4'>Rewind</h1>
       </div>
     </div>
   )

@@ -8,13 +8,14 @@ import { set } from 'react-ga'
 import { getTopContests } from './utils/utilsRewind'
 import { getTopPlatform } from './utils/utilsRewind'
 import { getProblemsSolved } from './utils/utilsRewind'
+import FullRewind from './FullRewind'
 
 function Rewind () {
   const [loading, setLoading] = useState(false)
   const { register, handleSubmit } = useForm()
 
   const [isSubmitted, setIsSubmitted] = useState(false)
-  const [isFetchedFromApi, setIsFetchedFromApi] = useState(true)
+  const [isFetched, setIsFetched] = useState(false)
 
   const [codechefData, setCodechefData] = useState([])
   const [codeforcesData, setCodeforcesData] = useState([])
@@ -36,6 +37,7 @@ function Rewind () {
   const [totalContsts, setTotalContests] = useState(0)
   const [totalProblems, setTotalProblems] = useState(0)
   const [quote, setQuote] = useState('')
+  const [monthlyData, setMonthlyData] = useState([])
 
   useEffect(() => {
     // const timer = setTimeout(() => {
@@ -46,7 +48,7 @@ function Rewind () {
 
   async function playGroundInput (usernamesData) {
     setLoading(true)
-    setIsFetchedFromApi(false)
+    setIsFetched(false)
     // console.log('usernamesData: ', usernamesData)
     let onlyUsernames = usernamesData
     delete onlyUsernames.nameOfUser
@@ -158,25 +160,28 @@ function Rewind () {
         let date = new Date(contest.ratingUpdateTimeSeconds * 1000)
         let year = date.getFullYear()
         let month = date.getMonth()
-        let day = date.getDate();
-        console.log(contest.contestName);
-        let tempContestName = contest.contestName.split(' ');
-        if(tempContestName[0]==='Codeforces'){
-          if(tempContestName[1]==='Global'){
-            contest.contestName=`${tempContestName[2]} ${tempContestName[3]}`;
-          }else{
-            contest.contestName=`${tempContestName[1]} ${tempContestName[2]}`;
+        let day = date.getDate()
+        console.log(contest.contestName)
+        let tempContestName = contest.contestName.split(' ')
+        if (tempContestName[0] === 'Codeforces') {
+          if (tempContestName[1] === 'Global') {
+            contest.contestName = `${tempContestName[2]} ${tempContestName[3]}`
+          } else {
+            contest.contestName = `${tempContestName[1]} ${tempContestName[2]}`
           }
-        }else if(tempContestName[0]==='EPIC'){
-          contest.contestName=`${tempContestName[0]} ${tempContestName[5]}`;
-        }else if(tempContestName[0]==='Educational'){
-          contest.contestName=`${tempContestName[2]} ${tempContestName[3]}`;
-        }else if(tempContestName[0]==='Pinely'){
-          contest.contestName=`${tempContestName[0]} ${tempContestName[1]} ${tempContestName[2]}`;
-        }else if(tempContestName[0]==='Rayan'){
-          contest.contestName=contest.contestName.split('(').split(' ')[1]+" "+contest.contestName.split('(').split(' ')[2];
-        }else if(tempContestName[0]==='CodeTON'){
-          contest.contestName=`${tempContestName[0]} ${tempContestName[1]} ${tempContestName[2]}`;
+        } else if (tempContestName[0] === 'EPIC') {
+          contest.contestName = `${tempContestName[0]} ${tempContestName[5]}`
+        } else if (tempContestName[0] === 'Educational') {
+          contest.contestName = `${tempContestName[2]} ${tempContestName[3]}`
+        } else if (tempContestName[0] === 'Pinely') {
+          contest.contestName = `${tempContestName[0]} ${tempContestName[1]} ${tempContestName[2]}`
+        } else if (tempContestName[0] === 'Rayan') {
+          contest.contestName =
+            contest.contestName.split('(').split(' ')[1] +
+            ' ' +
+            contest.contestName.split('(').split(' ')[2]
+        } else if (tempContestName[0] === 'CodeTON') {
+          contest.contestName = `${tempContestName[0]} ${tempContestName[1]} ${tempContestName[2]}`
         }
 
         return {
@@ -252,18 +257,20 @@ function Rewind () {
       for (let i = 0; i < 12; i++) {
         let monthData = {
           month: month[i],
-          contests: sortedAllContestData.filter(contest => parseInt(contest.getMonth) === i + 1)
+          contests: sortedAllContestData.filter(
+            contest => parseInt(contest.getMonth) === i + 1
+          )
         }
         monthlyData.push(monthData)
       }
       console.log('monthlyData: ', monthlyData)
+      setMonthlyData(monthlyData)
       // Getting Top Contests (5 or 0 => incase no contests)
-      console.log("January: ", getTopContests(monthlyData[0].contests));
+      console.log('January: ', getTopContests(monthlyData[0].contests))
       // Getting Top Platform
-      console.log("Feb: ", getTopPlatform(monthlyData[1].contests));
+      console.log('Feb: ', getTopPlatform(monthlyData[1].contests))
       // Getting Problems Solved
-      console.log("Feb: ", getProblemsSolved(monthlyData[1].contests));
-
+      console.log('Feb: ', getProblemsSolved(monthlyData[1].contests))
 
       // Quote
       // 10+ Contests: "You're just getting started—future champion in the making!"
@@ -309,42 +316,38 @@ function Rewind () {
       setCodeforcesData(codeforcesContests)
 
       setIsSubmitted(true)
-      setIsFetchedFromApi(true)
+      setIsFetched(true)
       setLoading(false)
     } catch (err) {
       console.log('Something went wrong' + err)
-      setIsFetchedFromApi(true)
+      setIsSubmitted(false)
     }
   }
-
-  // useEffect(() => {
-  //   console.log('Updated topPlatforms:', topPlatforms)
-  // }, [topPlatforms])
-
-  // useEffect(() => {
-  //   console.log('Codeforces Data Updated:', codeforcesData)
-  // }, [codeforcesData])
-
-  // useEffect(() => {
-  //   console.log('Codechef Data Updated:', codechefData)
-  // }, [codechefData])
-
-  // useEffect(() => {
-  //   console.log('Leetcode Data Updated:', leetcodeData)
-  // }, [leetcodeData])
 
   useEffect(() => {
     console.log('Original Data:', originalData)
   }, [originalData])
 
   return (
-    <div className='flex w-full h-screen justify-center items-center'>
-      {loading ? (
-        <div className='loading-screen justify-center items-center m-20'>
-          {/* <RewindLoading /> */}
-          <RewindLoadingGradient />
-        </div>
-      ) : (
+    <div className='flex w-full justify-center items-center'>
+      {/* 
+      isfeteched flase -> form
+      issubmtted && isfetched false -> loading(2sec)
+      isfetched true -> full rewind
+      
+      */}
+
+      {loading && <RewindLoadingGradient/>}
+      {isFetched && <FullRewind
+        topContest={topContest}
+        topPlatforms={topPlatforms}
+        totalContests={totalContsts}
+        totalProblems={totalProblems}
+        quote={quote}
+        monthlyData={monthlyData}
+      />}
+      {
+        !isSubmitted && !loading &&
         <div className='content'>
           <div className='m-3'>
             <form
@@ -400,37 +403,39 @@ function Rewind () {
 
               <button
                 type='submit'
-                // disabled={!isFetchedFromApi}
+                // disabled={!isFetched}
                 className={`w-full  font-semibold py-2 px-4 rounded-md
                         transition duration-700 ease-in-out text-white 
                          focus:outline-none focus:ring-2 
                         focus:ring-offset-2 focus:ring-blue-500 
-                        ${
-                          !isFetchedFromApi
-                            ? 'cursor-not-allowed bg-blue-300'
                             : 'cursor-pointer bg-blue-500 hover:bg-blue-600'
-                        }`}
+                        `}
               >
                 Submit
               </button>
             </form>
 
             {/* {
-                !isFetchedFromApi &&
+                !isFetched &&
                 <div className='flex flex-row justify-center'><RewindLoadingGradient /></div>
             } */}
 
             {/* {
-                (isSubmitted && isFetchedFromApi) &&
+                (isSubmitted && isFetched) &&
                 (codechefData !== null) &&
                 isCodeChefSelected && !isAnyChange &&
                 <CodechefChart codechefData={codechefData} />
             } */}
           </div>
         </div>
-      )}
+      }
     </div>
   )
 }
 
 export default Rewind
+
+{/* <div className='loading-screen justify-center items-center m-20'>
+            {/* <RewindLoading /> */}
+            // <RewindLoadingGradient />
+          // </div>
