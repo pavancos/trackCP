@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react'
 import RewindLoading from './RewindLoading'
 import GradientBackground from './GradientBackground'
 import RewindLoadingGradient from './RewindLoadingGradient'
-import { useForm } from 'react-hook-form'
-import Loading from '../Loading';
+import { get, useForm } from 'react-hook-form'
+import Loading from '../Loading'
 import { set } from 'react-ga'
-
+import { getTopContests } from './utils/utilsRewind'
+import { getTopPlatform } from './utils/utilsRewind'
+import { getProblemsSolved } from './utils/utilsRewind'
 
 function Rewind () {
   const [loading, setLoading] = useState(false)
@@ -18,6 +20,8 @@ function Rewind () {
   const [codeforcesData, setCodeforcesData] = useState([])
   const [leetcodeData, setLeetcodeData] = useState([])
 
+  const [originalData, setOriginalData] = useState()
+
   const [selectedPlatforms, setSelectedPlatforms] = useState({
     Codechef: true,
     Codeforces: true,
@@ -25,6 +29,13 @@ function Rewind () {
     Spoj: false,
     Atcoder: false
   })
+
+  // Rewind List
+  const [topContest, setTopContest] = useState([])
+  const [topPlatforms, setTopPlatforms] = useState([])
+  const [totalContsts, setTotalContests] = useState(0)
+  const [totalProblems, setTotalProblems] = useState(0)
+  const [quote, setQuote] = useState('')
 
   useEffect(() => {
     // const timer = setTimeout(() => {
@@ -52,17 +63,279 @@ function Rewind () {
       // console.log('res: ', res)
       let data = await res.json()
       console.log('data: ', data)
-      setCodechefData(data.codechef)
-      setLeetcodeData(data.leetcode)
-      setCodeforcesData(data.codeforces)
+      setOriginalData(data)
+
+      // Add problems codeforces contests data
+      data.codeforces.problems.forEach(problem => {
+        // console.log('problem: ', problem);
+        // console.log('ContestID: ', problem.contestId);
+        let contest = data.codeforces.contests.find(
+          contest => contest.contestId === problem.contestId
+        )
+        if (contest) {
+          if (!contest.problems) {
+            contest.problems = 0
+          }
+          contest.problems += 1
+        }
+      })
+
+      // filtering - Rewind
+      const codechefContests = (data.codechef?.contests || []).filter(
+        contest => contest.getyear === '2024'
+      )
+      const codeforcesContests = (data.codeforces?.contests || []).filter(
+        contest => {
+          const date = new Date(
+            contest.ratingUpdateTimeSeconds * 1000
+          ).getFullYear()
+          return date === 2024
+        }
+      )
+      const leetcodeContests = (
+        data.leetcode?.data.userContestRankingHistory || []
+      ).filter(con => {
+        const date = new Date(con.contest.startTime * 1000).getFullYear()
+        return date === 2024
+      })
+
+      // Top platforms
+      let topplatformsArr = [
+        { platform: 'codechef', length: codechefContests.length },
+        { platform: 'codeforces', length: codeforcesContests.length },
+        { platform: 'leetcode', length: leetcodeContests.length }
+      ]
+      topplatformsArr.sort((a, b) => b.length - a.length)
+      console.log('topplatformsArr: ', topplatformsArr)
+      setTopPlatforms(topplatformsArr)
+
+      // Total contests
+      let totalContests =
+        codechefContests.length +
+        codeforcesContests.length +
+        leetcodeContests.length
+      console.log('totalContests: ', totalContests)
+      setTotalContests(totalContests)
+
+      // Total problems
+      let totalProblems = 0
+      codechefContests.forEach(contest => {
+        totalProblems += contest.problems.length
+      })
+      codeforcesContests.forEach(contest => {
+        // console.log('contest: ', contest);
+        // console.log('contest Problems: ', contest.problems);
+        if (contest.problems) {
+          totalProblems += contest.problems
+        }
+      })
+      leetcodeContests.forEach(contest => {
+        totalProblems += contest.problemsSolved
+      })
+      console.log('totalProblems: ', totalProblems)
+      setTotalProblems(totalProblems)
+
+      // Sorting Codeforces Contests
+      let sortedCodeForcesContests = codeforcesContests.sort(
+        (p, q) => p.rank - q.rank
+      )
+      console.log('sortedCodeForcesContests: ', sortedCodeForcesContests)
+      // Sorting Codechef Contests
+      let sortedCodeChefContests = codechefContests.sort(
+        (p, q) => p.rank - q.rank
+      )
+      console.log('sortedCodeChefContests: ', sortedCodeChefContests)
+      // Sorting Leetcode Contests
+      let sortedLeetcodeContests = leetcodeContests.sort(
+        (p, q) => p.ranking - q.ranking
+      )
+      console.log('sortedLeetcodeContests: ', sortedLeetcodeContests)
+
+      // sortedAllContest
+      let sortedAllContest = []
+      sortedAllContest = sortedCodeForcesContests.map(contest => {
+        // console.log('contest: ', contest);
+        let date = new Date(contest.ratingUpdateTimeSeconds * 1000)
+        let year = date.getFullYear()
+        let month = date.getMonth()
+        let day = date.getDate();
+        console.log(contest.contestName);
+        let tempContestName = contest.contestName.split(' ');
+        if(tempContestName[0]==='Codeforces'){
+          if(tempContestName[1]==='Global'){
+            contest.contestName=`${tempContestName[2]} ${tempContestName[3]}`;
+          }else{
+            contest.contestName=`${tempContestName[1]} ${tempContestName[2]}`;
+          }
+        }else if(tempContestName[0]==='EPIC'){
+          contest.contestName=`${tempContestName[0]} ${tempContestName[5]}`;
+        }else if(tempContestName[0]==='Educational'){
+          contest.contestName=`${tempContestName[2]} ${tempContestName[3]}`;
+        }else if(tempContestName[0]==='Pinely'){
+          contest.contestName=`${tempContestName[0]} ${tempContestName[1]} ${tempContestName[2]}`;
+        }else if(tempContestName[0]==='Rayan'){
+          contest.contestName=contest.contestName.split('(').split(' ')[1]+" "+contest.contestName.split('(').split(' ')[2];
+        }else if(tempContestName[0]==='CodeTON'){
+          contest.contestName=`${tempContestName[0]} ${tempContestName[1]} ${tempContestName[2]}`;
+        }
+
+        return {
+          contest: contest.contestName,
+          rank: contest.rank,
+          problem: contest.problems,
+          platform: 'Codeforces',
+          getYear: year,
+          getMonth: month + 1,
+          getDay: day
+        }
+      })
+      sortedCodeChefContests.forEach(contest => {
+        sortedAllContest.push({
+          contest: contest.name,
+          rank: parseInt(contest.rank),
+          problem: contest.problems.length,
+          platform: 'Codechef',
+          getYear: contest.getyear,
+          getMonth: contest.getmonth,
+          getDay: contest.getday
+        })
+      })
+      sortedLeetcodeContests.forEach(contest => {
+        // console.log('contest: ', contest);
+        let date = new Date(contest.contest.startTime * 1000)
+        let year = date.getFullYear()
+        let month = date.getMonth()
+        let day = date.getDate()
+        sortedAllContest.push({
+          contest: contest.contest.title,
+          rank: contest.ranking,
+          problem: contest.problemsSolved,
+          platform: 'Leetcode',
+          getYear: year,
+          getMonth: month + 1,
+          getDay: day
+        })
+      })
+      // Sorting all contest
+      let sortedAllContestData = sortedAllContest.sort(
+        (p, q) => p.rank - q.rank
+      )
+      console.log('sortedAllContestData: ', sortedAllContestData)
+      setTopContest(sortedAllContestData)
+
+      // Filtering Monthly data
+
+      // {
+      //   month="",
+      //   contests=[
+      //     // All Contests sorted{}
+      //   ],
+      //   // cf, cf, lc;
+      // }
+
+      let monthlyData = []
+      let month = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+      ]
+
+      for (let i = 0; i < 12; i++) {
+        let monthData = {
+          month: month[i],
+          contests: sortedAllContestData.filter(contest => parseInt(contest.getMonth) === i + 1)
+        }
+        monthlyData.push(monthData)
+      }
+      console.log('monthlyData: ', monthlyData)
+      // Getting Top Contests (5 or 0 => incase no contests)
+      console.log("January: ", getTopContests(monthlyData[0].contests));
+      // Getting Top Platform
+      console.log("Feb: ", getTopPlatform(monthlyData[1].contests));
+      // Getting Problems Solved
+      console.log("Feb: ", getProblemsSolved(monthlyData[1].contests));
+
+
+      // Quote
+      // 10+ Contests: "You're just getting started—future champion in the making!"
+      // 20+ Contests: "Consistency is your middle name—keep up the momentum!"
+      // 30+ Contests: "You're coding your way to greatness—keep shining!"
+      // 40+ Contests: "A problem-solving wizard—your dedication is inspiring!"
+      // 50+ Contests: "Half a century of contests—you're unstoppable!"
+      // 60+ Contests: "A true coding legend—your persistence is extraordinary!"
+      // 70+ Contests: "You're rewriting the rules—an icon in the coding world!"
+      // 80+ Contests: "A master of marathons—conquering challenges with ease!"
+      // 90+ Contests: "You're the essence of excellence—an elite coding champion!"
+      // 100+ Contests: "A centurion of code—you're in a league of your own!"
+
+      let quote = ''
+      if (totalContests >= 100) {
+        quote = "A centurion of code—you're in a league of your own!"
+      } else if (totalContests >= 90) {
+        quote = "You're the essence of excellence—an elite coding champion!"
+      } else if (totalContests >= 80) {
+        quote = 'A master of marathons—conquering challenges with ease!'
+      } else if (totalContests >= 70) {
+        quote = "You're rewriting the rules—an icon in the coding world!"
+      } else if (totalContests >= 60) {
+        quote = 'A true coding legend—your persistence is extraordinary!'
+      } else if (totalContests >= 50) {
+        quote = "Half a century of contests—you're unstoppable!"
+      } else if (totalContests >= 40) {
+        quote = 'A problem-solving wizard—your dedication is inspiring!'
+      } else if (totalContests >= 30) {
+        quote = "You're coding your way to greatness—keep shining!"
+      } else if (totalContests >= 20) {
+        quote = 'Consistency is your middle name—keep up the momentum!'
+      } else if (totalContests >= 10) {
+        quote = "You're just getting started—future champion in the making!"
+      } else {
+        quote = 'Keep coding, keep shining!'
+      }
+      console.log('quote: ', quote)
+
+      // Update state
+      setCodechefData(codechefContests)
+      setLeetcodeData(leetcodeContests)
+      setCodeforcesData(codeforcesContests)
+
       setIsSubmitted(true)
       setIsFetchedFromApi(true)
       setLoading(false)
     } catch (err) {
-      toast.error('Something went wrong')
+      console.log('Something went wrong' + err)
       setIsFetchedFromApi(true)
     }
   }
+
+  // useEffect(() => {
+  //   console.log('Updated topPlatforms:', topPlatforms)
+  // }, [topPlatforms])
+
+  // useEffect(() => {
+  //   console.log('Codeforces Data Updated:', codeforcesData)
+  // }, [codeforcesData])
+
+  // useEffect(() => {
+  //   console.log('Codechef Data Updated:', codechefData)
+  // }, [codechefData])
+
+  // useEffect(() => {
+  //   console.log('Leetcode Data Updated:', leetcodeData)
+  // }, [leetcodeData])
+
+  useEffect(() => {
+    console.log('Original Data:', originalData)
+  }, [originalData])
 
   return (
     <div className='flex w-full h-screen justify-center items-center'>
@@ -83,7 +356,7 @@ function Rewind () {
               </h1>
               {/* Inputs for the platform usernames */}
               <div className='mb-2 flex flex-wrap'>
-                <div className='mb-1 w-full md:w-1/2 px-1'>
+                <div className='mb-1 w-full  px-1'>
                   <label htmlFor='inputCodechef' className='labelText'>
                     Codechef Username
                   </label>
@@ -97,7 +370,7 @@ function Rewind () {
                   />
                 </div>
 
-                <div className='mb-1 w-full md:w-1/2 px-1'>
+                <div className='mb-1 w-full  px-1'>
                   <label htmlFor='inputCodeforces' className='labelText'>
                     Codeforces Username
                   </label>
@@ -110,7 +383,7 @@ function Rewind () {
                     {...register('Codeforces')}
                   />
                 </div>
-                <div className='mb-1 w-full md:w-1/2 px-1'>
+                <div className='mb-1 w-full  px-1'>
                   <label htmlFor='inputLeetcode' className='labelText'>
                     Leetcode Username
                   </label>
@@ -152,12 +425,6 @@ function Rewind () {
                 (codechefData !== null) &&
                 isCodeChefSelected && !isAnyChange &&
                 <CodechefChart codechefData={codechefData} />
-            }
-            {
-                (isSubmitted && isFetchedFromApi) &&
-                (leetcodeData !== null) &&
-                isLeetcodeSelected && !isAnyChange &&
-                <LeetcodeChart leetcodeData={leetcodeData} />
             } */}
           </div>
         </div>
