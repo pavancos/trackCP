@@ -8,6 +8,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 ::selection {
     background-color: #dceeb1a8;
     color: #043000;
@@ -16,6 +17,7 @@
 body {
     /* @apply bg-lightBeige;*/
     background-color: #fcfcfc;
+    /* @apply bg-gradient-to-b from-indigo-500 via-red-900 to-pink-500; */
     transition: background-color 0.5s ease-in-out;
 }
 
@@ -74,5 +76,6 @@ body {
 
 .no-scroll {
     overflow: hidden;
-    height: 100vh; /* Prevents scrolling entirely */
-  }
+    height: 100vh;
+    /* Prevents scrolling entirely */
+}

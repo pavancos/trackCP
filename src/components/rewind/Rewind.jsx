@@ -23,6 +23,7 @@ function Rewind () {
 
   const [originalData, setOriginalData] = useState()
 
+
   const [selectedPlatforms, setSelectedPlatforms] = useState({
     Codechef: true,
     Codeforces: true,
@@ -68,7 +69,7 @@ function Rewind () {
       setOriginalData(data)
 
       // console.log(data.codeforces);
-      
+
       // Add problems codeforces contests data
       data.codeforces.contests.forEach(contest =>{
         let problems = data.codeforces.problems.filter(problem => problem.contestId === contest.contestId)
@@ -126,9 +127,6 @@ function Rewind () {
         // console.log('contest Problems: ', contest.problems);
         if (contest.problems) {
           totalProblems += contest.problems
-        }
-        if(contest.problems===undefined){
-          console.log(contest.contestName," ",contest, "Theda");
         }
       })
       leetcodeContests.forEach(contest => {
@@ -195,6 +193,9 @@ function Rewind () {
         }
       })
       sortedCodeChefContests.forEach(contest => {
+        if(contest.name.split(" ")[0]==='Starters'){
+          contest.name = `Starters ${contest.name.split(" ")[1]}`;
+        }
         sortedAllContest.push({
           contest: contest.name,
           rank: parseInt(contest.rank),
@@ -210,7 +211,11 @@ function Rewind () {
         let date = new Date(contest.contest.startTime * 1000)
         let year = date.getFullYear()
         let month = date.getMonth()
-        let day = date.getDate()
+        let day = date.getDate();
+
+        if(contest.contest.title.split(" ")[0]==='Weekly'||contest.contest.title.split(" ")[0]==='Biweekly'){
+          contest.contest.title = `${contest.contest.title.split(" ")[0]} ${contest.contest.title.split(" ")[2]}`
+        }
         sortedAllContest.push({
           contest: contest.contest.title,
           rank: contest.ranking,
@@ -310,6 +315,7 @@ function Rewind () {
         quote = 'Keep coding, keep shining!'
       }
       console.log('quote: ', quote)
+      setQuote(quote)
 
       // Update state
       setCodechefData(codechefContests)

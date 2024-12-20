@@ -30,6 +30,14 @@ function RewindLoadingGradient () {
     tl.add(tl1, '+=1')
   }, [])
 
+  useEffect(() => {
+    // set body color to black
+    document.body.style.backgroundColor = '#e3eefc'
+    return () => {
+      document.body.style.backgroundColor = 'white'
+    }
+  }, []);
+
   return (
     <div className='loading-box w-screen h-screen'>
       {/* Moving gradient background */}
