@@ -36,11 +36,13 @@ function getTopPlatform(contests){
 }
 
 function getProblemsSolved(contests){
+
     let problemsSolved = 0;
     contests.forEach((con)=>{
+        console.log(con.problem);
         problemsSolved+=con.problem;
     })
-    return problemsSolved;
+    return parseInt(problemsSolved);
 }
 export {
     getTopContests,

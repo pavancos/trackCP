@@ -54,7 +54,7 @@ function Rewind () {
     delete onlyUsernames.nameOfUser
     // console.log('onlyUsernames: ', onlyUsernames)
     let params = new URLSearchParams(onlyUsernames).toString().toLowerCase()
-    // console.log('params: ', params)
+    console.log('params: ', params)
     try {
       let res = await fetch(`https://cpplayground.vercel.app/all?${params}`, {
         method: 'GET',
@@ -67,25 +67,21 @@ function Rewind () {
       console.log('data: ', data)
       setOriginalData(data)
 
+      // console.log(data.codeforces);
+      
       // Add problems codeforces contests data
-      data.codeforces.problems.forEach(problem => {
-        // console.log('problem: ', problem);
-        // console.log('ContestID: ', problem.contestId);
-        let contest = data.codeforces.contests.find(
-          contest => contest.contestId === problem.contestId
-        )
-        if (contest) {
-          if (!contest.problems) {
-            contest.problems = 0
-          }
-          contest.problems += 1
-        }
+      data.codeforces.contests.forEach(contest =>{
+        let problems = data.codeforces.problems.filter(problem => problem.contestId === contest.contestId)
+        contest.problems = problems.length
       })
+      console.log('data.codeforces.contests: ', data.codeforces.contests);
 
-      // filtering - Rewind
+
+      // filtering - Rewind 1918
       const codechefContests = (data.codechef?.contests || []).filter(
         contest => contest.getyear === '2024'
       )
+      
       const codeforcesContests = (data.codeforces?.contests || []).filter(
         contest => {
           const date = new Date(
@@ -124,11 +120,15 @@ function Rewind () {
       codechefContests.forEach(contest => {
         totalProblems += contest.problems.length
       })
+      console.log(codeforcesContests);
       codeforcesContests.forEach(contest => {
         // console.log('contest: ', contest);
         // console.log('contest Problems: ', contest.problems);
         if (contest.problems) {
           totalProblems += contest.problems
+        }
+        if(contest.problems===undefined){
+          console.log(contest.contestName," ",contest, "Theda");
         }
       })
       leetcodeContests.forEach(contest => {
@@ -270,6 +270,7 @@ function Rewind () {
       // Getting Top Platform
       console.log('Feb: ', getTopPlatform(monthlyData[1].contests))
       // Getting Problems Solved
+      console.log('Feb Contests: ', monthlyData[1].contests)
       console.log('Feb: ', getProblemsSolved(monthlyData[1].contests))
 
       // Quote
@@ -393,7 +394,7 @@ function Rewind () {
                   <input
                     type='text'
                     id='inputLeetcode'
-                    reauired
+                    required
                     placeholder='Leetcode Username'
                     className='textInputBox'
                     {...register('Leetcode')}
