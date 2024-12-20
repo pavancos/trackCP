@@ -47,6 +47,9 @@ function Menu({ toggleMenu }) {
                     <li>
                         <Link onClick={toggleMenu} to="contestanalysis">Contest Analysis</Link>
                     </li>
+                    <li>
+                        <Link onClick={toggleMenu} to="rewind">Rewind</Link>
+                    </li>
                 </ul>
             </nav>
         </div>

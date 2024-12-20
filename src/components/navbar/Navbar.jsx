@@ -5,7 +5,7 @@ import './Navbar.css';
 const Navbar = ({ toggleMenu, hamburgerIsOpen }) => {
 
   return (
-    <header className={`bg-blue-100 flex w-full flex-row gap-6 md:gap-0 md:flex-row items-center py-4 px-2 md:px-6
+    <header className={ `nav bg-blue-100 flex w-full flex-row gap-6 md:gap-0 md:flex-row items-center py-4 px-2 md:px-6
       ${!hamburgerIsOpen ? 'justify-between' : 'justify-end'}
     `}>
 
@@ -47,6 +47,10 @@ const Navbar = ({ toggleMenu, hamburgerIsOpen }) => {
           <li>
             <Link to="contestanalysis">Contest Analysis</Link>
           </li>
+          <li>
+            <Link to="rewind">Rewind</Link>
+          </li>
+
         </ul>
       </nav>
     </header>
