@@ -21,9 +21,9 @@ function FullRewind ({
   quote,
   monthlyData
 }) {
-  console.log('quote: ', quote)
-  console.log('topPlatforms: ', topPlatforms)
-  console.log('topContest: ', topContest)
+  // console.log('quote: ', quote)
+  // console.log('topPlatforms: ', topPlatforms)
+  // console.log('topContest: ', topContest)
   const [selectedMonth, setSelectedMonth] = useState('Year')
   const [platforOrder, setPlatformOrder] = useState({
     codeforces: CodeforcesIcon,
@@ -91,7 +91,7 @@ function FullRewind ({
       }
     } else {
       let temp = []
-      console.log('monthlyData[selectedMonth] : ', monthlyData[selectedMonth])
+      // console.log('monthlyData[selectedMonth] : ', monthlyData[selectedMonth])
       if (monthlyData[selectedMonth].contests.length >= 5) {
         for (let i = 0; i < 5; i++) {
           temp.push(monthlyData[selectedMonth].contests[i].contest)
@@ -119,7 +119,7 @@ function FullRewind ({
     if (selectedMonth != 'Year') {
       let totMonthProblems = 0
       monthlyData[selectedMonth].contests.forEach(element => {
-        console.log('element : ', element)
+        // console.log('element : ', element)
         totMonthProblems += element.problem
       })
       settotalMonthlyProblems(totMonthProblems)
@@ -152,13 +152,13 @@ function FullRewind ({
 
 
   useEffect(() => {
-    console.log(selectedMonth)
+    // console.log(selectedMonth)
     if (selectedMonth === 'Year') {
       if (totalContests.length === 0) {
         setIsNoContests(true)
       }
     } else {
-      console.log('monthlyData[selectedMonth] : ', monthlyData[selectedMonth])
+      // console.log('monthlyData[selectedMonth] : ', monthlyData[selectedMonth])
       if (monthlyData[selectedMonth].contests.length === 0) {
         setIsNoContests(false)
       }

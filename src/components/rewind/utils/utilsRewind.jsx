@@ -39,7 +39,7 @@ function getProblemsSolved(contests){
 
     let problemsSolved = 0;
     contests.forEach((con)=>{
-        console.log(con.problem);
+        // console.log(con.problem);
         problemsSolved+=con.problem;
     })
     return parseInt(problemsSolved);

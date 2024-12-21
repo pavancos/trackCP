@@ -2,7 +2,7 @@ import React from 'react'
 import { use } from 'react';
 
 function TopContests ({title, content}) {
-  console.log('content: ', content);
+  // console.log('content: ', content);
 
   return (
     <div className='text-black px-5 py-3 rounded-lg '>
