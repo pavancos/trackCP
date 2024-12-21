@@ -77,6 +77,11 @@ function Rewind () {
       }  
       setOriginalData(data)
 
+      
+
+
+
+
       // console.log(data.codeforces);
 
       // Add problems codeforces contests data
@@ -345,6 +350,29 @@ function Rewind () {
       setLoading(false)
       setIsSubmitted(false)
       setIsFetched(false)
+    } finally{
+      // current time in IST
+      let currentTime = new Date().toLocaleString('en-US', {
+        timeZone: 'Asia/Kolkata'
+      });
+      let userInputs= await usernamesData
+      // To Debug the userInputs
+      // console.log('userInputs: ', userInputs);
+      
+
+      let res = await fetch(`https://getdata-contests.vercel.app/rewindUser`, {
+      // let res = await fetch(`https://4cfw3zvk-5678.inc1.devtunnels.ms/rewindUser`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body:JSON.stringify({
+          usernamesData,
+          timestamp:currentTime
+        })
+      })
+      
+      
     }
   }
 
