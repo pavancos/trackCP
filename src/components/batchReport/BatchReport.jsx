@@ -11,7 +11,7 @@ import { getUniqueContests } from '../../functions/uniqueContests/UniqueContests
 // import notify from '../toasts/notify';
 
 function BatchReport({ studentsInfo, isFetchedFromAPI }) {
-    console.log('studentsInfo: ', studentsInfo);
+    // console.log('studentsInfo: ', studentsInfo);
 
 
     // for the getUniqueContests
@@ -87,7 +87,7 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
 
     async function handleFormSubmit(dataFromForm) {
         try {
-            console.log('dataFromForm: ', dataFromForm);
+            // console.log('dataFromForm: ', dataFromForm);
             let studentsData;
             if (dataFromForm.batch == 'batch21') {
                 studentsData = studentsInfo.Batch21Data;
@@ -144,7 +144,7 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
                 putToast();
             }
 
-            console.log('uniqueContests: ', uniqueContests);
+            // console.log('uniqueContests: ', uniqueContests);
 
             // Check if there are any contests for asked platform
             const HasLeetcode = filteredContests.some(contest =>
@@ -160,18 +160,18 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
             );
             setHasCodeforces(HasCodeforces);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             // putErrToast('Something went wrong');
         }
     }
 
-    useEffect(()=>{
-        console.log('uniqueContests: ', uniqueContests);
-        // console.log('uniqueCodechefContestNames: ', uniqueCodechefContestNames);
-        // console.log('uniqueLeetcodeContestNames: ', uniqueLeetcodeContestNames);
-        // console.log('uniqueCodeforcesContestNames: ', uniqueCodeforcesContestNames);
-        // console.log('Leet Code Participants',leetcodeParticipants);
-    },[uniqueContests]);
+    // useEffect(()=>{
+    //     console.log('uniqueContests: ', uniqueContests);
+    //     // console.log('uniqueCodechefContestNames: ', uniqueCodechefContestNames);
+    //     // console.log('uniqueLeetcodeContestNames: ', uniqueLeetcodeContestNames);
+    //     // console.log('uniqueCodeforcesContestNames: ', uniqueCodeforcesContestNames);
+    //     // console.log('Leet Code Participants',leetcodeParticipants);
+    // },[uniqueContests]);
 
     useEffect(() => {
         // console.log("batchNumber: ", batchNumber);

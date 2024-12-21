@@ -45,7 +45,7 @@ function UpcomingContests() {
             const url = 'https://getdata-contests.vercel.app/getLatestContest';
             const response = await fetch(url);
             const data = await response.json();
-            console.log('data: ', data);
+            // console.log('data: ', data);
             data.result.sort((a, b) => new Date(a.start) - new Date(b.start));
             if (response.ok) {
                 return parseTheData(data.result);

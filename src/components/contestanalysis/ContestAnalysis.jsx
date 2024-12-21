@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import AnalysisTable from './AnalysisTable'
 
 const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
-    console.log('studentsInfo: ', studentsInfo);
+    // console.log('studentsInfo: ', studentsInfo);
     const { register, handleSubmit } = useForm();
 
 
@@ -60,7 +60,7 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
         });
     }
     async function handleContestAnalysisSubmit(dataFromForm) {
-        console.log('dataFromForm: ', dataFromForm);
+        // console.log('dataFromForm: ', dataFromForm);
         // console.log("Contest Analysis Submitted");
         let studentsData;
         if (batchNumber == 'batch21') {
@@ -97,7 +97,7 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
             };
         });
         filteredContests = await Promise.all(filteredContests);
-        console.log(' filteredContests: ', filteredContests);
+        // console.log(' filteredContests: ', filteredContests);
         const hasContests = filteredContests.some(contest =>
             contest.contests.codechef.length > 0 ||
             contest.contests.codeforces.length > 0 ||
@@ -110,7 +110,7 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
             return;
         }
         await getUniqueContests(filteredContests, setUniqueCodechefContestNames, setUniqueLeetcodeContestNames, setUniqueCodeforcesContestNames, setUniqueContests, setLeetcodeParticipants, setCodechefParticipants, setCodeforcesParticipants);
-        console.log('uniqueContests: ', uniqueContests);
+        // console.log('uniqueContests: ', uniqueContests);
         setIsSubmitted(true);
     }
 
@@ -127,7 +127,7 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
     }, [batchNumber]);
 
     async function handleContestSelect(data) {
-        console.log('data: ', data);
+        // console.log('data: ', data);
         setIsFiltered(true);
 
         let newUniqueContests = [];
@@ -135,7 +135,7 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
             newUniqueContests = [...uniqueContests.leetcode];
         }
         if (uniqueContests.codechef.length > 0) {
-            console.log('uniqueContests.codechef: ', uniqueContests.codechef);
+            // console.log('uniqueContests.codechef: ', uniqueContests.codechef);
             let newCodechefContests = uniqueContests.codechef.map((con) => {
                 let codechefContest = con;
                 // console.log('codechefContest: ', codechefContest);
@@ -175,7 +175,7 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
                         }
                     }
                 })
-                console.log('newParticipants: ', newParticipants);
+                // console.log('newParticipants: ', newParticipants);
 
                 let newcontest = [{
                     contest: {
@@ -196,7 +196,7 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
             return con.contest.title === data.contest;
         })
         getContestFullDetails = getContestFullDetails[0].contest.participants;
-        console.log('getContestFullDetails: ', getContestFullDetails);
+        // console.log('getContestFullDetails: ', getContestFullDetails);
         setTableData(getContestFullDetails);
     }
 

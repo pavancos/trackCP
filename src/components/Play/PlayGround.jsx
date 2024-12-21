@@ -39,7 +39,7 @@ const PlayGround = () => {
     async function onCheckChange(e) {
         setIsAnyChange(true);
 
-        console.log(e.target.value);
+        // console.log(e.target.value);
         if (e.target.value === 'Codechef') {
             setIsCodeChefSelected(!isCodeChefSelected);
         }
@@ -71,7 +71,7 @@ const PlayGround = () => {
     async function playGroundInput(usernamesData) {
         setIsFetchedFromApi(false);
         setnameOfUser(usernamesData.nameOfUser);
-        console.log('usernamesData: ', usernamesData);
+        // console.log('usernamesData: ', usernamesData);
         let onlyUsernames = usernamesData;
         delete onlyUsernames.nameOfUser;
         if (!isCodeChefSelected) delete onlyUsernames.Codechef;
@@ -79,9 +79,9 @@ const PlayGround = () => {
         if (!isLeetcodeSelected) delete onlyUsernames.Leetcode;
         if (!isSpojSelected) delete onlyUsernames.Spoj;
         if (!isAtCoderSelected) delete onlyUsernames.Atcoder;
-        console.log('onlyUsernames: ', onlyUsernames);
+        // console.log('onlyUsernames: ', onlyUsernames);
         let params = new URLSearchParams(onlyUsernames).toString().toLowerCase();
-        console.log('params: ', params);
+        // console.log('params: ', params);
         try{
             let res = await fetch(`https://cpplayground.vercel.app/all?${params}`, {
                 method: 'GET',
@@ -89,9 +89,9 @@ const PlayGround = () => {
                     'Content-Type': 'application/json'
                 }
             });
-            console.log('res: ', res);
+            // console.log('res: ', res);
             let data = await res.json();
-            console.log('data: ', data);
+            // console.log('data: ', data);
             if (isCodeChefSelected) {
                 setCodechefData(data.codechef);
             }

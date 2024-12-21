@@ -35,7 +35,7 @@ const UserForm = ({ studentsInfo, isFetchedFromAPI }) => {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [userData, setUserData] = useState([]);
     const handleUserSubmit = async function (data) {
-        console.log('data: ', data);
+        // console.log('data: ', data);
         // data.rollNo = data.rollNo.toUpperCase();
         let studentDetails = studentsInfo.find((student) => student.roll === data.rollno);
         // console.log('studentDetails: ', studentDetails);
@@ -55,7 +55,7 @@ const UserForm = ({ studentsInfo, isFetchedFromAPI }) => {
             contests: contestData
         }
         let DataOfUsers = [DataOfUser];
-        console.log('DataOfUsers: ', userData);
+        // console.log('DataOfUsers: ', userData);
         setUserData(DataOfUsers);
         setIsSubmitted(true);
         setplatform(data.platform)
