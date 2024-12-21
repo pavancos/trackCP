@@ -9,6 +9,10 @@ import { getTopContests } from './utils/utilsRewind'
 import { getTopPlatform } from './utils/utilsRewind'
 import { getProblemsSolved } from './utils/utilsRewind'
 import FullRewind from './FullRewind'
+import toast from 'react-hot-toast'
+import Navbar from '../navbar/Navbar'
+
+
 
 function Rewind () {
   const [loading, setLoading] = useState(false)
@@ -40,13 +44,6 @@ function Rewind () {
   const [quote, setQuote] = useState('')
   const [monthlyData, setMonthlyData] = useState([])
 
-  useEffect(() => {
-    // const timer = setTimeout(() => {
-    //   setLoading(false)
-    // }, 100000) // Set the loading duration to 10 seconds
-    // return () => clearTimeout(timer)
-  }, [])
-
   async function playGroundInput (usernamesData) {
     setLoading(true)
     setIsFetched(false)
@@ -55,7 +52,6 @@ function Rewind () {
     delete onlyUsernames.nameOfUser
     // console.log('onlyUsernames: ', onlyUsernames)
     let params = new URLSearchParams(onlyUsernames).toString().toLowerCase()
-    console.log('params: ', params)
     try {
       let res = await fetch(`https://cpplayground.vercel.app/all?${params}`, {
         method: 'GET',
@@ -64,8 +60,21 @@ function Rewind () {
         }
       })
       // console.log('res: ', res)
+      if(!res.ok) throw new Error('Try Again in a few moments');
       let data = await res.json()
-      console.log('data: ', data)
+      // console.log('data: ', data)
+      if(data.codechef.message=="Username does not exist") throw new Error('Invalid Codechef Username');
+      if(data.codeforces.contests.length==0) throw new Error('Codeforces: No Contests Found');
+      if(data.codechef.contests.length==0) throw new Error('Codechef: No Contests Found');
+
+      
+      if(data.leetcode.error){
+        let errMessage=data.leetcode.error.split(' ');
+        if(errMessage[3]=='exist')
+          throw new Error('Invalid Leetcode Username');
+        else
+          throw new Error('Leetcode: No Contests Found');
+      }  
       setOriginalData(data)
 
       // console.log(data.codeforces);
@@ -75,7 +84,6 @@ function Rewind () {
         let problems = data.codeforces.problems.filter(problem => problem.contestId === contest.contestId)
         contest.problems = problems.length
       })
-      console.log('data.codeforces.contests: ', data.codeforces.contests);
 
 
       // filtering - Rewind 1918
@@ -105,7 +113,7 @@ function Rewind () {
         { platform: 'leetcode', length: leetcodeContests.length }
       ]
       topplatformsArr.sort((a, b) => b.length - a.length)
-      console.log('topplatformsArr: ', topplatformsArr)
+      // console.log('topplatformsArr: ', topplatformsArr)
       setTopPlatforms(topplatformsArr)
 
       // Total contests
@@ -113,7 +121,7 @@ function Rewind () {
         codechefContests.length +
         codeforcesContests.length +
         leetcodeContests.length
-      console.log('totalContests: ', totalContests)
+      // console.log('totalContests: ', totalContests)
       setTotalContests(totalContests)
 
       // Total problems
@@ -121,7 +129,7 @@ function Rewind () {
       codechefContests.forEach(contest => {
         totalProblems += contest.problems.length
       })
-      console.log(codeforcesContests);
+      // console.log(codeforcesContests);
       codeforcesContests.forEach(contest => {
         // console.log('contest: ', contest);
         // console.log('contest Problems: ', contest.problems);
@@ -132,24 +140,24 @@ function Rewind () {
       leetcodeContests.forEach(contest => {
         totalProblems += contest.problemsSolved
       })
-      console.log('totalProblems: ', totalProblems)
+      // console.log('totalProblems: ', totalProblems)
       setTotalProblems(totalProblems)
 
       // Sorting Codeforces Contests
       let sortedCodeForcesContests = codeforcesContests.sort(
         (p, q) => p.rank - q.rank
       )
-      console.log('sortedCodeForcesContests: ', sortedCodeForcesContests)
+      // console.log('sortedCodeForcesContests: ', sortedCodeForcesContests)
       // Sorting Codechef Contests
       let sortedCodeChefContests = codechefContests.sort(
         (p, q) => p.rank - q.rank
       )
-      console.log('sortedCodeChefContests: ', sortedCodeChefContests)
+      // console.log('sortedCodeChefContests: ', sortedCodeChefContests)
       // Sorting Leetcode Contests
       let sortedLeetcodeContests = leetcodeContests.sort(
         (p, q) => p.ranking - q.ranking
       )
-      console.log('sortedLeetcodeContests: ', sortedLeetcodeContests)
+      // console.log('sortedLeetcodeContests: ', sortedLeetcodeContests)
 
       // sortedAllContest
       let sortedAllContest = []
@@ -159,7 +167,7 @@ function Rewind () {
         let year = date.getFullYear()
         let month = date.getMonth()
         let day = date.getDate()
-        console.log(contest.contestName)
+        // console.log(contest.contestName)
         let tempContestName = contest.contestName.split(' ')
         if (tempContestName[0] === 'Codeforces') {
           if (tempContestName[1] === 'Global') {
@@ -230,7 +238,7 @@ function Rewind () {
       let sortedAllContestData = sortedAllContest.sort(
         (p, q) => p.rank - q.rank
       )
-      console.log('sortedAllContestData: ', sortedAllContestData)
+      // console.log('sortedAllContestData: ', sortedAllContestData)
       setTopContest(sortedAllContestData)
 
       // Filtering Monthly data
@@ -268,15 +276,15 @@ function Rewind () {
         }
         monthlyData.push(monthData)
       }
-      console.log('monthlyData: ', monthlyData)
+      // console.log('monthlyData: ', monthlyData)
       setMonthlyData(monthlyData)
       // Getting Top Contests (5 or 0 => incase no contests)
-      console.log('January: ', getTopContests(monthlyData[0].contests))
-      // Getting Top Platform
-      console.log('Feb: ', getTopPlatform(monthlyData[1].contests))
-      // Getting Problems Solved
-      console.log('Feb Contests: ', monthlyData[1].contests)
-      console.log('Feb: ', getProblemsSolved(monthlyData[1].contests))
+      // console.log('January: ', getTopContests(monthlyData[0].contests))
+      // // Getting Top Platform
+      // console.log('Feb: ', getTopPlatform(monthlyData[1].contests))
+      // // Getting Problems Solved
+      // console.log('Feb Contests: ', monthlyData[1].contests)
+      // console.log('Feb: ', getProblemsSolved(monthlyData[1].contests))
 
       // Quote
       // 10+ Contests: "You're just getting started—future champion in the making!"
@@ -314,7 +322,7 @@ function Rewind () {
       } else {
         quote = 'Keep coding, keep shining!'
       }
-      console.log('quote: ', quote)
+      // console.log('quote: ', quote)
       setQuote(quote)
 
       // Update state
@@ -326,14 +334,23 @@ function Rewind () {
       setIsFetched(true)
       setLoading(false)
     } catch (err) {
-      console.log('Something went wrong' + err)
+      // console.log('Something went wrong' + err)
+      if(err.message === 'Invalid Leetcode Username') toast.error('Invalid Leetcode Username');
+      else if(err.message === 'Try Again in a few moments') toast.error('Try Again in a few moments');
+      else if(err.message === 'Leetcode: No Contests Found') toast.error('Leetcode: No Contests Found');
+      else if(err.message === 'Codeforces: No Contests Found') toast.error('Codeforces: No Contests Found');
+      else if(err.message === 'Codechef: No Contests Found') toast.error('Codechef: No Contests Found');
+      else if(err.message === 'Invalid Codechef Username') toast.error('Invalid Codechef Username');
+      else toast.error('Something went wrong. Please try again later');
+      setLoading(false)
       setIsSubmitted(false)
+      setIsFetched(false)
     }
   }
 
-  useEffect(() => {
-    console.log('Original Data:', originalData)
-  }, [originalData])
+  // useEffect(() => {
+  //   console.log('Original Data:', originalData)
+  // }, [originalData])
 
   return (
     <div className='flex w-full justify-center items-center'>
@@ -362,7 +379,7 @@ function Rewind () {
               className='max-w-lg mt-5 mx-auto p-4 mb-2 border rounded-md'
             >
               <h1 className='text-2xl font-semibold text-blue-700 text-center mb-3'>
-                Rewind - Trackcode
+                Rewind '24
               </h1>
               {/* Inputs for the platform usernames */}
               <div className='mb-2 flex flex-wrap'>

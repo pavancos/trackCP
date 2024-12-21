@@ -23,14 +23,14 @@ function CustomTooltip({ payload, label, active }) {
 }
 
 function LeetcodeChart({ leetcodeData }) {
-    console.log('leetcodeData: ', leetcodeData);
+    // console.log('leetcodeData: ', leetcodeData);
     let totalProblemsSolved = leetcodeData.data.matchedUser.submitStatsGlobal.acSubmissionNum[0].count;
     let totalContestsParticipated = leetcodeData.data.userContestRanking.attendedContestsCount;
 
 
     let contests = leetcodeData.data.userContestRankingHistory;
     contests = contests.reverse();
-    console.log('contests: ', contests);
+    // console.log('contests: ', contests);
     let contestsData = contests.map((contest) => {
         return {
             date: convertTimestampToDate(contest.contest.startTime),
@@ -42,11 +42,11 @@ function LeetcodeChart({ leetcodeData }) {
     });
 
     const minRating = Math.min(...contestsData.map(contest => contest.rating));
-    console.log('minRating: ', minRating);
+    // console.log('minRating: ', minRating);
     const maxRating = Math.max(...contestsData.map(contest => contest.rating));
-    console.log('maxRating: ', maxRating);
+    // console.log('maxRating: ', maxRating);
 
-    console.log('contestsData: ', contestsData);
+    // console.log('contestsData: ', contestsData);
     return (
         <div>
             <h1 className='text-2xl font-semibold text-blue-500'>Leetcode</h1>

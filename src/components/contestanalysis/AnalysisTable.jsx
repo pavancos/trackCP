@@ -10,7 +10,7 @@ const AnalysisTable = ({ tableData }) => {
     // let searchInput = null;
     useEffect(() => {
         // console.log(tableData)
-        console.log('tableData: ', tableData);
+        // console.log('tableData: ', tableData);
     }, [tableData]);
 
     // const getColumnSearchProps = (dataIndex) => ({

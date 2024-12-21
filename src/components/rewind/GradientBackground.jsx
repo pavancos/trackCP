@@ -16,7 +16,7 @@ const GradientBackground = () => {
       const { innerWidth, innerHeight } = window
       const x = (e.clientX / innerWidth) * 100
       const y = (e.clientY / innerHeight) * 100
-      console.log('y: ', y);
+      // console.log('y: ', y);
 
       gsap.to('.gradient', {
         backgroundPosition: `${x}% ${y}%`,

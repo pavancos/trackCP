@@ -90,7 +90,7 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
 
     async function handleFormSubmit(dataFromForm) {
         try {
-            console.log('dataFromForm: ', dataFromForm);
+            // console.log('dataFromForm: ', dataFromForm);
             let studentsData;
             if (dataFromForm.batch == 'batch21') {
                 studentsData = studentsInfo.Batch21Data;
@@ -163,16 +163,16 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
             console.log(error);
             // putErrToast('Something went wrong');
         }
-        console.log('uniqueContests: ', uniqueContests);
+        // console.log('uniqueContests: ', uniqueContests);
     }
 
-    useEffect(()=>{
-        console.log('uniqueContests: ', uniqueContests);
-        // console.log('uniqueCodechefContestNames: ', uniqueCodechefContestNames);
-        // console.log('uniqueLeetcodeContestNames: ', uniqueLeetcodeContestNames);
-        // console.log('uniqueCodeforcesContestNames: ', uniqueCodeforcesContestNames);
-        // console.log('Leet Code Participants',leetcodeParticipants);
-    },[uniqueContests]);
+    // useEffect(()=>{
+    //     // console.log('uniqueContests: ', uniqueContests);
+    //     // console.log('uniqueCodechefContestNames: ', uniqueCodechefContestNames);
+    //     // console.log('uniqueLeetcodeContestNames: ', uniqueLeetcodeContestNames);
+    //     // console.log('uniqueCodeforcesContestNames: ', uniqueCodeforcesContestNames);
+    //     // console.log('Leet Code Participants',leetcodeParticipants);
+    // },[uniqueContests]);
 
     useEffect(() => {
         // console.log("batchNumber: ", batchNumber);
@@ -285,7 +285,7 @@ function BatchReport({ studentsInfo, isFetchedFromAPI }) {
                             {...register('contest')}
                             defaultValue={uniqueContests[whichContestPlatform][0].contest.title}
                             onChange={(e)=>{
-                                console.log('e.target.value: ', e.target.value);
+                                // console.log('e.target.value: ', e.target.value);
                                 setWhichContestSelected(e.target.value);
                             }}
 

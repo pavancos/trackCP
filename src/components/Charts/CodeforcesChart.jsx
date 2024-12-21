@@ -31,11 +31,11 @@ function CustomTooltip({ payload, label, active }) {
   return null;
 }
 function CodeforcesChart({ codeforcesData }) {
-  console.log('codeforcesData: ', codeforcesData);
+  // console.log('codeforcesData: ', codeforcesData);
   let totalProblemsSolved = codeforcesData.problems.length
-  console.log('totalProblemsSolved: ', totalProblemsSolved);
+  // console.log('totalProblemsSolved: ', totalProblemsSolved);
   let totalContestsParticipated = codeforcesData.contests.length
-  console.log('totalContestsParticipated: ', totalContestsParticipated);
+  // console.log('totalContestsParticipated: ', totalContestsParticipated);
 
   let cfContests = codeforcesData.contests.reverse();
   let contestsData = cfContests.map(contest => {
@@ -47,7 +47,7 @@ function CodeforcesChart({ codeforcesData }) {
       name: contest.contestName,
     }
   })
-  console.log('contestsData: ', contestsData);
+  // console.log('contestsData: ', contestsData);
 
   const minRating = Math.min(...contestsData.map(contest => contest.rating));
   const maxRating = Math.max(...contestsData.map(contest => contest.rating));

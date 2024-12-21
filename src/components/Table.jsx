@@ -8,7 +8,7 @@ function Table({ data, isStudentReport, filter="all" }) {
   const [areCodeforces, setAreCodeforces] = useState();
 
 
-  console.log('filter: ', filter);
+  // console.log('filter: ', filter);
   // console.log('data: ', data);
   // Function to format date
   const formatDate = (dateString) => {

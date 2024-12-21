@@ -2,7 +2,7 @@
 async function fetchFromDB(setstudentsInfo) {
   let studentsDataFromAPI = await fetch(`https://getdata-contests.vercel.app/getAllData`);
   let studentsData = await studentsDataFromAPI.json();
-  console.log('studentsData: ', studentsData);
+  // console.log('studentsData: ', studentsData);
   setstudentsInfo(studentsData);
   // console.log("useEffect Invoked");
 }
@@ -11,7 +11,7 @@ async function fetchFromDB(setstudentsInfo) {
 async function fetch21BatchData(setBatch21Data){
   let response= await fetch(`https://getdata-contests.vercel.app/getBatch21Data`);
   let data = await response.json();
-  console.log("Batch 21 Data: ",data);
+  // console.log("Batch 21 Data: ",data);
   setBatch21Data(data);
 }
 
@@ -19,7 +19,7 @@ async function fetch21BatchData(setBatch21Data){
 async function fetch22BatchData(setBatch22Data) {
   let response = await fetch(`https://getdata-contests.vercel.app/getBatch22Data`);
   let data = await response.json();
-  console.log("Batch 22 data: ",data);
+  // console.log("Batch 22 data: ",data);
   setBatch22Data(data);
 }
 

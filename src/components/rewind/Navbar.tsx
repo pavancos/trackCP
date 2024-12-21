@@ -7,7 +7,7 @@ function Navbar ({ selectedMonth, setSelectedMonth, themeColor }) {
       className={`
              border 
               flex flex-row gap-3 items-center justify-around
-              px-2 py-2 sticky top-4 z-100 w-11/12 md:w-7/12 mx-auto
+              px-2 py-2 sticky top-4 z-100  mx-auto
               backdrop-blur-lg rounded-full backdrop-brightness-100
               ${themeColor != 'dark' ? 'bg-[#363f435d] border-[#b0b3b483] ' : 'bg-[#f0f0f05e] border-[#363F43]'}
               text-white 

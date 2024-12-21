@@ -2,10 +2,10 @@ import React from 'react'
 import { use } from 'react';
 
 function TopContests ({title, content}) {
-  console.log('content: ', content);
+  // console.log('content: ', content);
 
   return (
-    <div className='text-black px-3 py-3 bg-[#ffffff04] backdrop-blur-lg rounded-lg '>
+    <div className='text-black px-5 py-3 rounded-lg '>
       <h1 className='text-2xl font-semibold'>{title}</h1>
       <div className='mt-3'>
         {

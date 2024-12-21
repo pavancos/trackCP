@@ -19,9 +19,9 @@ function CustomTooltip({ payload, label, active }) {
 }
 
 function AtcoderChart({ atcoderData }) {
-    console.log('atcoderData: ', atcoderData);
+    // console.log('atcoderData: ', atcoderData);
     let totalContestsParticipated = atcoderData.contests.length;
-    console.log('totalContestsParticipated: ', totalContestsParticipated);
+    // console.log('totalContestsParticipated: ', totalContestsParticipated);
 
     let contestsData = atcoderData.contests.map((contest, index) => {
         return {
@@ -30,7 +30,7 @@ function AtcoderChart({ atcoderData }) {
             date: formatDate(contest.date.split(' ')[0]),
         }
     });
-    console.log('contestsData: ', contestsData);
+    // console.log('contestsData: ', contestsData);
 
     const minRank = Math.min(...contestsData.map(contest => contest.rank));
     const maxRank = Math.max(...contestsData.map(contest => contest.rank));

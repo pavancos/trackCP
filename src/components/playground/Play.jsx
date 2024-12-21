@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 import { Navigate } from 'react-router-dom';
 
 const Play = ({ sno }) => {
-    console.log('sno: ', sno);
+    // console.log('sno: ', sno);
     const { register, handleSubmit } = useForm();
 
     const [nameOfUser, setNameOfUser] = useState('');
@@ -97,11 +97,11 @@ const Play = ({ sno }) => {
                 putToast(platform);
             }
         });
-        console.log(selectedPlatforms);
+        // console.log(selectedPlatforms);
 
 
         let params = new URLSearchParams(filteredUsernames).toString().toLowerCase();
-        console.log(typeof (params))
+        // console.log(typeof (params))
         if (params.length === 0) {
             putNothingToast();
             setIsFetchedFromApi(true);
@@ -118,7 +118,7 @@ const Play = ({ sno }) => {
 
             if (!res.ok) throw new Error('No Respone From server');
             let data = await res.json();
-            console.log('data: ', data);
+            // console.log('data: ', data);
 
             if (selectedPlatforms.Codechef && data.codechef.message != null) {
                 throw new Error(data.codechef.message + " in Codechef");
@@ -147,7 +147,7 @@ const Play = ({ sno }) => {
             toast.error(error.message);
             setIsSubmitted(false);
 
-            console.log(error);
+            // console.log(error);
         } finally {
             setIsFetchedFromApi(true);
         }

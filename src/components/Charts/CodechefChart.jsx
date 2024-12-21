@@ -26,7 +26,7 @@ function CodechefChart({ codechefData }) {
     }
     let contestsData = codechefData.contests;
     contestsData = contestsData.reverse();
-    console.log('contestsData: ', contestsData);
+    // console.log('contestsData: ', contestsData);
     // Learning Paths (
     // 1)Practice Paths (
     // 1) Contests (
@@ -44,7 +44,7 @@ function CodechefChart({ codechefData }) {
         { name: 'Contests', value: parseInt(problemsData.Contests) },
         { name: 'Total Problems', value: parseInt(problemsData.TotalProblems) }
     ];
-    console.log('problemsData: ', problemsData);
+    // console.log('problemsData: ', problemsData);
 
     contestsData = contestsData.map((contest) => {
         contest.end_date = contest.end_date.split(' ')[0];
