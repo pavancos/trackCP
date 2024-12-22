@@ -29,6 +29,11 @@ body {
     /* font-family: "New Amsterdam", sans-serif; */
     font-size: 12rem;
 }
+.devNames{
+    font-size: 1.5rem;
+    position: relative;
+    top: -96px;
+}
 
 @media screen and (max-width: 500px) {
     .footer-page {
@@ -36,4 +41,11 @@ body {
         margin-left: 10px;
         height: 70vh;
     }
+    .devNames{
+        font-size: 1rem;
+        position: relative;
+        top: -55px;
+    }
+
 } 
+
