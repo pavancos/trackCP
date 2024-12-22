@@ -13,7 +13,7 @@ import domtoimage from 'dom-to-image'
 import ShareIcon from '../../assets/rewind/share.svg'
 import { use } from 'react'
 
-function FullRewind ({
+function FullRewind({
   topContest,
   topPlatforms,
   totalContests,
@@ -33,33 +33,78 @@ function FullRewind ({
   // Background Colors
   let colors = [
     {
-      from:"#e2c8e5",
-      via:"#ffc1b3",
-      to:"#ffdcce"
-    },{
-      from:"#5C8374",
-      via:"#a0b2af",
-      to:"#bac5c5"
-    },{
-      from:"#Ac8e2b2",
-      via:"#f0eb8e",
-      to:"#fff3b3"
-    },{
-      from:"#94fffb",
-      via:"#88e6e7",
-      to:"#ace6e9"      
+      from: "#e2c8e5",
+      via: "#ffc1b3",
+      to: "#ffdcce"
+    }, {
+      from: "#5C8374",
+      via: "#a0b2af",
+      to: "#bac5c5"
+    }, {
+      from: "#Ac8e2b2",
+      via: "#f0eb8e",
+      to: "#fff3b3"
+    }, {
+      from: "#94fffb",
+      via: "#88e6e7",
+      to: "#ace6e9"
     }
-    ,{
-      from:"#e6cf9c",
-      via:"#f8d586",
-      to:"#fbe4b2"      
+    , {
+      from: "#e6cf9c",
+      via: "#f8d586",
+      to: "#fbe4b2"
+    }
+    , {
+      from: "#f3f9f9",
+      via: "#60abb3",
+      to: "#4da1a9"
+    }
+    , {
+      from: "#ffffff",
+      via: "#b5a9fa",
+      to: "#a294f9"
+    }
+    , {
+      from: "#fdf6ed",
+      via: "#f1c083",
+      to: "#f1bc79"
+    }
+    , {
+      from: "#f9fff2",
+      via: "#e1ffbb",
+      to: "#e1febb"
+    }
+    , {
+      from: "#fefefe",
+      via: "#bbcbdb",
+      to: "#d1e2f5"
+    }
+    , {
+      from: "#fef9fb",
+      via: "#fecbe0",
+      to: "#ffcce1"
+    }
+    , {
+      from: "#f9fefb",
+      via: "#a3eebe",
+      to: "#a0edbc"
+    }
+    , {
+      from: "#fefaf5",
+      via: "#ffbd73",
+      to: "#febd73"
+    }
+    , {
+      from: "#fefffe",
+      via: "#e1fce3",
+      to: "#e0fbe2"
     }
   ]
-  
+
   const [gradColors, setGradColors] = useState({
-    from:"#e6cf9c",
-    via:"#f8d586",
-    to:"#fbe4b2"      
+    from: "#e6cf9c",
+    via: "#f8d586",
+    to: "#fbe4b2"
   });
 
   const [isNoContests, setIsNoContests] = useState(false)
@@ -69,7 +114,7 @@ function FullRewind ({
   const [totalMonthlyProblems, settotalMonthlyProblems] = useState(0)
   const [activeMonth, setActiveMonth] = useState('January')
 
-  function capitalizeFirstLetter (val) {
+  function capitalizeFirstLetter(val) {
     return String(val).charAt(0).toUpperCase() + String(val).slice(1)
   }
 
@@ -145,7 +190,7 @@ function FullRewind ({
     const selectedColors = colors[randomIndex];
     setGradColors(selectedColors);
     document.body.style.background = `${selectedColors.from}`;
-    return()=>{
+    return () => {
       document.body.style.background = `white`;
     }
   }, []); // Run only once on mount
@@ -167,32 +212,56 @@ function FullRewind ({
 
   const exportRef = useRef(null)
 
+  // const handleExport = () => {
+  //   const element = exportRef.current
+  //   html2canvas(element, {
+  //     scale: 2, // Increase for better quality
+  //     width: element.offsetWidth, // Use the actual width of the element
+  //     windowWidth: document.body.scrollWidth, // Ensures styles match the current viewport
+  //     windowHeight: document.body.scrollHeight - 138,
+  //     backgroundColor: null, // Avoid overriding the gradient
+
+  //     onclone: clonedDocument => {
+  //       // Apply the gradient manually to the cloned element
+  //       const clonedElement = clonedDocument.querySelector('.rewindDown')
+  //       if (clonedElement) {
+
+  //         clonedElement.style.background =
+  //           `linear-gradient(to bottom, ${gradColors.from},${gradColors.from},${gradColors.from})`
+  //       }
+  //     }
+  //   }).then(canvas => {
+  //     const link = document.createElement('a')
+  //     link.download = 'rewind.png'
+  //     link.href = canvas.toDataURL('image/png')
+  //     link.click()
+
+  //   })
+  // }
+
   const handleExport = () => {
-    const element = exportRef.current
+    const element = exportRef.current;
+  
+    // Ensure the gradient is explicitly applied
+    const gradientStyle = `linear-gradient(to bottom, ${gradColors.from}, ${gradColors.via}, ${gradColors.to})`;
+    element.style.background = gradientStyle;
+  
     html2canvas(element, {
       scale: 2, // Increase for better quality
       width: element.offsetWidth, // Use the actual width of the element
       windowWidth: document.body.scrollWidth, // Ensures styles match the current viewport
-      windowHeight: document.body.scrollHeight - 138,
       backgroundColor: null, // Avoid overriding the gradient
-      
-      onclone: clonedDocument => {
-        // Apply the gradient manually to the cloned element
-        const clonedElement = clonedDocument.querySelector('.rewindDown')
-        if (clonedElement) {
-
-          clonedElement.style.background =
-          `linear-gradient(to bottom, ${gradColors.from},${gradColors.from},${gradColors.from})`
-        }
-      }
-    }).then(canvas => {
-      const link = document.createElement('a')
-      link.download = 'rewind.png'
-      link.href = canvas.toDataURL('image/png')
-      link.click()
-
-    })
-  }
+    }).then((canvas) => {
+      const link = document.createElement('a');
+      link.download = 'rewind.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+  
+      // Revert the style change after capture
+      element.style.background = '';
+    });
+  };
+  
 
   return (
     <div className={`fullrewind w-full min-h-screen  text-balck pt-2 font-afacad`}
@@ -202,18 +271,17 @@ function FullRewind ({
     >
       {/* <div className='fullrewind w-full h-auto bg-[#1e1e1e] pt-2 font-afacad'> */}
 
-      <div className=' w-11/2 md:max-w-[350px] mx-auto shadow-2xl rounded-[20px] px-4'>        
+      <div className=' w-11/2 md:max-w-[350px] mx-auto shadow-2xl rounded-[20px] px-4'>
         <div className='pt-2'>
-          <Navbar 
+          <Navbar
             themeColor='light'
             selectedMonth={selectedMonth}
             setSelectedMonth={setSelectedMonth}
           />
 
           <div
-            className={`rewindDown ${
-              selectedMonth === 'Year' ? 'min-h-screen px-5' : 'px-5'
-            }`}
+            className={`rewindDown ${selectedMonth === 'Year' ? 'min-h-screen px-5' : 'px-5'
+              }`}
             ref={exportRef}
           >
 
@@ -298,7 +366,7 @@ function FullRewind ({
             </div>
           )}
         </div>
-        <div className={`flex flex-col ${selectedMonth!='Year' && "min-h-screen"}  mx-auto justify-start`}>
+        <div className={`flex flex-col ${selectedMonth != 'Year' && "min-h-screen"}  mx-auto justify-start`}>
           <div className='flex flex-col justify-between'>
             {!isNoContests && selectedMonth != 'Year' && (
               <TopContests title='Top Contests' content={top5Contests} />
@@ -339,7 +407,7 @@ function FullRewind ({
             </div>
             :null
         } */}
-        </div>
+      </div>
     </div>
   )
 }
