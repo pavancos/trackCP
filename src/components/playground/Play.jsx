@@ -191,7 +191,7 @@ const Play = ({ sno }) => {
                 </div>
 
                 {/* Select platforms */}
-                <div className="flex gap-1 flex-col mb-2">
+                {/* <div className="flex gap-1 flex-col mb-2">
                     <label className="labelText">Select Platforms</label>
                     <div className="flex gap-1 flex-row mb-2 flex-wrap sm:flex-nowrap rounded-lg border border-1 shadow-sm p-1">
                         {
@@ -211,7 +211,36 @@ const Play = ({ sno }) => {
                             })
                         }
                     </div>
+                </div> */}
+                <div className="flex gap-1 flex-col mb-2">
+                    <label className="labelText">Select Platforms</label>
+                    <div className="flex gap-1 flex-row mb-2 flex-wrap sm:flex-nowrap rounded-lg border border-1 shadow-sm p-1">
+                        {platforms.map((plat) => {
+                            let uniqueId;
+                            if(sno == undefined) {
+                                uniqueId = plat.id;
+                            }
+                            else {
+                                uniqueId = `${plat.id}-${sno}`;
+                            }
+
+                            console.log('uniqueId: ', uniqueId);
+                            return (
+                                <div key={uniqueId} className="flex w-1/2 flex-row gap-2 items-center px-2">
+                                    <input
+                                        type="checkbox"
+                                        id={uniqueId}
+                                        value={plat.id}
+                                        onChange={onCheckChange}
+                                        checked={selectedPlatforms[plat.id]}
+                                    />
+                                    <label htmlFor={uniqueId}>{plat.id}</label>
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
+
 
                 <div className="mb-2 flex flex-wrap">
                     {

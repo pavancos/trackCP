@@ -123,6 +123,12 @@ const UserForm = ({ studentsInfo, isFetchedFromAPI }) => {
             >
                 {isSubmitted &&
                     <div className={`m-3`}>
+                            {/* {console.log('userData: ', userData)}
+                            {console.log('userData2: ', userData[0].student)} */}
+                        <h1 className='text-[#3b82f6] text-2xl font-semibold'>{userData[0].student.name}</h1>
+                        <h1>Leetcode: <a href={`https://leetcode.com/u/${userData[0].student.leetcode.username}/`} target="_blank" className='text-blue-600 hover:underline' rel="noopener noreferrer">{userData[0].student.leetcode.username}</a> </h1>
+                        <h1>Codechef: <a href={`https://www.codechef.com/users/${userData[0].student.codechef.username}/`} target="_blank" className='text-blue-600 hover:underline' rel="noopener noreferrer">{userData[0].student.codechef.username}</a> </h1>
+                        <h1>Codeforces: <a href={`https://codeforces.com/profile/${userData[0].student.codeforces.username}/`} target="_blank" className='text-blue-600 hover:underline' rel="noopener noreferrer">{userData[0].student.codeforces.username}</a> </h1>
                         {
                             userData.length > 0 &&
                             <Table data={userData} isStudentReport={isStudentReport} filter={whtplatform}/>
