@@ -214,7 +214,7 @@ const BatchTable = ({ data }) => {
     };
 
     return (
-        <div style={{ overflowX: "auto" }}>
+        <div className="px-1" style={{ overflowX: "auto" }}>
             <Table
                 columns={columns}
                 dataSource={data}

@@ -4,12 +4,14 @@ import Loading from '../Loading';
 import { useState } from 'react';
 import { filterBatch } from './BatchUtil';
 import BatchTable from './BatchTable';
+import { set } from 'react-ga';
 
 function Batch() {
     const { year, branch } = useParams();
     const [isFetched, setIsFetched] = useState(false);
     const [error, setError] = useState(null);
     const [batchData, setBatchData] = useState(null);
+    const [title, setTitle] = useState('');
     
     useEffect(()=>{
         const fetchData = async ()=>{
@@ -18,13 +20,17 @@ function Batch() {
                 if(year === 'all' || year===undefined){
                     if(branch === 'all'|| branch===undefined){
                         query = '';
+                        setTitle('PVPSIT');
                     }else if(branch){
                         query = `/branch?branch=${branch}`;
+                        setTitle(branch);
                     }
                 }else{
                     if(branch === 'all' || branch===undefined){
                         query = `/year?year=${year}`;
+                        setTitle(year);
                     }else if(branch){
+                        setTitle(`${year} - ${branch}`);
                         query = `/yearBranch?year=${year}&branch=${branch}`;
                     }
                 }
@@ -56,9 +62,7 @@ function Batch() {
     }
     return (
         <div>
-            {year}
-            -
-            {branch}
+            <h1 className='text-2xl font-bold text-center my-4'>{title}</h1>
             { batchData &&  <BatchTable data={batchData}></BatchTable>}
         </div>
     )
