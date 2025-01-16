@@ -42,20 +42,19 @@ const BatchTable = ({ data }) => {
             record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
     });
 
-    // Columns definition
     const columns = [
         {
             title: "Sno",
             key: "sno",
             render: (text, record, index) => {
-                const { current, pageSize } = pagination; // Ensure pagination is accessible
-                return pageSize * (current - 1) + index + 1; // Calculate serial number
+                const { current, pageSize } = pagination;
+                return pageSize * (current - 1) + index + 1;
             },
             fixed: "left",
             width: 60,
         },
         {
-            title: "RollNo",
+            title: "Roll No",
             dataIndex: "rollNo",
             key: "rollNo",
             ...getColumnSearchProps("rollNo"),
@@ -208,7 +207,6 @@ const BatchTable = ({ data }) => {
         },
     ];
 
-    // Handle page change event
     const handlePaginationChange = (page, pageSize) => {
         setPagination({ current: page, pageSize });
     };

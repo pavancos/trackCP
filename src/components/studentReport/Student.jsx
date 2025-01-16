@@ -93,18 +93,18 @@ const Student = () => {
             <div
                 className={
                     `flex flex-col md:flex-row justify-between items-center
-                    border-2 rounded-xl bg-slate-200
+                    border-2 rounded-xl bg-[#07070721] shadow-md
                     `
                 }
             >
                 <div 
                     className={
-                        ` rounded-md px-2 py-4 m-4 `
+                        ` rounded-md px-2 py-4 m-4  `
                     }
                 >
 
-                    <h1 className="text-2xl ">Name: {studentInfo.name}</h1>
-                    <h2 className="text-xl font-bold" >Roll No: {studentInfo.rollNo}</h2>
+                    <h1 className="text-2xl ">{studentInfo.name}</h1>
+                    <h2 className="text-xl font-bold" >{studentInfo.rollNo}</h2>
                     <h3>Branch: {studentInfo.branch}</h3>
                     <h2>Passout Year: {studentInfo.year}</h2>
                     <h2>Codechef :   
@@ -126,7 +126,7 @@ const Student = () => {
                         <a className="ml-1 text-blue-600 hover:text-blue-800 hover:underline" href={`https://www.spoj.com/status/${studentInfo.spoj}`}>{studentInfo.spoj}</a>
                     </h2>
                 </div>
-                <div className="w-[500px] h-[300px] ">
+                <div className="w-[500px] h-[300px] rounded-xl mr-3 my-3 ">
                     {problemsData && <PieChartComponent data={problemsData} />}
                 </div>
 

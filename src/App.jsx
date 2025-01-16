@@ -12,23 +12,15 @@ import Compare from './components/compare/Compare';
 import ContestAnalysis from './components/contestanalysis/ContestAnalysis';
 import StudentReport from './components/studentReport/StudentReport';
 import Student from './components/studentReport/Student';
-
+import Rewind from './components/rewind/Rewind';
 
 function App() {
-
-  // Define routes
   const browserRouter = createBrowserRouter([
     {
       path: '',
       element: <Layout />,
       children: [
         { path: '', element: <Home /> },
-        // {
-        //   path: 'batchreport/:year/:branch',
-        //   element: (
-        //     <BatchReport  />
-        //   )
-        // },
         {
           path: 'studentreport',
           element: (
@@ -54,21 +46,21 @@ function App() {
         {
           path:'batch/:year/:branch',
           element: <Batch/>
+        },
+        { path: 'refreshdb', element: <RefreshDB /> },
+        { path: 'playground', element: <Play /> },
+        { path: 'compare', element: <Compare /> },
+        { path: 'play', element: <PlayGround /> },
+        {
+          path: 'contestanalysis',
+          element: (
+            <ContestAnalysis/>
+          )
+        },
+        {
+          path: 'rewind',
+          element: <Rewind />
         }
-        // { path: 'refreshdb', element: <RefreshDB /> },
-        // { path: 'playground', element: <Play /> },
-        // { path: 'compare', element: <Compare /> },
-        // { path: 'play', element: <PlayGround /> },
-        // {
-        //   path: 'contestanalysis',
-        //   element: (
-        //     <ContestAnalysis/>
-        //   )
-        // },
-        // {
-        //   path: 'rewind',
-        //   element: <Rewind />
-        // }
       ]
     }
   ]);

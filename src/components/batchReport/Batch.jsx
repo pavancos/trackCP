@@ -46,6 +46,7 @@ function Batch() {
                 console.log(data);
             }catch(err){
                 console.log(err);
+                setError(err.message);
             }finally{
                 console.log("Batch Fetched");
                 setIsFetched(true);
@@ -55,8 +56,15 @@ function Batch() {
     },[])
     if(!isFetched){
         return (
-            <div className="w-full flex flex-row justify-center">
+            <div className="w-full h-[calc(100vh-80px)] flex flex-row justify-center items-center">
                 <Loading />
+            </div>
+        );
+    }
+    if(error){
+        return (
+            <div className="w-full h-[calc(100vh-80px)] flex flex-row justify-center items-center">
+                <h1 className="text-2xl font-bold text-center text-red-500">{error}</h1>
             </div>
         );
     }
