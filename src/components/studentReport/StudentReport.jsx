@@ -12,9 +12,9 @@ const StudentReport = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const rollNo = e.target.elements.rollNo.value; // Get roll number from input
+        const rollNo = e.target.elements.rollNo.value;
         if (rollNo) {
-            navigate(`/student/${rollNo}`); // Redirect to the Student page with rollNo
+            navigate(`/student/${rollNo}`);
         }
     };
 

@@ -1,14 +1,16 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import PieChartComponent from "../Charts/StudentCharts/ProblemsPie";
 import Loading from "../Loading";
-
+import StudentTable from "./StudentTable";
+import { combineContests } from "./StudentUtil/chartUtils";
+import { set } from "react-ga";
 const Student = () => {
     let { rollNo } = useParams();
     const [studentInfo, setStudentInfo] = useState(null);
     const [isFetched, setIsFetched] = useState(false);
     const [error, setError] = useState(null);
-    const [problemsData, setProblemsData] = useState(null);
+    const [ratingHistory, setRatinHistory] = useState(null);
 
     useEffect(() => {
         const fetchStudentInfo = async () => {
@@ -22,6 +24,8 @@ const Student = () => {
                 }
                 const data = await response.json();
                 setStudentInfo(data);
+                setRatinHistory(combineContests(data));
+
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -32,11 +36,11 @@ const Student = () => {
         fetchStudentInfo();
     }, [rollNo]);
 
-    useEffect(() => {
+    const problemsData=useMemo(() => {
         if (!studentInfo) return;
-        setProblemsData([
-            { 
-                name: "LeetCode", 
+        const data=[
+            {
+                name: "LeetCode",
                 value: studentInfo.leetcode.TotalProblemsSolved,
                 score: studentInfo.leetcode.score,
                 fill: "#d6a540"
@@ -46,25 +50,23 @@ const Student = () => {
                 value: studentInfo.codeforces.TotalProblemsSolved,
                 score: studentInfo.codeforces.score,
                 fill: "#a52f2c"
-                
+
             },
-            { 
+            {
                 name: "CodeChef",
                 value: studentInfo.codechef.TotalProblemsSolved,
                 score: studentInfo.codechef.score,
                 fill: "#a7673a"
 
             },
-            { 
+            {
                 name: "InterviewBit",
                 value: studentInfo.interviewbit.TotalProblemsSolved,
                 score: studentInfo.interviewbit.score,
                 fill: "#4e949e"
             }
-        ])
-        setProblemsData((prevData) => {
-            return prevData.sort((a, b) => b.value - a.value);
-        });
+        ]
+        return data.sort((a, b) => b.value - a.value);
     }, [studentInfo])
 
     if (!isFetched) {
@@ -84,14 +86,53 @@ const Student = () => {
     }
 
     return (
-        <div>
-            <h1>Name: {studentInfo.name}</h1>
-            <h2>Roll No: {studentInfo.rollNo}</h2>
-            <h3>Branch: {studentInfo.branch}</h3>
-            <h2>Passout Year: {studentInfo.year}</h2>
-            <div className="w-[500px] h-[500px] *:outline-none">
-                {problemsData && <PieChartComponent data={problemsData} />}
+        <div className={
+            `flex flex-col space-y-8 p-6`
+        }
+        >
+            <div
+                className={
+                    `flex flex-col md:flex-row justify-between items-center
+                    border-2 rounded-xl bg-slate-200
+                    `
+                }
+            >
+                <div 
+                    className={
+                        ` rounded-md px-2 py-4 m-4 `
+                    }
+                >
+
+                    <h1 className="text-2xl ">Name: {studentInfo.name}</h1>
+                    <h2 className="text-xl font-bold" >Roll No: {studentInfo.rollNo}</h2>
+                    <h3>Branch: {studentInfo.branch}</h3>
+                    <h2>Passout Year: {studentInfo.year}</h2>
+                    <h2>Codechef :   
+                        <a className="ml-1 text-blue-600 hover:text-blue-800 hover:underline" href={`https://www.codechef.com/users/${studentInfo.codechef.username}`}>{studentInfo.codechef.username}</a>
+                    </h2>
+                    <h2>Leetcode : 
+                        <a className="ml-1 text-blue-600 hover:text-blue-800 hover:underline" href={`https://leetcode.com/u/${studentInfo.leetcode.username}`}>{studentInfo.leetcode.username}</a>
+                    </h2>
+                    <h2>Codeforces : 
+                        <a className="ml-1 text-blue-600 hover:text-blue-800 hover:underline" href={`https://codeforces.com/profile/${studentInfo.codeforces.username}`}>{studentInfo.codeforces.username}</a>
+                    </h2>
+                    <h2>InterviewBit : 
+                        <a className="ml-1 text-blue-600 hover:text-blue-800 hover:underline" href={`https://www.interviewbit.com/profile/${studentInfo.interviewbit.username}`}>{studentInfo.interviewbit.username}</a>
+                    </h2>
+                    <h2>Hackerrank : 
+                        <a className="ml-1 text-blue-600 hover:text-blue-800 hover:underline" href={`https://www.hackerrank.com/profile/${studentInfo.hackerrank}`}>{studentInfo.hackerrank}</a>
+                    </h2>
+                    <h2>Spoj : 
+                        <a className="ml-1 text-blue-600 hover:text-blue-800 hover:underline" href={`https://www.spoj.com/status/${studentInfo.spoj}`}>{studentInfo.spoj}</a>
+                    </h2>
+                </div>
+                <div className="w-[500px] h-[300px] ">
+                    {problemsData && <PieChartComponent data={problemsData} />}
+                </div>
+
             </div>
+            <StudentTable data={ratingHistory}></StudentTable>
+
         </div>
     );
 };

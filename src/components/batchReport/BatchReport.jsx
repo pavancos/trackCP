@@ -1,314 +1,66 @@
-import React, { useEffect } from 'react'
-import { useState, Suspense } from 'react'
-import { get, set, useForm } from 'react-hook-form';
-import ExportToXlxs from '../../functions/ExportToXlxs';
-import { filterCodechef, filterCodeforces, filterLeetcode } from '../../functions/filterLogics/filterLogics';
-import Loading from '../Loading'
-const Table = React.lazy(() => import('../Table'));
-import toast from 'react-hot-toast';
-import { data } from 'autoprefixer';
-import { getUniqueContests } from '../../functions/uniqueContests/UniqueContests';
-// import notify from '../toasts/notify';
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+const BatchReport = () => {
+    const {register,handleSubmit,formState: { errors },} = useForm();
+    const navigate = useNavigate();
+    const onSubmit = (data) => {
+        console.log(data);
+        
+        navigate(`/batch/${data.year}/${data.branch}`);
+    };
 
-function BatchReport({ studentsInfo, isFetchedFromAPI }) {
-    // console.log('studentsInfo: ', studentsInfo);
-
-
-    // for the getUniqueContests
-    const [uniqueCodechefContestNames, setUniqueCodechefContestNames] = useState([]);
-    const [uniqueLeetcodeContestNames, setUniqueLeetcodeContestNames] = useState([]);
-    const [uniqueCodeforcesContestNames, setUniqueCodeforcesContestNames] = useState([]);
-    const [uniqueContests, setUniqueContests] = useState({});
-
-    const [leetcodeParticipants, setLeetcodeParticipants] = useState([]);
-    const [codechefParticipants, setCodechefParticipants] = useState([]);
-    const [codeforcesParticipants, setCodeforcesParticipants] = useState([]);
-
-
-    // const [studentInfo, setStudentInfo] = useState([]);
-
-    const [areThereAnyContests, setAreThereAnyContests] = useState(false);
-    const [isTheDataAvailable, setIsTheDataAvailable] = useState(true);
-
-    const [batchNumber, setBatchNumber] = useState('batch22');
-
-    const [fromRollForm, setFromRoll] = useState('22501A0501');
-    const [toRollForm, setToRoll] = useState('22501A05J8');
-
-
-    const { register, handleSubmit } = useForm();
-    const [filteredContests, setFilteredContests] = useState([]);
-    const [isSubmitted, setIsSubmitted] = useState(false);
-    const [whtplatform, setplatform] = useState('all');
-    const [hasLeetcode, setHasLeetcode] = useState(false);
-    const [hasCodechef, setHasCodechef] = useState(false);
-    const [hasCodeforces, setHasCodeforces] = useState(false);
-
-    const todayDate = new Date();
-    const oneWeekAgoDate = new Date(todayDate);
-    oneWeekAgoDate.setDate(todayDate.getDate() - 7);
-    const todayFormatted = todayDate.toISOString().split('T')[0];
-    const oneWeekAgoFormatted = oneWeekAgoDate.toISOString().split('T')[0];
-    const ccDateFormat = todayDate.toISOString().split(' ')[0];
-    const today = new Date().toISOString().split('T')[0];
-
-    const putToast = () => {
-        toast.error('No Contests Found', {
-            style: {
-                marginTop: '-10px',
-                marginBottom: '10px',
-                borderRadius: '10px',
-                background: '#fff',
-                color: '#333',
-            },
-            iconTheme: {
-                primary: '#333',
-                secondary: '#fff',
-            },
-            icon: '🚫',
-        });
-    }
-    const putErrToast = (err) => {
-        toast.error(err, {
-            style: {
-                marginTop: '-10px',
-                marginBottom: '10px',
-                borderRadius: '10px',
-                background: '#fff',
-                color: '#333',
-            },
-            iconTheme: {
-                primary: '#333',
-                secondary: '#fff',
-            },
-            icon: '🚫',
-        });
-    }
-
-    async function handleFormSubmit(dataFromForm) {
-        try {
-            // console.log('dataFromForm: ', dataFromForm);
-            let studentsData;
-            if (dataFromForm.batch == 'batch21') {
-                studentsData = studentsInfo.Batch21Data;
-            } else {
-                studentsData = studentsInfo.Batch22Data;
-            }
-            // FILTER STUDENTS ACCORDING TO ROLL NO 
-            // let fromRoll = dataFromForm.fromroll;
-            // let toRoll = dataFromForm.toroll;
-            let fromRoll = fromRollForm;
-            let toRoll = toRollForm;
-
-            if (fromRoll > toRoll) {
-                putErrToast('Enter Valid Roll No Range');
-                throw new Error('Enter Valid Roll No Range');
-            }
-
-            let students = studentsData.filter((student) => {
-                let roll = student.roll;
-                let fromRollFormatted = fromRoll.toUpperCase();
-                let toRollFormatted = toRoll.toUpperCase();
-                return roll >= fromRollFormatted && roll <= toRollFormatted;
-            });
-
-            // console.log('students: ', students);
-
-            let filteredContests = await students.map(async (student) => {
-                // console.log('student: ', student);
-
-                return {
-                    student,
-                    contests: {
-                        leetcode: filterLeetcode(dataFromForm.from, dataFromForm.to, student.leetcode?.data?.userContestRankingHistory || []),
-                        codechef: filterCodechef(dataFromForm.from, dataFromForm.to, student.codechef?.newAllRating || []),
-                        codeforces: filterCodeforces(dataFromForm.from, dataFromForm.to, student.codeforces?.attendedContests || [])
-                    }
-                };
-            });
-            filteredContests = await Promise.all(filteredContests);
-            // console.log('filteredContests: ', filteredContests);
-            getUniqueContests(filteredContests, setUniqueCodechefContestNames, setUniqueLeetcodeContestNames, setUniqueCodeforcesContestNames,setUniqueContests,setLeetcodeParticipants, setCodechefParticipants, setCodeforcesParticipants);
-            // Check if there are any contests
-            const hasContests = filteredContests.some(contest =>
-                contest.contests.codechef.length > 0 ||
-                contest.contests.codeforces.length > 0 ||
-                contest.contests.leetcode.length > 0
-            );
-
-            setAreThereAnyContests(hasContests);
-            setFilteredContests(filteredContests);
-            setIsSubmitted(true);
-            setplatform(dataFromForm.platform);
-            if (!hasContests) {
-                putToast();
-            }
-
-            // console.log('uniqueContests: ', uniqueContests);
-
-            // Check if there are any contests for asked platform
-            const HasLeetcode = filteredContests.some(contest =>
-                contest.contests.leetcode.length > 0
-            );
-            setHasLeetcode(HasLeetcode);
-            const HasCodechef = filteredContests.some(contest =>
-                contest.contests.codechef.length > 0
-            );
-            setHasCodechef(HasCodechef);
-            const HasCodeforces = filteredContests.some(contest =>
-                contest.contests.codeforces.length > 0
-            );
-            setHasCodeforces(HasCodeforces);
-        } catch (error) {
-            // console.log(error);
-            // putErrToast('Something went wrong');
-        }
-    }
-
-    // useEffect(()=>{
-    //     console.log('uniqueContests: ', uniqueContests);
-    //     // console.log('uniqueCodechefContestNames: ', uniqueCodechefContestNames);
-    //     // console.log('uniqueLeetcodeContestNames: ', uniqueLeetcodeContestNames);
-    //     // console.log('uniqueCodeforcesContestNames: ', uniqueCodeforcesContestNames);
-    //     // console.log('Leet Code Participants',leetcodeParticipants);
-    // },[uniqueContests]);
-
-    useEffect(() => {
-        // console.log("batchNumber: ", batchNumber);
-        if (batchNumber == 'batch21') {
-            setFromRoll('21501A0501');
-            setToRoll('21501A05J7');
-        }
-        else if (batchNumber == 'batch22') {
-            setFromRoll('22501A0501');
-            setToRoll('22501A05J8');
-        }
-    }, [batchNumber]);
     return (
-        <div className="mt-6 m-3">
-            <form onSubmit={handleSubmit(handleFormSubmit)} className="max-w-md mx-auto p-4 mb-2 border rounded-md ">
-                <h1 className="text-2xl font-semibold text-blue-700 text-center mb-3">Batch Report</h1>
-                <div className="flex-row flex justify-between">
-                    <div className="mb-4 w-1/2 pr-2">
-                        <label htmlFor="from" className="labelText">From</label>
-                        <input
-                            type="date"
-                            id="from"
-                            defaultValue={oneWeekAgoFormatted}
-                            max={today}
-                            className="textInputBox"
-                            {...register('from')}
-                        />
-                    </div>
-                    <div className="mb-4 w-1/2 pl-2">
-                        <label htmlFor="to" className="labelText">To</label>
-                        <input
-                            type="date" id="to"
-                            defaultValue={todayFormatted}
-                            max={today}
-                            className="textInputBox"
-                            {...register('to')}
-                        />
-                    </div>
-                </div>
-                {/* Select which Batch */}
+        <div className="m-3">
+            <form
+                className="p-6 max-w-md mx-auto border rounded-md mt-6 shadow-md"
+                onSubmit={handleSubmit(onSubmit)}
+            >
+                <h1 className="text-2xl font-semibold text-blue-700 text-center mb-3">
+                    Batch Report
+                </h1>
                 <div>
-                    <label className="labelText">Select Batch</label>
+                    <label className="labelText">Year</label>
                     <select
-                        className="textInputBox mb-4"
-                        {...register('batch')}
-                        defaultValue={"batch22"}
-                        onChange={(e) => {
-                            setBatchNumber(e.target.value);
-                        }}
+                        {...register("year")}
+                        className="w-full bg-white border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-md hover:bg-gray-100 transition duration-300 ease-in-out mb-2"
                     >
-                        <option value="batch22">22 Batch</option>
-                        <option value="batch21">21 Batch</option>
-                    </select>
-                </div>
-                <div className="flex-row flex justify-between">
-                    <div className="mb-4 w-1/2 pr-2">
-                        <label htmlFor="fromroll" className="labelText">From Roll No</label>
-                        <input
-                            type="text" id="fromroll" value={fromRollForm}
-                            className='textInputBox' {...register('fromroll')}
-                            onInput={(e) => e.target.value = e.target.value.toUpperCase()}
-                            onChange={(e) => { setFromRoll(e.target.value) }}
-                        />
-                    </div>
-                    <div className="mb-4 w-1/2 pl-2">
-                        <label htmlFor="toroll" className="labelText">To Roll No</label>
-                        <input
-                            type="text" id="toroll" value={toRollForm}
-                            className='textInputBox'
-                            {...register('toroll')}
-                            onInput={(e) => e.target.value = e.target.value.toUpperCase()}
-                            onChange={(e) => { setToRoll(e.target.value) }}
-                        />
-                    </div>
-                </div>
-
-                {/* Select which platform to display */}
-                <div>
-                    <label className="labelText">Select Platform</label>
-                    <select
-                        className="textInputBox mb-4"
-                        {...register('platform')}
-                    >
+                        <option value="2026">2026</option>
+                        <option value="2025">2025</option>
                         <option value="all">All</option>
-                        <option value="codechef">Codechef</option>
-                        <option value="codeforces">Codeforces</option>
-                        <option value="leetcode">Leetcode</option>
                     </select>
-                </div>
-                {
+                    {errors.year && (
+                        <p className="text-red-500 text-sm">{errors.year.message}</p>
+                    )}
+
+                    <label className="labelText">Branch</label>
+                    <select
+                        {...register("branch")}
+                        className="w-full bg-white border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-md hover:bg-gray-100 transition duration-300 ease-in-out"
+                    >
+                        <option value="CSE">CSE</option>
+                        <option value="CSM & CSD">CSM & CSD</option>
+                        <option value="IT">IT</option>
+                        <option value="all">All</option>
+                    </select>
+                    {errors.branch && (
+                        <p className="text-red-500 text-sm">{errors.branch.message}</p>
+                    )}
+
                     <button
                         type="submit"
                         className={`
-                    w-full   text-white 
-                    font-semibold py-2 px-4 rounded-md focus:outline-none 
-                    focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
-                    ${isFetchedFromAPI ? "bg-blue-500 hover:bg-blue-600" : "bg-blue-300 cursor-not-allowed"}
-                    transition duration-700 ease-in-out
-                    `}
+                            w-full mt-4 text-white 
+                            font-semibold py-2 px-4 rounded-md focus:outline-none 
+                            focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+                            bg-blue-500 hover:bg-blue-600 transition duration-700 ease-in-out
+                        `}
                     >
-                        {isFetchedFromAPI ? 'Submit' : 'Fetching Data...'}
+                        Get Report
                     </button>
-                }
-                {
-                    isSubmitted &&
-                    areThereAnyContests &&
-                    (whtplatform === 'all' || (whtplatform === 'leetcode' && hasLeetcode) || (whtplatform === 'codechef' && hasCodechef) || (whtplatform === 'codeforces' && hasCodeforces)) &&
-
-
-
-                    <button
-                        onClick={() => ExportToXlxs(filteredContests, whtplatform)}
-                        className={
-                            `btnSubmit w-full mt-2`
-                        }
-                    >
-                        Download .xlsx
-                    </button>
-                }
+                </div>
             </form>
-            {
-                isSubmitted &&
-                areThereAnyContests &&
-                <>
-                    <Suspense
-                        fallback={
-                            <div className='w-full flex flex-row justify-center '>
-                                <Loading />
-                            </div>
-                        }
-                    >
-                        <Table data={filteredContests} filter={whtplatform} />
-                    </Suspense>
-                </>
-            }
         </div>
-    )
-}
+    );
+};
 
-export default BatchReport
+export default BatchReport;

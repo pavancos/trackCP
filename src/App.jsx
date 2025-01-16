@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { createBrowserRouter, RouterProvider, useLocation } from 'react-router-dom';
 import BatchReport from './components/batchReport/BatchReport';
+import Batch from './components/batchReport/Batch';
 import RefreshDB from './components/refreshdb/RefreshDB';
 import Home from './components/home/Home';
 import Layout from './Layout';
@@ -37,6 +38,22 @@ function App() {
         {
           path: 'student/:rollNo',
           element: <Student/>
+        },
+        {
+          path:'batchreport',
+          element: <BatchReport/>
+        },
+        {
+          path:'batch',
+          element: <Batch/>
+        },
+        {
+          path:'batch/:year',
+          element: <Batch/>
+        },
+        {
+          path:'batch/:year/:branch',
+          element: <Batch/>
         }
         // { path: 'refreshdb', element: <RefreshDB /> },
         // { path: 'playground', element: <Play /> },
