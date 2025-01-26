@@ -16,7 +16,13 @@ const Dashboard = () => {
                     setBatches(data)
                 })
         }
-    }, [])
+    }, []);
+
+    const handleDelete = (year, branch) => {
+        setBatches((prevBatches) =>
+            prevBatches.filter((batch) => !(batch.year === year && batch.branch === branch))
+        );
+    };
 
     return (
         <>
@@ -42,7 +48,7 @@ const Dashboard = () => {
                     }
                     {
                         authState.role === "dev" &&
-                        <button 
+                        <button
                             className="w-full bg-slate-500 px-5 py-2 rounded-md text-white text-center"
                             onClick={() => setIsAddAdmin(true)}
                         >
@@ -52,10 +58,12 @@ const Dashboard = () => {
                 </div>
             </div>
             <div className="mx-3">
-                <h1 className="text-3xl " >Batches</h1>
+                <div className="flex justify-between items-center">
+                    <h1 className="text-3xl " >Batches</h1>
+                    <button className="text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 bg-blue-500 hover:bg-blue-600 transition duration-700 ease-in-out">Add New Batch</button>
+                </div>
                 <div className="mt-4">
-
-                    <BatchConfigTable batches={batches} />
+                    <BatchConfigTable batches={batches} handleDelete={handleDelete} />
                 </div>
 
             </div>

@@ -6,7 +6,8 @@ import { useAuth } from "../../../../store/authContext";
 import {deleteBatch} from '../batchConfigHandler'
 
 
-const DeleteModal = ({ setIsDelete, year, branch }) => {
+const DeleteModal = ({ setIsDelete, year, branch, handleDelete }) => {
+    console.log(year, branch);
     const { authState } = useAuth();
     const modalRef = useRef(null);
 
@@ -22,6 +23,19 @@ const DeleteModal = ({ setIsDelete, year, branch }) => {
         };
     }, [setIsDelete]);
 
+
+    const onDeleteClick = async ()=>{
+        let res = await deleteBatch(year, branch, authState.token);
+        if(res.error){
+            toast.error(res.message)
+        }
+        else{
+            toast.success(res.message);
+            handleDelete(year, branch);
+            setIsDelete(false);
+        }
+    }
+
     return (
         <div className="fixed z-10 w-screen h-screen inset-0 bg-[#0004] flex justify-center items-center">
             <div
@@ -29,17 +43,16 @@ const DeleteModal = ({ setIsDelete, year, branch }) => {
                 className="fixed z-20 w-[300px] h-min flex flex-col inset-0 m-auto bg-white rounded-md p-4"
             >
                 <div className="flex justify-between items-center mb-4">
-                    <h1 className="text-2xl font-semibold text-blue-700 text-center">Are You Sure</h1>
+                    <h1 className="text-2xl font-semibold text-black-700 text-center">Are You Sure?</h1>
                     <img onClick={() => setIsDelete(false)} src={closeImg} className="w-5 mt-1 hover:cursor-pointer" alt="" />
                 </div>
-                <h1></h1>
+                <h1 className="text-xl mb-3">You are going to clear {year}-{branch} Batch</h1>
                 <div className="flex gap-x-2">
                     <button
                         onClick={()=>{
-                            setIsDelete(false)
-                            // deleteBatch(year, branch,authState.token)
+                            onDeleteClick();
                         }}
-                        className=" bg-red-500 btnSubmit">
+                        className="w-full bg-red-700 text-white rounded-md py-2 font-semibold focus:outline-none">
                         Delete
                     </button>
                 </div>
