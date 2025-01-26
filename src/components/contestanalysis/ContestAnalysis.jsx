@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import ContestTable from './ContestTable';
+import toast from 'react-hot-toast';
 
 const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
     const { register, handleSubmit } = useForm();
@@ -15,6 +16,7 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
             const res = await fetch('https://v2contestinfo.onrender.com/v2/contest/getContests');
             const data = await res.json();
             setContests(data.contests);
+            // console.log('data.contests: ', data.contests);
             setIsContestFetched(true);
         } catch (err) {
             console.log(err);
@@ -29,14 +31,14 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
     }, []);
 
     async function onSubmit(data) {
-        console.log('data: ', data);
-        if (data.contestName === "") {
-            // handle empty selection with a toast or alert
-            return;
-        }
+        // console.log('data: ', data);
+
 
         try {
-            let res = await fetch('https://v2contestinfo.onrender.com/v2/contest?contestName=' + data.contestName);
+            // if 404 print toast saying contest not found
+            // let res = await fetch('http://localhost:4000/v2/contest?contestName=' + data.contestName);
+            let res = await fetch('https://v2contestinfo.onrender.com/v2/contest/id/'+data._id);
+            // let res = await fetch('http://localhost:4000/v2/contest/id/'+data._id);
             res.json().then((data) => {
                 setContestData(data);
             })
@@ -45,6 +47,7 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
             // })
         } catch (err) {
             console.log(err);
+            toast.error('Error! Please try again later');
             setContestData(null);
         }
     }
@@ -62,16 +65,19 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
                     <div className={` ${isContestFetched ? " " : "opacity-80 cursor-not-allowed "} `}>
                         <label className="labelText mb-1">Select Contest</label>
                         <select
-                            {...register("contestName")}
+                            {...register("_id")}
                             onChange={(e) => setSelectedContest(e.target.value)} // Handle onChange on select
                             className="w-full bg-white border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:bg-gray-100 transition duration-300 ease-in-out mb-2"
                         >
                             <option value="">Select Contest</option>
-                            {isContestFetched && contests.map((contest, index) => (
-                                <option key={index} value={contest.contestName}>
-                                    {contest.contestName}
-                                </option>
-                            ))}
+                            {isContestFetched && contests.map((contest, index) => {
+                                // console.log('contest: ', contest);
+                                return(
+                                    <option key={index} value={contest._id}>
+                                        {contest.contestName}
+                                    </option>
+                                )
+                            })}
                         </select>
                         <button
                             type="submit"

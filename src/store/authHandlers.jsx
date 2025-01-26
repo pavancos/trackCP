@@ -1,6 +1,6 @@
 export async function verifyUser(token){
     if (!token) {
-        console.log("Token not provided");
+        // console.log("Token not provided");
         return {
             isAuthenticated: false,
             token: null,
@@ -9,8 +9,8 @@ export async function verifyUser(token){
         };
     }
     try {
-        const response = await fetch('http://localhost:4000/v2/auth/verify', {
-        // const response = await fetch('https://v2contestinfo.onrender.com/v2/auth/verify', {
+        // const response = await fetch('http://localhost:4000/v2/auth/verify', {
+        const response = await fetch('https://v2contestinfo.onrender.com/v2/auth/verify', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ export async function verifyUser(token){
         }
     } catch (err) {
         
-        console.log(err.message || "Error verifying token");
+        // console.log(err.message || "Error verifying token");
         return {
             isAuthenticated: false,
             token: null,

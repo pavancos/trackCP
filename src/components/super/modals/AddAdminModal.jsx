@@ -22,9 +22,9 @@ const AddAdminModal = ({ setIsAddAdmin }) => {
 
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onAddAdmin = async(data) => {
-        console.log(data);
+        // console.log(data);
         const token = authState.token;
-        console.log(authState.token)
+        // console.log(authState.token)
         if (data.username === "" || data.password === "") {
             toast.error("Please fill all the fields");
             return;
@@ -32,13 +32,13 @@ const AddAdminModal = ({ setIsAddAdmin }) => {
         try {
             const { username, password, role } = data;
             const newUser = await addAdminHandler(username, password, role, token);
-            console.log(newUser)
+            // console.log(newUser)
             if (!newUser.error) {
                 toast.success(newUser.message);
                 setIsAddAdmin(false);
                 return;
             }
-            console.log(newUser);
+            // console.log(newUser);
             toast.error(newUser.message);
             return;
             

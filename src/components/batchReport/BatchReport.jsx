@@ -17,7 +17,7 @@ const BatchReport = () => {
     const {register,handleSubmit,formState: { errors },} = useForm();
     const navigate = useNavigate();
     const onSubmit = (data) => {
-        console.log(data);
+        // console.log(data);
         
         navigate(`/batch/${data.year}/${data.branch}`);
     };

@@ -3,12 +3,14 @@ import { Table, Button, Space } from 'antd';
 import { useState } from 'react';
 import { useAuth } from '../../../store/authContext';
 import DeleteModal from './modals/DeleteModal'
+import { useNavigate } from "react-router-dom";
+
 const BatchConfigTable = ({ batches, handleDelete }) => {
     const { authState } = useAuth();
     const [isDelete, setIsDelete] = useState(false);
     const [year, setYear] = useState(null);
     const [branch, setBranch] = useState(null);
-
+    const navigate = useNavigate();
     const columns = [
         {
             title: 'Year',
@@ -32,7 +34,12 @@ const BatchConfigTable = ({ batches, handleDelete }) => {
                 <Space size="middle">
                     <Button
                         type="default"
-                        onClick={() => console.log('Edit clicked for row:', record)}
+                        onClick={
+                            () => {
+                                // console.log('Edit clicked for row:', record);
+                                navigate(`/super/edit/${record.year}/${record.branch}`);
+                            }
+                        }
                     >
                         Edit
                     </Button>

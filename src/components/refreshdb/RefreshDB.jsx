@@ -10,7 +10,7 @@ function RefreshDB() {
         try {
             const response = await fetch(`https://contestinfo-m59t.onrender.com/data`);
             const data = await response.json();
-            console.log('data: ', data);
+            // console.log('data: ', data);
             setIsRefreshed(true);
         } catch (error) {
             console.error('Error refreshing database:', error);

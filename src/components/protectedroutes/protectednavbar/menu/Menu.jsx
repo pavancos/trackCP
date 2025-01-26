@@ -4,8 +4,11 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../../../../store/authContext';
+
 
 function Menu({ toggleMenu }) {
+  const { logout } = useAuth();
 
     useEffect(() => {
         gsap.set('.full-menu nav ul li', {
@@ -33,13 +36,22 @@ function Menu({ toggleMenu }) {
                         <Link to="/">Home</Link>
                     </li> */}
                     <li>
-                        <Link onClick={toggleMenu} to="batchreport">Batch Report</Link>
+                        <Link onClick={toggleMenu} to="/batchreport">Batch Report</Link>
                     </li>
                     <li>
-                        <Link onClick={toggleMenu} to="studentreport">Student Report</Link>
+                        <Link onClick={toggleMenu} to="/studentreport">Student Report</Link>
                     </li>
                     <li>
-                        <Link onClick={toggleMenu} to="playground">Logout</Link>
+                        <button
+                            onClick={
+                                async () => {
+                                    await logout();
+                                    toggleMenu();
+                                }
+                            }
+                        >
+                            Logout
+                        </button>
                     </li>
                     {/* <li>
                         <Link onClick={toggleMenu} to="compare">Compare</Link>

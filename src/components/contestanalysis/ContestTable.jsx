@@ -65,9 +65,9 @@ const ContestTable = ({ contestData }) => {
         getAvailableBatches();        
     },[])
 
-    useEffect(()=>{
-        console.log(yearsBranches)
-    },[yearsBranches])
+    // useEffect(()=>{
+    //     console.log(yearsBranches)
+    // },[yearsBranches])
 
     let columns = [
         {

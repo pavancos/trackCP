@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Menu from './protectednavbar/menu/Menu';
 import Loading from '../Loading';
+import BackToTop from '../../assets/Top.svg';
 const ProtectedRoutes = () => {
   const location = useLocation();
 
@@ -40,7 +41,6 @@ const ProtectedRoutes = () => {
   const toggleMenu = () => {
     setHamburgerIsOpen(!hamburgerIsOpen);
   };
-  const isHomePage = location.pathname === '/super/dashboard';
 
   useEffect(() => {
     if (hamburgerIsOpen) {
@@ -97,8 +97,6 @@ const ProtectedRoutes = () => {
           </div>
         }
         {
-
-          !isHomePage &&
           <button
             onClick={handleScrollToTop}
             className={`back-to-top ${showButton ? "show" : "hide"}`}

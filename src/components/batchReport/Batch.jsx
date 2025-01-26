@@ -43,7 +43,7 @@ function Batch() {
                 }
                 const data = await response.json();
                 setBatchData(filterBatch(data));
-                console.log(data);
+                // console.log(data);
             }catch(err){
                 console.log(err);
                 setError(err.message);

@@ -17,6 +17,7 @@ import Login from './components/auth/Login';
 import Dashboard from './components/super/Dashboard';
 import { AuthProvider } from './store/authContext';
 import ProtectedRoutes from './components/protectedroutes/ProtectedRoute';
+import StudentConfig from './components/super/studentconfig/StudentConfig';
 import { ToastBar, Toaster } from 'react-hot-toast';
 
 function App() {
@@ -51,8 +52,12 @@ function App() {
       element: <ProtectedRoutes/>,
       children:[
         {
-          path:'dashboard',
+          path:'',
           element:<Dashboard/>
+        },
+        {
+          path:"edit/:year/:branch",          
+          element:<StudentConfig/>
         }
       ]
     }

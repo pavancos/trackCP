@@ -43,10 +43,10 @@ export const AuthProvider = ({ children }) => {
         if (token) {
             verifyUser(token).then((data) => {
                 if (data.isAuthenticated) {
-                    console.log(data)
+                    // console.log(data)
                     setAuthState(data);
                 } else {
-                    console.log(data, "Token verification failed: Context");
+                    // console.log(data, "Token verification failed: Context");
                     logout();
                 }
             });

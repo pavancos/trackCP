@@ -7,7 +7,7 @@ import {deleteBatch} from '../batchConfigHandler'
 
 
 const DeleteModal = ({ setIsDelete, year, branch, handleDelete }) => {
-    console.log(year, branch);
+    // console.log(year, branch);
     const { authState } = useAuth();
     const modalRef = useRef(null);
 

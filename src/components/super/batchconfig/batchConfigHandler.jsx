@@ -4,7 +4,8 @@ export async function deleteBatch(year, branch, token){
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         }
-        let res = await fetch("http://localhost:4000/v2/admin/deleteBatch",{
+        // let res = await fetch("http://localhost:4000/v2/admin/deleteBatch",{
+        let res = await fetch("https://v2contestinfo.onrender.com/v2/admin/deleteBatch",{
             method:'DELETE',
             headers,
             body: JSON.stringify({

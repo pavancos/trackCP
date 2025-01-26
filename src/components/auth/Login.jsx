@@ -18,7 +18,8 @@ const Login = () => {
   const onLogin = async (data) => {
     const { username, password } = data;
     try {
-      const response = await fetch('http://localhost:4000/v2/auth/login', {
+      // const response = await fetch('http://localhost:4000/v2/auth/login', {
+      const response = await fetch('https://v2contestinfo.onrender.com/v2/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -30,7 +31,7 @@ const Login = () => {
 
       if (!res.error) {
         login(res.token, res.username, res.role);
-        navigate('/super/dashboard');
+        navigate('/super');
       } else {
         console.error(res);
         toast.error(res.message);

@@ -2,8 +2,9 @@ import React, { useEffect } from 'react'
 import gsap from 'gsap'
 import './Home.css'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { Link } from 'react-router-dom'
 
-function HomeFooter () {
+function HomeFooter() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
     gsap.from('.footer-text', {
@@ -28,15 +29,18 @@ function HomeFooter () {
   return (
     <div>
       <div className='footer-page font-advent font-mediumbold'>
-        <span className='footer-text'>t</span>
-        <span className='footer-text'>r</span>
-        <span className='footer-text'>a</span>
-        <span className='footer-text'>c</span>
-        <span className='footer-text pe-5'>k</span>
-        <span className='footer-text'>c</span>
-        <span className='footer-text'>o</span>
-        <span className='footer-text'>d</span>
-        <span className='footer-text'>e</span>
+          <span className='footer-text'>t</span>
+          <span className='footer-text'>r</span>
+          <span className='footer-text'>a</span>
+          <span className='footer-text'>c</span>
+          <span className='footer-text pe-5'>k</span>
+        <Link to="/login">
+          <span className='footer-text'>c</span>
+          <span className='footer-text'>o</span>
+          <span className='footer-text'>d</span>
+          <span className='footer-text'>e</span>
+        </Link>
+
         {/* <h1 className='footer-text text-8xl'>Track Code</h1> */}
       </div>
       <div className='devNames font-sans flex gap-3 px-3 sm:px-7'>

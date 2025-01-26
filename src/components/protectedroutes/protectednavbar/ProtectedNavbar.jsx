@@ -33,13 +33,13 @@ const ProtectedNavbar = ({ toggleMenu, hamburgerIsOpen }) => {
       <nav className="hidden sm:flex">
         <ul className="flex flex-row justify-evenly gap-8">
           <li>
-            <Link to="batchreport">Batch Report</Link>
+            <Link to="/batchreport">Batch Report</Link>
           </li>
           <li>
-            <Link to="studentreport">Student Report</Link>
+            <Link to="/studentreport">Student Report</Link>
           </li>
           <li>
-            <Link to="contestanalysis">Contest Analysis</Link>
+            <Link to="/contestanalysis">Contest Analysis</Link>
           </li>
           <li>
             <button 
