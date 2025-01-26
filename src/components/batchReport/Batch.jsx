@@ -48,7 +48,7 @@ function Batch() {
                 console.log(err);
                 setError(err.message);
             }finally{
-                console.log("Batch Fetched");
+                // console.log("Batch Fetched");
                 setIsFetched(true);
             }
         }

@@ -6,7 +6,7 @@ export function filterBatch(BatchData) {
             let lcRating = stu.leetcode.contests[stu.leetcode.contests.length - 1].performance.rating;
             let ccRating = stu.codechef.contests[stu.codechef.contests.length - 1].performance.rating;
             let cfRating = stu.codeforces.contests[stu.codeforces.contests.length - 1].performance.rating;
-            console.log(stu.leetcode.contests.length)
+            // console.log(stu.leetcode.contests.length)
             // console.log('stu.leetcode.contests[stu.leetcode.contests.length - 1]: ', stu.leetcode.contests[stu.leetcode.contests.length - 1]);
             let data = {
                 rollNo: stu.rollNo,
@@ -78,4 +78,18 @@ export function filterBatch(BatchData) {
 
     });
     return AllData;
+}
+
+export async function getYearsBranches(){
+    try{
+        const res = await fetch('https://v2contestinfo.onrender.com/v2/batch/getYearsBranches');
+        const data = await res.json();
+        return data;
+    }catch(err){
+        console.log(err);
+        return {
+            years:[],
+            branches:[]
+        }
+    }
 }

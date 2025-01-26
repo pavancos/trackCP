@@ -108,22 +108,22 @@ const Student = () => {
                     <h3>Branch: {studentInfo.branch}</h3>
                     <h2>Passout Year: {studentInfo.year}</h2>
                     <h2>Codechef :   
-                        <a className="ml-1 text-blue-600 hover:text-blue-800 hover:underline" href={`https://www.codechef.com/users/${studentInfo.codechef.username}`}>{studentInfo.codechef.username}</a>
+                        <a className="ml-1 text-blue-600 hover:text-blue-800 hover:underline" href={`https://www.codechef.com/users/${studentInfo.codechef.username}`} target="_blank">{studentInfo.codechef.username}</a>
                     </h2>
                     <h2>Leetcode : 
-                        <a className="ml-1 text-blue-600 hover:text-blue-800 hover:underline" href={`https://leetcode.com/u/${studentInfo.leetcode.username}`}>{studentInfo.leetcode.username}</a>
+                        <a className="ml-1 text-blue-600 hover:text-blue-800 hover:underline" href={`https://leetcode.com/u/${studentInfo.leetcode.username}`} target="_blank">{studentInfo.leetcode.username}</a>
                     </h2>
                     <h2>Codeforces : 
-                        <a className="ml-1 text-blue-600 hover:text-blue-800 hover:underline" href={`https://codeforces.com/profile/${studentInfo.codeforces.username}`}>{studentInfo.codeforces.username}</a>
+                        <a className="ml-1 text-blue-600 hover:text-blue-800 hover:underline" href={`https://codeforces.com/profile/${studentInfo.codeforces.username}`} target="_blank">{studentInfo.codeforces.username}</a>
                     </h2>
                     <h2>InterviewBit : 
-                        <a className="ml-1 text-blue-600 hover:text-blue-800 hover:underline" href={`https://www.interviewbit.com/profile/${studentInfo.interviewbit.username}`}>{studentInfo.interviewbit.username}</a>
+                        <a className="ml-1 text-blue-600 hover:text-blue-800 hover:underline" href={`https://www.interviewbit.com/profile/${studentInfo.interviewbit.username}`} target="_blank">{studentInfo.interviewbit.username}</a>
                     </h2>
                     <h2>Hackerrank : 
-                        <a className="ml-1 text-blue-600 hover:text-blue-800 hover:underline" href={`https://www.hackerrank.com/profile/${studentInfo.hackerrank}`}>{studentInfo.hackerrank}</a>
+                        <a className="ml-1 text-blue-600 hover:text-blue-800 hover:underline" href={`https://www.hackerrank.com/profile/${studentInfo.hackerrank}`} target="_blank">{studentInfo.hackerrank}</a>
                     </h2>
                     <h2>Spoj : 
-                        <a className="ml-1 text-blue-600 hover:text-blue-800 hover:underline" href={`https://www.spoj.com/status/${studentInfo.spoj}`}>{studentInfo.spoj}</a>
+                        <a className="ml-1 text-blue-600 hover:text-blue-800 hover:underline" href={`https://www.spoj.com/status/${studentInfo.spoj}`} target="_blank">{studentInfo.spoj}</a>
                     </h2>
                 </div>
                 <div className="w-[500px] h-[300px] rounded-xl mr-3 my-3 ">

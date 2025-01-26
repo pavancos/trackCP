@@ -1,10 +1,25 @@
 import React, { useState, useRef } from "react";
 import { Table, Input, Button, Space } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
+import { useEffect } from "react";
+import { getYearsBranches } from "./BatchUtil";
 
 const BatchTable = ({ data }) => {
     const searchInput = useRef(null);
     const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
+    const [yearsBranches, setYearsBranches] = useState({ years: [], branches: [] });
+
+
+
+    useEffect(() => {
+        async function getAvailableBatches() {
+            let yearBranchDetails = await getYearsBranches()
+            let years = yearBranchDetails.years.map(year => ({ text: year, value: year }))
+            let branches = yearBranchDetails.branches.map(branch => ({ text: branch, value: branch }))
+            setYearsBranches({ years, branches })
+        }
+        getAvailableBatches();
+    }, [])
 
     const getColumnSearchProps = (dataIndex) => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -70,23 +85,14 @@ const BatchTable = ({ data }) => {
             title: "Year",
             dataIndex: "year",
             key: "year",
-            filters: [
-                { text: "2026", value: 2026 },
-                { text: "2025", value: 2025 },
-                { text: "2027", value: 2027 },
-            ],
+            filters: yearsBranches.years,
             onFilter: (value, record) => record.year === value,
         },
         {
             title: "Branch",
             dataIndex: "branch",
             key: "branch",
-            filters: [
-                { text: "CSE", value: "CSE" },
-                { text: "CSMD", value: "CSMD" },
-                { text: "IT", value: "IT" },
-                { text: "ECE", value: "ECE" },
-            ],
+            filters: yearsBranches.branches,
             onFilter: (value, record) => record.branch === value,
         },
         {
@@ -215,7 +221,7 @@ const BatchTable = ({ data }) => {
         <div className="px-1" style={{ overflowX: "auto" }}>
             <Table
                 columns={columns}
-                dataSource={data}
+                dataSource={data.map((item, index) => ({ ...item, key: item.rollNo || index }))}
                 pagination={{
                     current: pagination.current,
                     pageSize: pagination.pageSize,
