@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useAuth } from "../../store/authContext"
 import { getBatches } from "./handlers"
 import { Navigate, Link, useNavigate } from "react-router-dom"
-import BatchConfigTable from "./batchConfig/BatchConfigTable"
+import BatchConfigTable from "./batchconfig/BatchConfigTable"
 import AddAdminModal from "./modals/AddAdminModal";
 import AddBatch from "./modals/AddBatch"
 const Dashboard = () => {
@@ -30,7 +30,7 @@ const Dashboard = () => {
         <>
             <div className={`flex bg-slate-100 rounded-md m-3 py-2 md:flex-row  md:justify-around md:items-center `}>
                 <div className=" w-[300px] h-[300px] rounded-full bg-slate-200">
-                    
+
                 </div>
                 <div className={`flex flex-col gap-y-4 `}>
                     {
