@@ -124,14 +124,14 @@ const ContestTable = ({ contestData }) => {
             dataIndex: ["performance", "rank"],
             key: "rank",
             sorter: (a, b) => a.performance.rank - b.performance.rank,
-        },
-        {
-            title: "Delta",
-            dataIndex: ["performance", "delta"],
-            key: "delta",
-            sorter: (a, b) => a.performance.delta - b.performance.delta,
-            render : (text, record) => <DeltaComponent value={record.performance.delta} />
         }
+        // {
+        //     title: "Delta",
+        //     dataIndex: ["performance", "delta"],
+        //     key: "delta",
+        //     sorter: (a, b) => a.performance.delta - b.performance.delta,
+        //     render : (text, record) => <DeltaComponent value={record.performance.delta} />
+        // }
     ];
 
     if (contestData.contest.platform === "codechef") {

@@ -80,8 +80,6 @@ function Layout() {
           }
         </div>
       }
-      {/* Add Dynamic Content Here */}
-
       {
         hamburgerIsOpen == false &&
 
