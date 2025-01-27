@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { filterBatch } from './BatchUtil';
 import BatchTable from './BatchTable';
 import { set } from 'react-ga';
+import batchReportToXlsx from '../../utils/BatchReportXlsx';
 
 function Batch() {
     const { year, branch } = useParams();
@@ -70,7 +71,10 @@ function Batch() {
     }
     return (
         <div>
-            <h1 className='text-2xl font-bold text-center my-4'>{title}</h1>
+            <div className='flex flex-wrap justify-between items-center m-3'>
+                <h1 className='text-2xl font-bold text-center my-4'>{title}</h1>
+                <button onClick={()=>batchReportToXlsx(batchData,title)} className='btnNormal'>Download xlsx</button>
+            </div>
             { batchData &&  <BatchTable data={batchData}></BatchTable>}
         </div>
     )

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import ContestTable from './ContestTable';
 import toast from 'react-hot-toast';
+import contestAnalysisToXlsx from '../../utils/ContestAnalysisXlsx';
 
 const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
     const { register, handleSubmit } = useForm();
@@ -92,11 +93,14 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
             <div>
                 {contestData && (
                     <div>
-                        <a href={contestData.contest.link} target="_blank" >
-                            <h1 className="text-2xl font-semibold text-blue-700 text-center mb-3">
-                                {contestData.contest.contestName} - {contestData.contest.date}
-                            </h1>
-                        </a>
+                        <div className='flex flex-wrap gap-2 justify-between items-center m-3'>
+                            <a href={contestData.contest.link} target="_blank" >
+                                <h1 className="text-2xl font-semibold text-blue-700 text-center">
+                                    {contestData.contest.contestName} - {contestData.contest.date}
+                                </h1>
+                            </a>
+                            <button onClick={()=>contestAnalysisToXlsx(contestData)} className='btnNormal mb-2'>Download xlsx</button>
+                        </div>
                         <ContestTable contestData={contestData} />
                     </div>
                 )}
