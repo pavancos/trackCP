@@ -6,6 +6,7 @@ import Loading from "../../Loading";
 import StudentConfigTable from "./StudentConfigTable";
 import { useNavigate } from "react-router-dom";
 import AddStudent from "../modals/AddStudent";
+import usernamesToXlsx from "../../../utils/UsernamesXlsx";
 
 const StudentConfig = () => {
     const { year, branch } = useParams();
@@ -52,14 +53,15 @@ const StudentConfig = () => {
 
     return (
         <div>
-            <div className="flex justify-between items-center px-3">
+            <div className="flex flex-wrap gap-2 justify-between items-center px-3 my-2">
                 <h1 className="text-2xl font-semibold">
                     Students Config {year}-{branch}
                 </h1>
-                <div>
-                    <button className="btnSubmit mb-2 w-min" onClick={handleAddStudent}>
+                <div className="flex flex-wrap gap-2">
+                    <button className="btnNormal" onClick={handleAddStudent}>
                         Add New Student
                     </button>
+                    <button onClick={()=>usernamesToXlsx(students,year,branch)} className="btnNormal">Download Xlsx</button>
                 </div>
             </div>
             <StudentConfigTable students={students} setStudents={setStudents} onEdit={handleEditStudent} year={year} branch={branch} />
