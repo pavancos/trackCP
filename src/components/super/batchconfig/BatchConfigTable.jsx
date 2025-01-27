@@ -45,6 +45,16 @@ const BatchConfigTable = ({ batches, handleDelete }) => {
                     </Button>
                     <Button
                         type="default"
+                        onClick={
+                            () => {
+                                navigate(`/batch/${record.year}/${record.branch}`);
+                            }
+                        }
+                    >
+                        View
+                    </Button>
+                    <Button
+                        type="default"
                         danger
                         onClick={() => {
                             setYear(record.year);
@@ -65,6 +75,7 @@ const BatchConfigTable = ({ batches, handleDelete }) => {
                 columns={columns}
                 dataSource={batches.map((item, index) => ({ ...item, key: item.year + item.branch || index }))}
                 pagination={false}
+                scroll={{ y: 240 }}
             />
             {
                 isDelete && 

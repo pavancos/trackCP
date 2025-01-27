@@ -3,13 +3,14 @@ import { Table, Button, Input } from "antd";
 import Highlighter from "react-highlight-words";
 import { SearchOutlined } from "@ant-design/icons";
 import { deleteStudent } from "../modals/modalHandlers";
+import { refreshStudent } from '../handlers'
 import { useAuth } from "../../../store/authContext";
 import toast from "react-hot-toast";
-const StudentConfigTable = ({ students,setStudents, onEdit,year,branch }) => {
+const StudentConfigTable = ({ students, setStudents, onEdit, year, branch }) => {
     const [searchText, setSearchText] = useState("");
     const [searchedColumn, setSearchedColumn] = useState("");
     const [pageSize, setPageSize] = useState(20);
-    const {authState} = useAuth();
+    const { authState } = useAuth();
 
     let searchInput = null;
 
@@ -153,14 +154,41 @@ const StudentConfigTable = ({ students,setStudents, onEdit,year,branch }) => {
                         Edit
                     </Button>
                     <Button
-                        type="default"
+                        color=""
+                        variant="outlined"
+                        onClick={async () => {
+                            const promise = refreshStudent(record.rollNo, year, branch, authState.token);
+                            toast.promise(
+                                promise,
+                                {
+                                    loading: 'Refreshing...',
+                                    success: (res) => {
+                                        if (res.error) {
+                                            return `Error: ${res.message}`;
+                                        }
+                                        return res.message || 'Refresh successful!';
+                                    },
+                                    error: 'An error occurred while refreshing',
+                                },
+                                {
+                                    success: {
+                                        duration: 3000,
+                                    },
+                                }
+                            );
+                        }}
+                    >
+                        Refresh
+                    </Button>
+
+                    <Button
                         danger
-                        onClick={ async() => {
+                        onClick={async () => {
                             // console.log("Delete row:", record)
-                            const res = await deleteStudent(record.rollNo,year,branch,authState.token);
-                            if(res.error){
+                            const res = await deleteStudent(record.rollNo, year, branch, authState.token);
+                            if (res.error) {
                                 toast.error(res.message);
-                            }else{
+                            } else {
                                 toast.success(res.message);
                                 setStudents(students.filter(student => student.rollNo !== record.rollNo));
                             }

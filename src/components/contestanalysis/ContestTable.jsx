@@ -164,6 +164,8 @@ const ContestTable = ({ contestData }) => {
                     pageSize: pagination.pageSize,
                     onChange: handlePaginationChange,
                     total: data.length,
+                    pageSizeOptions: ["10", "50", "100", "200"],
+                    showSizeChanger: true,
                 }}
                 bordered={true}
                 scroll={{

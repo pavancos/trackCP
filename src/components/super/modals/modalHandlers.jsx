@@ -116,8 +116,8 @@ export async function deleteStudent(rollNo,year,branch,token){
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         }
-        // const response = await fetch('http://localhost:4000/v2/admin/deleteStudent',{
-        const response = await fetch('https://v2contestinfo.onrender.com/v2/admin/deleteStudent',{
+        const response = await fetch('http://localhost:4000/v2/admin/deleteStudent',{
+        // const response = await fetch('https://v2contestinfo.onrender.com/v2/admin/deleteStudent',{
             method: 'DELETE',
             headers,
             body: JSON.stringify({

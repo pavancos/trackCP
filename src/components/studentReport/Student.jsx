@@ -93,7 +93,7 @@ const Student = () => {
             <div
                 className={
                     `flex flex-col md:flex-row justify-between items-center
-                    border-2 rounded-xl bg-[#07070721] shadow-md
+                    border-2 rounded-xl bg-[#f5f5f5c7] shadow-sm
                     `
                 }
             >

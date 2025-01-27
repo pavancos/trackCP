@@ -1,7 +1,7 @@
 export async function getBatches(token) {
     try {
         // const response = await fetch('http://localhost:4000/v2/admin/batches', {
-            const response = await fetch('https://v2contestinfo.onrender.com/v2/admin/batches',{
+        const response = await fetch('https://v2contestinfo.onrender.com/v2/admin/batches', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -19,28 +19,61 @@ export async function getBatches(token) {
     }
 }
 
-export async function getStudents(year, branch, token){
+export async function getStudents(year, branch, token) {
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
     }
-    try{
+    try {
         // const response = await fetch('http://localhost:4000/v2/admin/students',{
-        const response = await fetch('https://v2contestinfo.onrender.com/v2/admin/students',{
-            method:'POST',
+        const response = await fetch('https://v2contestinfo.onrender.com/v2/admin/students', {
+            method: 'POST',
             headers,
-            body: JSON.stringify({year, branch})
+            body: JSON.stringify({ year, branch })
         });
         const res = await response.json();
-        if(res.error){
+        if (res.error) {
             return {
                 error: true,
                 message: "Something went wrong"
             };
         }
-        
+
         return res;
-    }catch(err){
+    } catch (err) {
+        console.log(err);
+        return {
+            error: true,
+            message: "Something went wrong"
+        };
+    }
+}
+
+export async function refreshStudent(rollNo, year, branch, token) {
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+    }
+    try {
+        // const response = await fetch('http://localhost:4000/v2/admin/refreshStudent',{
+        const response = await fetch('https://v2contestinfo.onrender.com/v2/admin/refreshStudent', {
+            method: 'PUT',
+            headers,
+            body: JSON.stringify({ rollNo, year, branch })
+        });
+        const res = await response.json();
+        if (res.error) {
+            return {
+                error: true,
+                message: "Something went wrong"
+            };
+        }
+
+        return {
+            error: false,
+            message: `Student ${rollNo} Refreshed Successfully`
+        };
+    } catch (err) {
         console.log(err);
         return {
             error: true,
