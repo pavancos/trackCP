@@ -36,6 +36,9 @@ function Menu({ toggleMenu }) {
                         <Link to="/">Home</Link>
                     </li> */}
                     <li>
+                        <Link onClick={toggleMenu} to="/super">Dashboard</Link>
+                    </li>
+                    <li>
                         <Link onClick={toggleMenu} to="/batchreport">Batch Report</Link>
                     </li>
                     <li>

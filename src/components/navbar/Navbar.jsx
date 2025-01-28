@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
+import { useAuth } from '../../store/authContext';
 
 const Navbar = ({ toggleMenu, hamburgerIsOpen }) => {
+    const { authState, logout } = useAuth();
 
   return (
     <header className={ `nav bg-blue-100 flex w-full flex-row gap-6 md:gap-0 md:flex-row items-center py-4 px-2 md:px-6
@@ -32,25 +34,54 @@ const Navbar = ({ toggleMenu, hamburgerIsOpen }) => {
 
       <nav className="hidden sm:flex">
         <ul className="flex flex-row justify-evenly gap-8">
-          <li>
-            <Link to="batchreport">Batch Report</Link>
-          </li>
-          <li>
-            <Link to="studentreport">Student Report</Link>
-          </li>
-          <li>
-            <Link to="playground">CP Report</Link>
-          </li>
-          <li>
-            <Link to="compare">Compare</Link>
-          </li>
-          <li>
-            <Link to="contestanalysis">Contest Analysis</Link>
-          </li>
-          <li>
-            <Link to="rewind">Rewind</Link>
-          </li>
-
+          {
+            !authState.isAuthenticated &&
+            // console.log('authState.isAuthenticated: ', authState.isAuthenticated)
+            <>
+              <li>
+                <Link to="batchreport">Batch Report</Link>
+              </li>
+              <li>
+                <Link to="studentreport">Student Report</Link>
+              </li>
+              <li>
+                <Link to="playground">CP Report</Link>
+              </li>
+              <li>
+                <Link to="compare">Compare</Link>
+              </li>
+              <li>
+                <Link to="contestanalysis">Contest Analysis</Link>
+              </li>
+              <li>
+                <Link to="rewind">Rewind</Link>
+              </li>
+            </>
+          }
+          {
+            authState.isAuthenticated &&
+            <>
+              <li>
+                <Link to="/super">Dashboard</Link>
+              </li>
+              <li>
+                <Link to="/batchreport">Batch Report</Link>
+              </li>
+              <li>
+                <Link to="/studentreport">Student Report</Link>
+              </li>
+              <li>
+                <Link to="/contestanalysis">Contest Analysis</Link>
+              </li>
+              <li>
+                <button 
+                  onClick={logout}
+                >
+                  Logout
+                </button>
+              </li>
+            </>
+          }
         </ul>
       </nav>
     </header>
