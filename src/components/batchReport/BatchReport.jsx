@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getYearsBranches } from "./BatchUtil";
+import Loading from '../Loading';
 const BatchReport = () => {
     const [yearsBranches, setYearsBranches] = useState({ years: [], branches: [] });
     const [isLoaded, setIsLoaded] = useState(false);
@@ -26,6 +27,12 @@ const BatchReport = () => {
 
     return (
         <div className="m-3">
+            {
+                !isLoaded && 
+                <div className="w-full h-[calc(100vh-80px)] flex flex-row justify-center items-center">
+                    <Loading />
+                </div>                    
+            }
             <form
                 className={`
                     p-6 max-w-md mx-auto border rounded-md mt-6 shadow-md

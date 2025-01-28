@@ -3,9 +3,10 @@ import { useAuth } from '../../store/authContext';
 import ProtectedNavbar from './protectednavbar/ProtectedNavbar';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import Menu from './protectednavbar/menu/Menu';
 import Loading from '../Loading';
 import BackToTop from '../../assets/Top.svg';
+import Navbar from '../navbar/Navbar';
+import Menu from '../navbar/menu/Menu';
 const ProtectedRoutes = () => {
   const location = useLocation();
 
@@ -77,7 +78,7 @@ const ProtectedRoutes = () => {
       >
         {
           <div>
-            <ProtectedNavbar
+            <Navbar
               toggleMenu={toggleMenu}
               hamburgerIsOpen={hamburgerIsOpen}
             />

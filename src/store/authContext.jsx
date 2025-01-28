@@ -37,21 +37,47 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem("role");       
     };
 
-
-    useEffect(() => {
+    const syncAuthState = async () => {
         const token = localStorage.getItem("token");
         if (token) {
-            verifyUser(token).then((data) => {
-                if (data.isAuthenticated) {
-                    // console.log(data)
-                    setAuthState(data);
-                } else {
-                    // console.log(data, "Token verification failed: Context");
-                    logout();
-                }
-            });
+            const data = await verifyUser(token);
+            if (data.isAuthenticated) {
+                setAuthState(data);
+            } else {
+                logout();
+            }
+        } else {
+            logout();
         }
+    };
+    useEffect(() => {
+        syncAuthState();
+        const handleStorageChange = (e) => {
+            if (e.key === "token") {
+                syncAuthState();
+            }
+        };
+        window.addEventListener("storage", handleStorageChange);
+        return () => {
+            window.removeEventListener("storage", handleStorageChange);
+        };
     }, []);
+
+    // useEffect(() => {
+    //     const token = localStorage.getItem("token");
+    //     if (token) {
+    //         verifyUser(token).then((data) => {
+    //             console.log("hello");
+    //             if (data.isAuthenticated) {
+    //                 // console.log(data)
+    //                 setAuthState(data);
+    //             } else {
+    //                 // console.log(data, "Token verification failed: Context");
+    //                 logout();
+    //             }
+    //         });
+    //     }
+    // }, []);
     
 
     return (
