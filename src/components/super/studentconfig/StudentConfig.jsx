@@ -13,9 +13,9 @@ const StudentConfig = () => {
     const { authState } = useAuth();
     const [students, setStudents] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [isModalVisible, setIsModalVisible] = useState(false); // State for modal visibility
-    const [studentToEdit, setStudentToEdit] = useState(null); // State to hold the student data to edit
-    const [isEdit, setIsEdit] = useState(false); // State to track whether it’s add or edit
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [studentToEdit, setStudentToEdit] = useState(null);
+    const [isEdit, setIsEdit] = useState(false);
 
     useEffect(() => {
         if (authState.isAuthenticated) {
@@ -36,7 +36,7 @@ const StudentConfig = () => {
     }
     const handleAddStudent = () => {
         setIsEdit(false);
-        setStudentToEdit(null); // Ensure no student data is passed when adding new student
+        setStudentToEdit(null);
         setIsModalVisible(true);
     };
 
@@ -48,8 +48,27 @@ const StudentConfig = () => {
 
     const handleCloseModal = () => {
         setIsModalVisible(false);
-        setStudentToEdit(null); 
+        setStudentToEdit(null);
     };
+    const handleAddStudentJSON = (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const data = JSON.parse(e.target.result);
+                if (Array.isArray(data)) {
+                    setStudents([...students, ...data]);
+                } else {
+                    toast.error("Invalid JSON format. Expected an array.");
+                }
+            } catch (error) {
+                toast.error("Error parsing JSON: " + error.message);
+            }
+        };
+        reader.readAsText(file);
+    };
+
 
     return (
         <div>
@@ -61,7 +80,16 @@ const StudentConfig = () => {
                     <button className="btnNormal" onClick={handleAddStudent}>
                         Add New Student
                     </button>
-                    <button onClick={()=>usernamesToXlsx(students,year,branch)} className="btnNormal">Download Xlsx</button>
+                    <label className="btnNormal">
+                        Add using JSON
+                        <input
+                            type="file"
+                            accept=".json"
+                            onChange={handleAddStudentJSON}
+                            className="hidden"
+                        />
+                    </label>
+                    <button onClick={() => usernamesToXlsx(students, year, branch)} className="btnNormal">Download Xlsx</button>
                 </div>
             </div>
             <StudentConfigTable students={students} setStudents={setStudents} onEdit={handleEditStudent} year={year} branch={branch} />

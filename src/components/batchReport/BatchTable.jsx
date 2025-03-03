@@ -6,7 +6,7 @@ import { getYearsBranches } from "./BatchUtil";
 
 const BatchTable = ({ data }) => {
     const searchInput = useRef(null);
-    const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
+    const [pagination, setPagination] = useState({ current: 1, pageSize: 50 });
     const [yearsBranches, setYearsBranches] = useState({ years: [], branches: [] });
 
 
@@ -225,8 +225,10 @@ const BatchTable = ({ data }) => {
                 pagination={{
                     current: pagination.current,
                     pageSize: pagination.pageSize,
+                    pageSizeOptions: ["50", "100", "200", "300"],
                     onChange: handlePaginationChange,
                     total: data.length,
+                    showSizeChanger: true
                 }}
                 bordered={true}
                 scroll={{
