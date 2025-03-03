@@ -13,6 +13,12 @@ const Login = () => {
       password: '',
     },
   });
+
+  useEffect(() => {
+    if (authState.isAuthenticated) {
+      navigate('/super');
+    }
+  }, [authState.isAuthenticated, navigate]);
   
 
   const onLogin = async (data) => {

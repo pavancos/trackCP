@@ -3,6 +3,7 @@ import { Table, Input, Button, Space } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { useEffect } from "react";
 import { getYearsBranches } from "./BatchUtil";
+import { render } from "react-dom";
 
 const BatchTable = ({ data }) => {
     const searchInput = useRef(null);
@@ -74,6 +75,7 @@ const BatchTable = ({ data }) => {
             key: "rollNo",
             ...getColumnSearchProps("rollNo"),
             fixed: "left",
+            render: (text) => <a className="text-blue-800 font-semibold hover:underline hover:text-blue-800" href={`/student/${text}`}>{text}</a>,
         },
         {
             title: "Name",
@@ -225,10 +227,10 @@ const BatchTable = ({ data }) => {
                 pagination={{
                     current: pagination.current,
                     pageSize: pagination.pageSize,
-                    pageSizeOptions: ["50", "100", "200", "300"],
+                    pageSizeOptions: ["20", "50", "200", "300"],
                     onChange: handlePaginationChange,
                     total: data.length,
-                    showSizeChanger: true
+                    showSizeChanger: true,
                 }}
                 bordered={true}
                 scroll={{

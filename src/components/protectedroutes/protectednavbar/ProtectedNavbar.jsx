@@ -33,6 +33,9 @@ const ProtectedNavbar = ({ toggleMenu, hamburgerIsOpen }) => {
       <nav className="hidden sm:flex">
         <ul className="flex flex-row justify-evenly gap-8">
           <li>
+            <Link to="/super">Dashboard</Link>
+          </li>
+          <li>
             <Link to="/batchreport">Batch Report</Link>
           </li>
           <li>

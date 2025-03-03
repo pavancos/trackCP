@@ -4,8 +4,10 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../../../store/authContext'
 
 function Menu({ toggleMenu }) {
+    const { authState, logout } = useAuth();    
 
     useEffect(() => {
         gsap.set('.full-menu nav ul li', {
@@ -32,24 +34,56 @@ function Menu({ toggleMenu }) {
                     {/* <li>
                         <Link to="/">Home</Link>
                     </li> */}
-                    <li>
-                        <Link onClick={toggleMenu} to="batchreport">Batch Report</Link>
-                    </li>
-                    <li>
-                        <Link onClick={toggleMenu} to="studentreport">Student Report</Link>
-                    </li>
-                    <li>
-                        <Link onClick={toggleMenu} to="playground">CP Report</Link>
-                    </li>
-                    <li>
-                        <Link onClick={toggleMenu} to="compare">Compare</Link>
-                    </li>
-                    <li>
-                        <Link onClick={toggleMenu} to="contestanalysis">Contest Analysis</Link>
-                    </li>
-                    <li>
-                        <Link onClick={toggleMenu} to="rewind">Rewind</Link>
-                    </li>
+                    {   
+                        !authState.isAuthenticated &&
+                        <>
+                            <li>
+                                <Link onClick={toggleMenu} to="batchreport">Batch Report</Link>
+                            </li>
+                            <li>
+                                <Link onClick={toggleMenu} to="studentreport">Student Report</Link>
+                            </li>
+                            <li>
+                                <Link onClick={toggleMenu} to="playground">CP Report</Link>
+                            </li>
+                            <li>
+                                <Link onClick={toggleMenu} to="compare">Compare</Link>
+                            </li>
+                            <li>
+                                <Link onClick={toggleMenu} to="contestanalysis">Contest Analysis</Link>
+                            </li>
+                            <li>
+                                <Link onClick={toggleMenu} to="rewind">Rewind</Link>
+                            </li>
+                        </>
+                    }
+                    {   
+                        authState.isAuthenticated &&
+                        <>
+                            <li>
+                                <Link onClick={toggleMenu} to="/super">Dashboard</Link>
+                            </li>
+                            <li>
+                                <Link onClick={toggleMenu} to="/batchreport">Batch Report</Link>
+                            </li>
+                            <li>
+                                <Link onClick={toggleMenu} to="/studentreport">Student Report</Link>
+                            </li>
+                            <li>
+                                <Link onClick={toggleMenu} to="/contestanalysis">Contest Analysis</Link>
+                            </li>
+                            <li>
+                                <button 
+                                onClick={() => {
+                                    toggleMenu()
+                                    logout()
+                                }}
+                                >
+                                Logout
+                                </button>
+                            </li>
+                        </>
+                    }
                 </ul>
             </nav>
         </div>

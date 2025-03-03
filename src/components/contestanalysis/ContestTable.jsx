@@ -86,6 +86,7 @@ const ContestTable = ({ contestData }) => {
             key: "rollNo",
             ...getColumnSearchProps("rollNo"),
             fixed: "left",
+            render: (text) => <a className="text-blue-800 font-semibold hover:underline hover:text-blue-800" href={`/student/${text}`}>{text}</a>,
         },
         {
             title: "Name",
