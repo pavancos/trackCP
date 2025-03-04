@@ -14,7 +14,8 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
 
     async function fetchContests() {
         try {
-            const res = await fetch('https://v2contestinfo.onrender.com/v2/contest/getContests');
+            // const res = await fetch('https://v2contestinfo.onrender.com/v2/contest/getContests');
+            const res = await fetch('https://contestinfov2.vercel.app/v2/contest/getContests');
             const data = await res.json();
             setContests(data.contests);
             // console.log('data.contests: ', data.contests);
@@ -38,7 +39,8 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
         try {
             // if 404 print toast saying contest not found
             // let res = await fetch('http://localhost:4000/v2/contest?contestName=' + data.contestName);
-            let res = await fetch('https://v2contestinfo.onrender.com/v2/contest/id/'+data._id);
+            // let res = await fetch('https://v2contestinfo.onrender.com/v2/contest/id/'+data._id);
+            let res = await fetch('https://contestinfov2.vercel.app/v2/contest/id/'+data._id);
             // let res = await fetch('http://localhost:4000/v2/contest/id/'+data._id);
             res.json().then((data) => {
                 setContestData(data);

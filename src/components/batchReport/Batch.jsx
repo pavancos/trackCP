@@ -39,7 +39,8 @@ function Batch() {
                     }
                 }
                 // const response = await fetch(`http://localhost:4000/v2/batch${query}`,{
-                const response = await fetch(`https://v2contestinfo.onrender.com/v2/batch${query}`,{
+                // const response = await fetch(`https://v2contestinfo.onrender.com/v2/batch${query}`,{
+                const response = await fetch(`https://contestinfov2.vercel.app/v2/batch${query}`,{
                     method: 'GET'
                 });
                 if(!response.ok){
