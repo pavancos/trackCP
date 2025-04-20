@@ -114,24 +114,44 @@ const StudentConfigTable = ({ students, setStudents, onEdit, year, branch }) => 
             dataIndex: "leetcode",
             key: "leetcode",
             width: 150,
+            render: (text, record) => (
+                <span className={ `${record.isError?.leetcode?"text-red-600":"inherit"}` }>
+                    {text}
+                </span>
+            ),
         },
         {
             title: "CodeChef",
             dataIndex: "codechef",
             key: "codechef",
             width: 150,
+            render: (text, record) => (
+                <span className={ `${record.isError?.codechef?"text-red-600":"inherit"}` }>
+                    {text}
+                </span>
+            ),
         },
         {
             title: "CodeForces",
             dataIndex: "codeforces",
             key: "codeforces",
             width: 150,
+            render: (text, record) => (
+                <span className={ `${record.isError?.codeforces?"text-red-600":"inherit"}` }>
+                    {text}
+                </span>
+            ),
         },
         {
             title: "InterviewBit",
             dataIndex: "interviewbit",
             key: "interviewbit",
             width: 150,
+            render: (text, record) => (
+                <span className={ `${record.isError?.interviewbit?"text-red-600":"inherit"}` }>
+                    {text}
+                </span>
+            ),
         },
         {
             title: "HackerRank",
@@ -216,6 +236,7 @@ const StudentConfigTable = ({ students, setStudents, onEdit, year, branch }) => 
                 interviewbit: student.interviewbit.username,
                 hackerrank: student.hackerrank,
                 spoj: student.spoj,
+                isError: student.isError
             }))}
             pagination={{
                 pageSize: pageSize,
@@ -225,6 +246,10 @@ const StudentConfigTable = ({ students, setStudents, onEdit, year, branch }) => 
             }}
             scroll={{ x: "max-content" }}
             style={{ width: "100%" }}
+            rowClassName={(record) => {
+                const hasError = Object.values(record.isError || {}).some((value) => value === true);
+                return hasError ? "bg-red-200" : "";
+            }}
         />
     );
 };
