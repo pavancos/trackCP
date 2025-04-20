@@ -15,7 +15,7 @@ const DeltaComponent = ({ value }) => {
 
 const ContestTable = ({ contestData }) => {
     const searchInput = useRef(null);
-    const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
+    const [pagination, setPagination] = useState({ current: 1, pageSize: 50 });
     const [yearsBranches, setYearsBranches] = useState({ years: [], branches: [] });
 
 
@@ -165,7 +165,7 @@ const ContestTable = ({ contestData }) => {
                     pageSize: pagination.pageSize,
                     onChange: handlePaginationChange,
                     total: data.length,
-                    pageSizeOptions: ["10", "50", "100", "200"],
+                    pageSizeOptions: ["50", "100", "200"],
                     showSizeChanger: true,
                 }}
                 bordered={true}

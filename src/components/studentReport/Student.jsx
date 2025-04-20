@@ -17,7 +17,8 @@ const Student = () => {
             try {
                 rollNo = rollNo.toUpperCase();
                 const response = await fetch(
-                    `https://v2contestinfo.onrender.com/v2/student/?rollNo=${rollNo}`
+                    // `https://v2contestinfo.onrender.com/v2/student/?rollNo=${rollNo}`
+                    `https://contestinfov2.vercel.app/v2/student/?rollNo=${rollNo}`
                 );
                 if (!response.ok) {
                     throw new Error("Student Not Found");

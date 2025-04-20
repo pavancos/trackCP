@@ -82,7 +82,8 @@ export function filterBatch(BatchData) {
 
 export async function getYearsBranches(){
     try{
-        const res = await fetch('https://v2contestinfo.onrender.com/v2/batch/getYearsBranches');
+        // const res = await fetch('https://v2contestinfo.onrender.com/v2/batch/getYearsBranches');
+        const res = await fetch('https://contestinfov2.vercel.app/v2/batch/getYearsBranches');
         const data = await res.json();
         return data;
     }catch(err){
