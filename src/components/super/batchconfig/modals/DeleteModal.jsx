@@ -6,7 +6,7 @@ import { useAuth } from "../../../../store/authContext";
 import {deleteBatch} from '../batchConfigHandler'
 
 
-const DeleteModal = ({ setIsDelete, year, branch, handleDelete }) => {
+const DeleteModal = ({ setIsDelete, year, branch, handleDelete,isView , viewName}) => {
     // console.log(year, branch);
     const { authState } = useAuth();
     const modalRef = useRef(null);
@@ -46,7 +46,9 @@ const DeleteModal = ({ setIsDelete, year, branch, handleDelete }) => {
                     <h1 className="text-2xl font-semibold text-black-700 text-center">Are You Sure?</h1>
                     <img onClick={() => setIsDelete(false)} src={closeImg} className="w-5 mt-1 hover:cursor-pointer" alt="" />
                 </div>
-                <h1 className="text-xl mb-3">You are going to clear {year}-{branch} Batch</h1>
+                {
+                    isView ? <h1 className="text-xl mb-3">You are going to clear {viewName} View</h1> : <h1 className="text-xl mb-3">You are going to clear {year}-{branch} Batch</h1>
+                }
                 <div className="flex gap-x-2">
                     <button
                         onClick={()=>{

@@ -4,45 +4,67 @@ import Loading from '../Loading';
 import { useState } from 'react';
 import { filterBatch } from './BatchUtil';
 import BatchTable from './BatchTable';
-import { set } from 'react-ga';
 import batchReportToXlsx from '../../utils/BatchReportXlsx';
 
 function Batch() {
-    const { year, branch } = useParams();
+    const { year, branch, name } = useParams();
     const [isFetched, setIsFetched] = useState(false);
     const [error, setError] = useState(null);
     const [batchData, setBatchData] = useState(null);
     const [title, setTitle] = useState('');
     
+    
     useEffect(()=>{
         const fetchData = async ()=>{
             try{
                 let query = '';
-                if (year==='elite' && branch===undefined){
-                    query = '/elite';
-                    setTitle('Elite');
-                }else if(year === 'all' || year===undefined){
-                    if(branch === 'all'|| branch===undefined){
-                        query = '';
-                        setTitle('PVPSIT');
-                    }else if(branch){
-                        query = `/branch?branch=${branch}`;
-                        setTitle(branch);
-                    }
+                if(name){
+                    query = `/name?name=${name}`;
+                    let viewName = name.split('-').map(word=>{
+                        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                    }).join(' ');
+                    viewName+="'s View"
+                    setTitle(viewName)
                 }else{
-                    if(branch === 'all' || branch===undefined){
-                        query = `/year?year=${year}`;
-                        setTitle(year);
-                    }else if(branch){
-                        setTitle(`${year} - ${branch}`);
-                        query = `/yearBranch?year=${year}&branch=${branch}`;
+                    if (year==='elite' && branch===undefined){
+                        query = '/elite';
+                        setTitle('Elite');
+                    }else if(year === 'all' || year===undefined){
+                        if(branch === 'all'|| branch===undefined){
+                            query = '';
+                            setTitle('PVPSIT');
+                        }else if(branch){
+                            query = `/branch?branch=${branch}`;
+                            setTitle(branch);
+                        }
+                    }else{
+                        if(branch === 'all' || branch===undefined){
+                            query = `/year?year=${year}`;
+                            setTitle(year);
+                        }else if(branch){
+                            setTitle(`${year} - ${branch}`);
+                            query = `/yearBranch?year=${year}&branch=${branch}`;
+                        }
                     }
                 }
                 // const response = await fetch(`http://localhost:4000/v2/batch${query}`,{
                 // const response = await fetch(`https://v2contestinfo.onrender.com/v2/batch${query}`,{
-                const response = await fetch(`https://contestinfov2.vercel.app/v2/batch${query}`,{
-                    method: 'GET'
-                });
+                let response;
+                if(name){
+                    response = await fetch(`https://contestinfov2.vercel.app/v2/batch/view`,{
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            name:name
+                        })
+                    });
+                }else{
+                    response = await fetch(`https://contestinfov2.vercel.app/v2/batch${query}`,{
+                        method: 'GET'
+                    });
+                }
                 if(!response.ok){
                     throw new Error("Batch Not Found");
                 }

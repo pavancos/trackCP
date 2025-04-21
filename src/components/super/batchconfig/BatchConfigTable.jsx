@@ -75,7 +75,7 @@ const BatchConfigTable = ({ batches, handleDelete }) => {
                 columns={columns}
                 dataSource={batches.map((item, index) => ({ ...item, key: item.year + item.branch || index }))}
                 pagination={false}
-                scroll={{ y: 240 }}
+                scroll={{ x: 'max-content' }}
             />
             {
                 isDelete && 

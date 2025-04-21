@@ -19,6 +19,7 @@ import { AuthProvider } from './store/authContext';
 import ProtectedRoutes from './components/protectedroutes/ProtectedRoute';
 import StudentConfig from './components/super/studentconfig/StudentConfig';
 import { ToastBar, Toaster } from 'react-hot-toast';
+import ViewConfig from './components/super/viewconfig/ViewConfig';
 
 function App() {
   const router = createBrowserRouter([
@@ -37,6 +38,10 @@ function App() {
             { path: ':year', element: <Batch /> },
             { path: ':year/:branch', element: <Batch /> }
           ]
+        },
+        {
+          path:'view/:name',
+          element:<Batch/>
         },
         { path: 'refreshdb', element: <RefreshDB /> },
         { path: 'playground', element: <Play /> },
@@ -58,6 +63,10 @@ function App() {
         {
           path:"edit/:year/:branch",          
           element:<StudentConfig/>
+        },
+        {
+          path:"editview/:viewName",
+          element:<ViewConfig/>
         }
       ]
     }
