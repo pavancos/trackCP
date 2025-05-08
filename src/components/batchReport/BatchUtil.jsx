@@ -4,7 +4,7 @@ export function filterBatch(BatchData) {
     BatchData.forEach(stu => {
         try {
             let lcRating = stu.leetcode.contests[stu.leetcode.contests.length - 1].performance.rating;
-            let ccRating = stu.codechef.contests[stu.codechef.contests.length - 1].performance.rating;
+            let ccRating = stu.codechef.contests[0].performance.rating;
             let cfRating = stu.codeforces.contests[stu.codeforces.contests.length - 1].performance.rating;
             // console.log(stu.leetcode.contests.length)
             // console.log('stu.leetcode.contests[stu.leetcode.contests.length - 1]: ', stu.leetcode.contests[stu.leetcode.contests.length - 1]);
