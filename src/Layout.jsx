@@ -6,10 +6,17 @@ import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import BackToTop from './assets/Top.svg';
 import Menu from './components/navbar/menu/Menu';
+import ReactGA from 'react-ga4';
+
 
 function Layout() {
   const location = useLocation();
   // console.log('location: ', location);
+
+  useEffect(() => {
+    ReactGA.send({ hitType: 'pageview', page: location.pathname + location.search });
+  }, [location]);
+
 
   const [showButton, setShowButton] = useState(false);
 
