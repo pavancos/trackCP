@@ -4,6 +4,7 @@ import ContestTable from './ContestTable';
 import toast from 'react-hot-toast';
 import contestAnalysisToXlsx from '../../utils/ContestAnalysisXlsx';
 import { BE_VM } from '../../config';
+import { Helmet } from 'react-helmet-async';
 const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
     const { register, handleSubmit } = useForm();
 
@@ -57,6 +58,9 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
 
     return (
         <>
+            <Helmet>
+                <title>Contest Analysis | Track Code</title>
+            </Helmet>
             <div className="m-3">
                 <form
                     className="p-6 max-w-md mx-auto border rounded-md mt-6 shadow-md"

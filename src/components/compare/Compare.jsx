@@ -46,6 +46,7 @@
 import React, { useState } from 'react';
 import Play from '../playground/Play';
 import { useForm } from 'react-hook-form';
+import { Helmet } from 'react-helmet-async';
 
 const Compare = () => {
     const { register, handleSubmit } = useForm();
@@ -68,6 +69,9 @@ const Compare = () => {
 
     return (
         <>
+            <Helmet>
+                <title>Compare | Track Code</title>
+            </Helmet>
             <div className='max-w-lg mt-5 mx-auto p-4 mb-2 border rounded-md '>
                 <h1 className="text-2xl font-semibold text-blue-700 text-center mb-3">
                     Compare

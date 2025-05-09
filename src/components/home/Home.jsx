@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import UpcomingContests from './UpcomingContests'
 import BatchRepportSection from './BatchRepportSection'
 import HomeFooter from './HomeFooter'
+import { Helmet } from 'react-helmet-async'
 
 
 function Home() {
@@ -31,6 +32,10 @@ function Home() {
   }, [])
   return (
     <>
+    <Helmet>
+      <title>Track Code</title>
+      <meta name="description" content="Track Code is a platform to track your code and improve your coding skills. It provides various features like batch report, student report, playground, compare, and contest analysis." />
+    </Helmet>
       <div className='h-screen flex justify-center items-center'>
         <div className="grid grid-cols-8 grid-rows-3 auto-rows-fr grid-flow-row w-full h-1/2 md:w-2/3">
           <div className="bubble col-span-3 row-span-1  flex justify-center items-start">

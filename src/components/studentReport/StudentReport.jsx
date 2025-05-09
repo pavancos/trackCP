@@ -6,6 +6,7 @@ const Table = React.lazy(() => import('../Table'));
 import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 const StudentReport = () => {
 
     const navigate = useNavigate();
@@ -20,6 +21,9 @@ const StudentReport = () => {
 
     return (
         <>
+            <Helmet>
+                <title>Student Report | Track Code</title>
+            </Helmet>
             <div className='m-3'>
                 <form
                     className={`p-6 max-w-md mx-auto border rounded-md mt-6`}

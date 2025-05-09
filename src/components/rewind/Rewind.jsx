@@ -11,6 +11,7 @@ import { getProblemsSolved } from './utils/utilsRewind'
 import FullRewind from './FullRewind'
 import toast from 'react-hot-toast'
 import Navbar from '../navbar/Navbar'
+import { Helmet } from 'react-helmet-async'
 
 
 
@@ -381,6 +382,10 @@ function Rewind () {
   // }, [originalData])
 
   return (
+    <>
+    <Helmet>
+      <title>Rewind | Track Code</title>
+    </Helmet>
     <div className='flex w-full justify-center items-center'>
       {/* 
       isfeteched flase -> form
@@ -482,6 +487,7 @@ function Rewind () {
         </div>
       }
     </div>
+    </>
   )
 }
 

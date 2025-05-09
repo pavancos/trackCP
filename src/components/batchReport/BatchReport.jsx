@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { getYearsBranches } from './BatchUtil'
 import { getViews } from '../super/handlers'
 import Loading from '../Loading'
+import { Helmet } from 'react-helmet-async'
 const BatchReport = () => {
   const [yearsBranches, setYearsBranches] = useState({
     years: [],
@@ -52,6 +53,10 @@ const BatchReport = () => {
   }
 
   return (
+    <>
+    <Helmet>
+      <title>Batch Report | Track Code</title>
+    </Helmet>
     <div className='m-3'>
       {!isLoaded && (
         <div className='w-full h-[calc(100vh-80px)] flex flex-row justify-center items-center'>
@@ -136,6 +141,8 @@ const BatchReport = () => {
         </div>
       </form>
     </div>
+    </>
+
   )
 }
 

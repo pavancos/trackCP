@@ -7,6 +7,8 @@ import AtcoderChart from '../Charts/AtcoderChart';
 import Loading from '../Loading';
 import toast from 'react-hot-toast';
 import { Navigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import { useParams } from 'react-router-dom';
 const Play = ({ sno }) => {
     // console.log('sno: ', sno);
     const { register, handleSubmit } = useForm();
@@ -159,6 +161,12 @@ const Play = ({ sno }) => {
     };
 
     return (
+        <>
+        {sno === undefined && (
+            <Helmet>
+            <title>CP Report | Track Code</title>
+            </Helmet>
+        )}
         <div className="m-3">
             <form
                 onSubmit={handleSubmit(playGroundInput)}
@@ -276,6 +284,7 @@ const Play = ({ sno }) => {
                 </>
             )}
         </div>
+        </>
     );
 };
 
