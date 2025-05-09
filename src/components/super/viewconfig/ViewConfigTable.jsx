@@ -4,12 +4,29 @@ import { useState } from 'react';
 import { useAuth } from '../../../store/authContext';
 import DeleteModal from '../batchconfig/modals/DeleteModal'
 import { useNavigate } from "react-router-dom";
+import { refreshView } from '../handlers';
+import { toast } from 'react-hot-toast';
 
 const ViewConfigTable = ({ views, handleViewDelete }) => {
     const { authState } = useAuth();
     const [isDelete, setIsDelete] = useState(false);
     const [name, setName] = useState(null);
     const navigate = useNavigate();
+
+    async function handleRefreshView({viewName}){
+        try{
+            const response = await refreshView(viewName,authState.token)
+            if (response.error) {
+                toast.error(response.message || 'View Refresh Failed');
+            } else {
+                toast.success(response.message || 'Refresh Started for ' + viewName);
+            }
+        }
+        catch (error) {
+            console.error('Error during View refresh:', error);
+            toast.error('An error occurred during View refresh.');
+        }
+    }
     const columns = [
         {
             title: 'View Name',
@@ -56,6 +73,15 @@ const ViewConfigTable = ({ views, handleViewDelete }) => {
                         }}
                     >
                         Delete
+                    </Button>
+                    <Button
+                        type="default"
+                        danger
+                        onClick={() => {
+                            handleRefreshView({viewName: record.viewName});
+                        }}
+                    >
+                        Refresh
                     </Button>
                 </Space>
             ),

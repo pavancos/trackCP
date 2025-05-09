@@ -29,8 +29,8 @@ export async function deleteBatch(year, branch, token){
 }
 
 export async function refreshBatch(year, branch, token){
-    console.log('branch: ', branch);
-    console.log('year: ', year);
+    // console.log('branch: ', branch);
+    // console.log('year: ', year);
     try{
         let headers = {
             'Content-Type': 'application/json',

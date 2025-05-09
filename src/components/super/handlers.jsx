@@ -235,3 +235,31 @@ export async function fullRefresh(token) {
         };
     }
 }
+
+
+export async function refreshView(viewName,token){
+    // console.log('viewName: ', viewName);
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+    }
+    try {
+        const response = await fetch(`${BE_VM}/v2/admin/refreshView`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({ name:viewName })
+        });
+        if (!response.ok) {
+            throw new Error("Refresh for the view Failed");
+        }
+        const data = await response.json();
+        return data;
+    } catch (err) {
+        console.log(err);
+        return {
+            error: true,
+            message: "Refresh View Failed"
+        };
+    }
+
+}
