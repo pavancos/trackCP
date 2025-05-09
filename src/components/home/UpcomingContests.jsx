@@ -42,7 +42,8 @@ function UpcomingContests() {
 
     const fetchUpcommingContests = async () => {
         try {
-            const url = 'https://getdata-contests.vercel.app/getLatestContest';
+            // const url = 'https://getdata-contests.vercel.app/getLatestContest';
+            const url = `${BE_VM}/v2/getUpcoming`;
             const response = await fetch(url);
             const data = await response.json();
             // console.log('data: ', data);
