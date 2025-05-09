@@ -1,8 +1,9 @@
+import { BE_VM } from "../../config";
 export async function getBatches(token) {
     try {
         // const response = await fetch('http://localhost:4000/v2/admin/batches', {
         // const response = await fetch('https://v2contestinfo.onrender.com/v2/admin/batches', {
-        const response = await fetch('https://contestinfov2.vercel.app/v2/admin/batches', {
+        const response = await fetch(`${BE_VM}/v2/admin/batches`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -16,7 +17,7 @@ export async function getBatches(token) {
         return data;
     } catch (err) {
         console.log(err);
-        return [];
+        throw new Error("Batch Not Found");
     }
 }
 
@@ -28,7 +29,7 @@ export async function getStudents(year, branch, token) {
     try {
         // const response = await fetch('http://localhost:4000/v2/admin/students',{
         // const response = await fetch('https://v2contestinfo.onrender.com/v2/admin/students', {
-        const response = await fetch('https://contestinfov2.vercel.app/v2/admin/students', {
+        const response = await fetch(`${BE_VM}/v2/admin/students`, {
             method: 'POST',
             headers,
             body: JSON.stringify({ year, branch })
@@ -58,7 +59,7 @@ export async function refreshStudent(rollNo, year, branch, token) {
     }
     try {
         // const response = await fetch('http://localhost:4000/v2/admin/refreshStudent',{
-            const response = await fetch('https://v2contestinfo.onrender.com/v2/admin/refreshStudent', {
+            const response = await fetch(`${BE_VM}/v2/admin/refreshStudent`, {
             method: 'PUT',
             headers,
             body: JSON.stringify({ rollNo, year, branch })
@@ -85,14 +86,21 @@ export async function refreshStudent(rollNo, year, branch, token) {
 }
 export async function getViews() {
     try {
-        const response = await fetch('https://contestinfov2.vercel.app/v2/batch/views', {
+        const response = await fetch(`${BE_VM}/v2/batch/views`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             }
         });
-        if (!response.ok) {
+        if (!response.ok && response.status !== 404) {
             throw new Error("Views Not Found");
+        }
+        if (response.status === 404) {
+            return {
+                error: false,
+                message: "No Views Found",
+                views: []
+            };
         }
         const data = await response.json();
         return data;
@@ -108,7 +116,7 @@ export async function addView(name,rollNumbers,token){
         'Authorization': `Bearer ${token}`
     }
     // const res = await fetch('https://v2contestinfo.onrender.com/v2/admin/newView',{
-    const res = await fetch('https://contestinfov2.vercel.app/v2/admin/newView',{
+    const res = await fetch(`${BE_VM}/v2/admin/newView`,{
         method: 'POST',
         headers,
         body: JSON.stringify({ name, rollNumbers })
@@ -130,7 +138,7 @@ export async function removeStudentsFromView(name,rollNumbers,token){
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
     }
-    const res = await fetch('https://contestinfov2.vercel.app/v2/admin/removeStudentsFromView',{
+    const res = await fetch(`${BE_VM}/v2/admin/removeStudentsFromView`,{
         method: 'POST',
         headers,
         body: JSON.stringify({ name, rollNumbers })
@@ -152,7 +160,7 @@ export async function addStudentsToView(name,rollNumbers,token){
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
     }
-    const res = await fetch('https://contestinfov2.vercel.app/v2/admin/addStudentsToView',{
+    const res = await fetch(`${BE_VM}/v2/admin/addStudentsToView`,{
         method: 'POST',
         headers,
         body: JSON.stringify({ name, rollNumbers })
@@ -179,7 +187,7 @@ export async function getViewStudents(name, token) {
     try {
         // const response = await fetch('http://localhost:8000/v2/admin/viewStudents', {
         // const response = await fetch('https://v2contestinfo.onrender.com/v2/admin/viewStudents', {
-        const response = await fetch('https://contestinfov2.vercel.app/v2/admin/viewStudents', {
+        const response = await fetch(`${BE_VM}/v2/admin/viewStudents`, {
             method: 'POST',
             headers,
             body: JSON.stringify({ name })
@@ -200,6 +208,30 @@ export async function getViewStudents(name, token) {
         return {
             error: true,
             message: "Something went wrong"
+        };
+    }
+}
+
+export async function fullRefresh(token) {
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+    }
+    try {
+        const response = await fetch(`${BE_VM}/v2/admin/fullRefresh`, {
+            method: 'POST',
+            headers
+        });
+        if (!response.ok) {
+            throw new Error("Full Refresh Failed");
+        }
+        const data = await response.json();
+        return data;
+    } catch (err) {
+        console.log(err);
+        return {
+            error: true,
+            message: "Full Refresh Failed"
         };
     }
 }

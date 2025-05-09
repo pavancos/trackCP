@@ -5,6 +5,7 @@ import Loading from "../Loading";
 import StudentTable from "./StudentTable";
 import { combineContests } from "./StudentUtil/chartUtils";
 import { set } from "react-ga";
+import { BE_VM } from "../../config";
 const Student = () => {
     let { rollNo } = useParams();
     const [studentInfo, setStudentInfo] = useState(null);
@@ -18,7 +19,8 @@ const Student = () => {
                 rollNo = rollNo.toUpperCase();
                 const response = await fetch(
                     // `https://v2contestinfo.onrender.com/v2/student/?rollNo=${rollNo}`
-                    `https://contestinfov2.vercel.app/v2/student/?rollNo=${rollNo}`
+                    // `https://contestinfov2.vercel.app/v2/student/?rollNo=${rollNo}`
+                    `${BE_VM}/v2/student/?rollNo=${rollNo}`
                 );
                 if (!response.ok) {
                     throw new Error("Student Not Found");

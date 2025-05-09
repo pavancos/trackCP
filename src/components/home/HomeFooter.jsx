@@ -46,13 +46,13 @@ function HomeFooter() {
       <div className='devNames font-sans flex gap-3 px-3 sm:px-7'>
         <a
           className='hover:text-orange-400 transition duration-300'
-          href='https://www.linkedin.com/in/vigneshvaranasi'
+          href='https://vigneshvaranasi.in'
         >
           @<span className='font-mono'>Vignesh Varanasi</span>
         </a>
         <a
           className='hover:text-orange-400 transition duration-300'
-          href='https://www.linkedin.com/in/pavankch/'
+          href='https://pavanc.me'
         >
           @<span className='font-mono'>Pavan Chennupati</span>
         </a>

@@ -18,7 +18,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-
+import { BE_VM } from '../../config'
 
 function UpcomingContests() {
     const [upcoming, setUpcoming] = useState([]);

@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { filterBatch } from './BatchUtil';
 import BatchTable from './BatchTable';
 import batchReportToXlsx from '../../utils/BatchReportXlsx';
-
+import { BE_VM } from '../../config';
 function Batch() {
     const { year, branch, name } = useParams();
     const [isFetched, setIsFetched] = useState(false);
@@ -51,7 +51,7 @@ function Batch() {
                 // const response = await fetch(`https://v2contestinfo.onrender.com/v2/batch${query}`,{
                 let response;
                 if(name){
-                    response = await fetch(`https://contestinfov2.vercel.app/v2/batch/view`,{
+                    response = await fetch(`${BE_VM}/v2/batch/view`,{
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -61,7 +61,7 @@ function Batch() {
                         })
                     });
                 }else{
-                    response = await fetch(`https://contestinfov2.vercel.app/v2/batch${query}`,{
+                    response = await fetch(`${BE_VM}/v2/batch${query}`,{
                         method: 'GET'
                     });
                 }
@@ -70,7 +70,7 @@ function Batch() {
                 }
                 const data = await response.json();
                 setBatchData(filterBatch(data));
-                // console.log(data);
+                console.log(data);
             }catch(err){
                 console.log(err);
                 setError(err.message);

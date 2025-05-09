@@ -7,7 +7,6 @@ import AtcoderChart from '../Charts/AtcoderChart';
 import Loading from '../Loading';
 import toast from 'react-hot-toast';
 import { Navigate } from 'react-router-dom';
-
 const Play = ({ sno }) => {
     // console.log('sno: ', sno);
     const { register, handleSubmit } = useForm();

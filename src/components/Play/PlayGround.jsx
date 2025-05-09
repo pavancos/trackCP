@@ -5,7 +5,6 @@ import CodechefChart from '../Charts/CodechefChart';
 import LeetcodeChart from '../Charts/LeetcodeChart';
 import Loading from '../Loading';
 import toast from 'react-hot-toast';
-
 const PlayGround = () => {
     const { register, handleSubmit } = useForm();
     const [isCodeChefSelected, setIsCodeChefSelected] = useState(true);

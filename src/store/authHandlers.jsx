@@ -1,3 +1,4 @@
+import { BE_VM } from "../config";
 export async function verifyUser(token){
     if (!token) {
         // console.log("Token not provided");
@@ -11,7 +12,8 @@ export async function verifyUser(token){
     try {
         // const response = await fetch('http://localhost:4000/v2/auth/verify', {
         // const response = await fetch('https://v2contestinfo.onrender.com/v2/auth/verify', {
-        const response = await fetch('https://contestinfov2.vercel.app/v2/auth/verify', {
+        // const response = await fetch('https://contestinfov2.vercel.app/v2/auth/verify', {
+        const response = await fetch(`${BE_VM}/v2/auth/verify`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -20,13 +22,14 @@ export async function verifyUser(token){
         });
         if (!response.ok) {
             return {
-                isAuthenticated: false,
+                isAuthenticated: null,
                 token: null,
                 username: null,
                 role: null,
             };
         }
         const data = await response.json();
+        // console.log('data: ', data);
         if(data.error){
             return {
                 isAuthenticated: false,

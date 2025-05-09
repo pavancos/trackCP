@@ -17,8 +17,13 @@ const BatchReport = () => {
     })
     getViews()
       .then(data => {
-        setViews(data.views)
-        console.log(data.views)
+        // console.log('data: ', data)
+        if (!data || !data.views) {
+          setViews([])
+        } else {
+          setViews(data.views)
+        }
+        // console.log(data.views)
       })
       .then(() => {
         setIsLoaded(true)
@@ -29,16 +34,21 @@ const BatchReport = () => {
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm()
+  } = useForm({
+    defaultValues: {
+      year: 'all',
+      branch: 'all',
+      view: 'none'
+    }
+  })
   const navigate = useNavigate()
   const onSubmit = data => {
-    // console.log(data);
-    if(data.view !== 'none') {
-        console.log(data.view);
-        navigate(`/view/${data.view}`)
-        return
+    if (data.view && data.view !== 'none') {
+      navigate(`/view/${data.view}`)
+    } 
+    else {
+      navigate(`/batch/${data.year}/${data.branch}`)
     }
-    navigate(`/batch/${data.year}/${data.branch}`)
   }
 
   return (
@@ -90,21 +100,26 @@ const BatchReport = () => {
           {errors.branch && (
             <p className='text-red-500 text-sm'>{errors.branch.message}</p>
           )}
-          <p className='text-center mt-4 font-semibold text-lg'>or</p>
-          <label className='labelText'>View</label>
-          <select
-            {...register('view')}
-            className='w-full bg-white border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent  hover:bg-gray-100 transition duration-300 ease-in-out mb-2'
-          >
-            <option value='none'>Select a View</option>
-            {views.map(view => (
-              <option key={view} value={view}>
-                {view}
-              </option>
-            ))}
-          </select>
-          {errors.view && (
-            <p className='text-red-500 text-sm'>{errors.view.message}</p>
+
+          {views.length > 0 && (
+            <>
+              <p className='text-center mt-4 font-semibold text-lg'>or</p>
+              <label className='labelText'>View</label>
+              <select
+                {...register('view')}
+                className='w-full bg-white border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent  hover:bg-gray-100 transition duration-300 ease-in-out mb-2'
+              >
+                <option value='none'>Select a View</option>
+                {views.map(view => (
+                  <option key={view} value={view}>
+                    {view}
+                  </option>
+                ))}
+              </select>
+              {errors.view && (
+                <p className='text-red-500 text-sm'>{errors.view.message}</p>
+              )}
+            </>
           )}
 
           <button

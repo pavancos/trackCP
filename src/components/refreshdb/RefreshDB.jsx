@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Loading from '../Loading';
-
+import { BE_VM } from '../../config';
 function RefreshDB() {
     const [isRefreshed, setIsRefreshed] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -8,7 +8,7 @@ function RefreshDB() {
     async function refreshDB() {
         setIsLoading(true);
         try {
-            const response = await fetch(`https://contestinfo-m59t.onrender.com/data`);
+            const response = await fetch(`${BE_VM}/data`);
             const data = await response.json();
             // console.log('data: ', data);
             setIsRefreshed(true);

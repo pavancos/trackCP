@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import ContestTable from './ContestTable';
 import toast from 'react-hot-toast';
 import contestAnalysisToXlsx from '../../utils/ContestAnalysisXlsx';
-
+import { BE_VM } from '../../config';
 const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
     const { register, handleSubmit } = useForm();
 
@@ -15,7 +15,7 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
     async function fetchContests() {
         try {
             // const res = await fetch('https://v2contestinfo.onrender.com/v2/contest/getContests');
-            const res = await fetch('https://contestinfov2.vercel.app/v2/contest/getContests');
+            const res = await fetch(BE_VM+'/v2/contest/getContests');
             const data = await res.json();
             setContests(data.contests);
             // console.log('data.contests: ', data.contests);
@@ -40,7 +40,7 @@ const ContestAnalysis = ({ studentsInfo, isFetchedFromAPI }) => {
             // if 404 print toast saying contest not found
             // let res = await fetch('http://localhost:4000/v2/contest?contestName=' + data.contestName);
             // let res = await fetch('https://v2contestinfo.onrender.com/v2/contest/id/'+data._id);
-            let res = await fetch('https://contestinfov2.vercel.app/v2/contest/id/'+data._id);
+            let res = await fetch(BE_VM+'/v2/contest/id/'+data._id);
             // let res = await fetch('http://localhost:4000/v2/contest/id/'+data._id);
             res.json().then((data) => {
                 setContestData(data);

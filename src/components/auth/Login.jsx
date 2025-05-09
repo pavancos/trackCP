@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../../store/authContext";
 import { useEffect } from "react";
 import toast from 'react-hot-toast';
+import {BE_VM} from '../../config'
 
 const Login = () => {
   const { login,authState } = useAuth();
@@ -26,7 +27,7 @@ const Login = () => {
     try {
       // const response = await fetch('http://localhost:4000/v2/auth/login', {
 /*       const response = await fetch('https://v2contestinfo.onrender.com/v2/auth/login', { */
-      const response = await fetch('https://contestinfov2.vercel.app/v2/auth/login', {
+      const response = await fetch(BE_VM+'/v2/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -35,6 +36,7 @@ const Login = () => {
       });
 
       const res = await response.json();
+      // console.log('res: ', res);
 
       if (!res.error) {
         login(res.token, res.username, res.role);
