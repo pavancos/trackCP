@@ -1,12 +1,13 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../store/authContext";
-import { getStudents } from "../handlers";
+import { addStudentsJson, getStudents } from "../handlers";
 import Loading from "../../Loading";
 import StudentConfigTable from "./StudentConfigTable";
 import { useNavigate } from "react-router-dom";
 import AddStudent from "../modals/AddStudent";
 import usernamesToXlsx from "../../../utils/UsernamesXlsx";
+import { toast } from "react-hot-toast";
 
 const StudentConfig = () => {
     const { year, branch } = useParams();
@@ -50,15 +51,22 @@ const StudentConfig = () => {
         setIsModalVisible(false);
         setStudentToEdit(null);
     };
-    const handleAddStudentJSON = (event) => {
+    const handleAddStudentJSON =  (event) => {
         const file = event.target.files[0];
         if (!file) return;
         const reader = new FileReader();
-        reader.onload = (e) => {
+        reader.onload = async (e) => {
             try {
                 const data = JSON.parse(e.target.result);
                 if (Array.isArray(data)) {
                     setStudents([...students, ...data]);
+                    const res = await addStudentsJson(year,branch,data,authState.token);
+                    // console.log('res: ', res);
+                    if (res.error) {
+                        toast.error("Error adding students: " + res.message);
+                        return;
+                    }
+                    toast.success(`${res.message}`);
                 } else {
                     toast.error("Invalid JSON format. Expected an array.");
                 }

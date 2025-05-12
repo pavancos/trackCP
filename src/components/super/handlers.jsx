@@ -261,5 +261,34 @@ export async function refreshView(viewName,token){
             message: "Refresh View Failed"
         };
     }
+    
+}
 
+export async function addStudentsJson(year,branch,studentsList,token){
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+    }
+    // console.log("Hello");
+    try {
+        const response = await fetch(`${BE_VM}/v2/admin/newStudents`, {
+        // const response = await fetch(`https://8z236w0s-8000.inc1.devtunnels.ms/v2/admin/newStudents`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({ year:year,branch:branch,students:studentsList })
+        });
+        if (!response.ok) {
+            throw new Error("Adding Students failed");
+        }
+        const data = await response.json();
+        console.log('data: ', data);
+        return data;
+    } catch (err) {
+        console.log(err);
+        return {
+            error: true,
+            message: "Adding Students failed"
+        };
+    }
+    
 }
