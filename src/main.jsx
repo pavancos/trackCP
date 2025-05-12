@@ -7,6 +7,6 @@ import { HelmetProvider } from 'react-helmet-async'
 ReactGA.initialize(import.meta.env.VITE_GA_MEASUREMENT_ID)
 ReactDOM.createRoot(document.getElementById('root')).render(
   <HelmetProvider>
-    <App />
+      <App />
   </HelmetProvider>
 )

@@ -20,7 +20,7 @@ import ProtectedRoutes from './components/protectedroutes/ProtectedRoute';
 import StudentConfig from './components/super/studentconfig/StudentConfig';
 import { ToastBar, Toaster } from 'react-hot-toast';
 import ViewConfig from './components/super/viewconfig/ViewConfig';
-
+import NotFound from './components/NotFound';
 function App() {
   const router = createBrowserRouter([
     {
@@ -69,6 +69,10 @@ function App() {
           element:<ViewConfig/>
         }
       ]
+    },
+    {
+      path: '*',
+      element: <NotFound />
     }
     
   ]);
