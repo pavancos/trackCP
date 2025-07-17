@@ -46,6 +46,10 @@ function UpcomingContests() {
             const url = `${BE_VM}/v2/getUpcoming`;
             const response = await fetch(url);
             const data = await response.json();
+            if (response.status === 404) {
+                console.error("No Contests Found");
+                return [];
+            }
             // console.log('data: ', data);
             data.result.sort((a, b) => new Date(a.start) - new Date(b.start));
             if (response.ok) {
@@ -209,6 +213,12 @@ function UpcomingContests() {
                                     <p className="text-md p-2 pb-2 px-0"><span className='font-semibold'></span> {<Skeleton />} </p>
                                 </div>
                             </>
+                            :
+                            upcoming.length === 0 ?
+                                <div className="flex flex-col w-80 h-64 p-6 pb-4 sm:pe-4 bg-[#f5f5f5] rounded-28px hover:scale-[1.01] transition-all">
+                                    <h2 className='text-2xl font-semibold mb-2'>No Upcoming Contests</h2>
+                                    <p className="text-md">There are no upcoming contests in the next 2 weeks.</p>
+                                </div>
                             :
                             upcoming.map((contest, index) => {
                                 return (
