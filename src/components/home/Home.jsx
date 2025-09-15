@@ -90,6 +90,11 @@ function Home() {
         </div>
       </div>
 
+      <div
+        className='border-2 border-[#fcad00] rounded-lg text-yellow-700 p-4 mb-8 max-w-xs mx-auto'
+      >
+        <h2 className='text-xl font-semibold mb-2 text-center'>Site is under maintenance</h2>
+      </div>
       {/* <div style={{ height: '100vh' }}> */}
         <UpcomingContests />
       {/* </div> */}

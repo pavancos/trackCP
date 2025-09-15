@@ -26,6 +26,7 @@ function UpcomingContests() {
     const [atStart, setAtStart] = useState(true);
     const [atEnd, setAtEnd] = useState(false);
     const [isFetchedUpcomingContests, setIsFetchedUpcomingContests] = useState(false);
+    const [fetchError, setFetchError] = useState(false);
 
     const formatToIST = (dateString) => {
         const gmtDate = new Date(dateString);
@@ -59,7 +60,8 @@ function UpcomingContests() {
             }
         } catch (err) {
             console.error(err);
-            return null;
+            setFetchError(true);
+            return [];
         }
         finally {
             setIsFetchedUpcomingContests(true);
@@ -111,8 +113,7 @@ function UpcomingContests() {
 
     useEffect(() => {
         fetchUpcommingContests().then(data => {
-            // console.log(data);
-            setUpcoming(data);
+            setUpcoming(Array.isArray(data) ? data : []);
         });
     }, [])
 
@@ -214,7 +215,13 @@ function UpcomingContests() {
                                 </div>
                             </>
                             :
-                            upcoming.length === 0 ?
+                            fetchError ?
+                                <div className="flex flex-col w-80 h-64 p-6 pb-4 sm:pe-4  rounded-28px border ">
+                                    <h2 className='text-2xl font-semibold mb-2'>Server unavailable</h2>
+                                    <p className="text-md mb-4">We couldn't load upcoming contests right now. Please try again later.</p>
+                                </div>
+                            :
+                            (Array.isArray(upcoming) && upcoming.length === 0) ?
                                 <div className="flex flex-col w-80 h-64 p-6 pb-4 sm:pe-4 bg-[#f5f5f5] rounded-28px hover:scale-[1.01] transition-all">
                                     <h2 className='text-2xl font-semibold mb-2'>No Upcoming Contests</h2>
                                     <p className="text-md">There are no upcoming contests in the next 2 weeks.</p>
