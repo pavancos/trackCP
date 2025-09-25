@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import './Home.css'
@@ -7,9 +7,11 @@ import UpcomingContests from './UpcomingContests'
 import BatchRepportSection from './BatchRepportSection'
 import HomeFooter from './HomeFooter'
 import { Helmet } from 'react-helmet-async'
+import { BE_VC, BE_VM } from '../../config'
 
 
 function Home() {
+  const [isSiteUp,setIsSiteUp]=useState(true)
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     // hide bubbles
@@ -30,6 +32,22 @@ function Home() {
       // ease: 'elastic.out(0.9, 0.5)',
     });
   }, [])
+
+  async function healthCheck(){
+    try{
+      const res = await fetch(`${BE_VM}`)
+      if(res.status!=200){
+        setIsSiteUp(false)
+      }
+    }
+    catch(err){
+      console.log('err: ', err);
+      setIsSiteUp(false)
+    }
+  }
+  useEffect(()=>{
+    healthCheck()
+  },[])
   return (
     <>
     <Helmet>
@@ -90,11 +108,14 @@ function Home() {
         </div>
       </div>
 
-      <div
-        className='border-2 border-[#fcad00] rounded-lg text-yellow-700 p-4 mb-8 max-w-xs mx-auto'
-      >
-        <h2 className='text-xl font-semibold mb-2 text-center'>Site is under maintenance</h2>
-      </div>
+      {
+        !isSiteUp &&
+        <div
+          className='border-2 border-[#fcad00] rounded-lg text-yellow-700 p-4 mb-8 max-w-xs mx-auto'
+        >
+          <h2 className='text-xl font-semibold mb-2 text-center'>Site is under maintenance</h2>
+        </div>
+      }
       {/* <div style={{ height: '100vh' }}> */}
         <UpcomingContests />
       {/* </div> */}
