@@ -1,0 +1,30 @@
+<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="trophyBody" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#fde68a" />
+        <stop offset="50%" stopColor="#facc15" />
+        <stop offset="100%" stopColor="#f97316" />
+      </linearGradient>
+      <linearGradient id="trophyBase" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#e5e7eb" />
+        <stop offset="100%" stopColor="#9ca3af" />
+      </linearGradient>
+    </defs>
+    <path d="M16 18C12 18 9 21 9 25C9 30 12.5 34 18 35" stroke="#e5e7eb" strokeWidth="2" strokeLinecap="round" />
+    <path d="M48 18C52 18 55 21 55 25C55 30 51.5 34 46 35" stroke="#e5e7eb" strokeWidth="2" strokeLinecap="round" />
+    <path
+      d="M20 14H44V26C44 32 39.5 38 32 38C24.5 38 20 32 20 26V14Z"
+      fill="url(#trophyBody)"
+      stroke="#fbbf24"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M32 19L33.7 22.8L37.8 23.1L34.6 25.8L35.6 29.8L32 27.7L28.4 29.8L29.4 25.8L26.2 23.1L30.3 22.8L32 19Z"
+      fill="#fef9c3"
+    />
+    <rect x="28" y="38" width="8" height="6" rx="2" fill="url(#trophyBody)" />
+    <rect x="24" y="46" width="16" height="4" rx="1" fill="url(#trophyBase)" />
+    <rect x="22" y="50" width="20" height="4" rx="1" fill="url(#trophyBase)" />
+  </svg>

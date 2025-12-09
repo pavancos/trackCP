@@ -21,6 +21,8 @@ import StudentConfig from './components/super/studentconfig/StudentConfig';
 import { ToastBar, Toaster } from 'react-hot-toast';
 import ViewConfig from './components/super/viewconfig/ViewConfig';
 import NotFound from './components/NotFound';
+import Rewind25 from './components/rewind25/Rewind25';
+import RewindStory from './components/rewind25/RewindStory';
 function App() {
   const router = createBrowserRouter([
     {
@@ -48,7 +50,9 @@ function App() {
         { path: 'compare', element: <Compare /> },
         { path: 'play', element: <PlayGround /> },
         { path: 'contestanalysis', element: <ContestAnalysis /> },
-        { path: 'rewind', element: <Rewind /> },
+        { path: 'rewind24', element: <Rewind /> },
+        { path: 'rewind25', element: <Rewind25 /> },
+        { path: 'rewind25/story', element: <RewindStory /> },
         { path: 'login', element: <Login /> },
       ]
     },

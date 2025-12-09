@@ -54,7 +54,7 @@ const Navbar = ({ toggleMenu, hamburgerIsOpen }) => {
                 <Link to="contestanalysis">Contest Analysis</Link>
               </li>
               <li>
-                <Link to="rewind">Rewind</Link>
+                <Link to="rewind25">Rewind</Link>
               </li>
             </>
           }

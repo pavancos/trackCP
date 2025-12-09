@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react";
 import PieChartComponent from "../Charts/StudentCharts/ProblemsPie";
 import Loading from "../Loading";
@@ -8,6 +8,7 @@ import { set } from "react-ga";
 import { BE_VM } from "../../config";
 const Student = () => {
     let { rollNo } = useParams();
+    const navigate = useNavigate();
     const [studentInfo, setStudentInfo] = useState(null);
     const [isFetched, setIsFetched] = useState(false);
     const [error, setError] = useState(null);
@@ -128,6 +129,25 @@ const Student = () => {
                     <h2>Spoj : 
                         <a className="ml-1 text-blue-600 hover:text-blue-800 hover:underline" href={`https://www.spoj.com/status/${studentInfo.spoj}`} target="_blank">{studentInfo.spoj}</a>
                     </h2>
+
+                    <button 
+                        onClick={() => {
+                            const params = new URLSearchParams();
+                            if (studentInfo.leetcode?.username) params.append('leetcode', studentInfo.leetcode.username);
+                            if (studentInfo.codeforces?.username) params.append('codeforces', studentInfo.codeforces.username);
+                            if (studentInfo.codechef?.username) params.append('codechef', studentInfo.codechef.username);
+                            navigate(`/rewind25/story?${params.toString()}`);
+                        }}
+                        className={`
+                            w-full mt-4 text-white 
+                            font-semibold py-2 px-4 rounded-md focus:outline-none 
+                            focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+                            bg-blue-500 hover:bg-blue-600
+                            transition duration-700 ease-in-out
+                        `}
+                    >
+                        View Rewind '25
+                    </button>
                 </div>
                 <div className="w-[500px] h-[300px] rounded-xl mr-3 my-3 ">
                     {problemsData && <PieChartComponent data={problemsData} />}

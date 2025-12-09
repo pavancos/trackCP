@@ -53,7 +53,7 @@ function Menu({ toggleMenu }) {
                                 <Link onClick={toggleMenu} to="contestanalysis">Contest Analysis</Link>
                             </li>
                             <li>
-                                <Link onClick={toggleMenu} to="rewind">Rewind</Link>
+                                <Link onClick={toggleMenu} to="rewind25">Rewind</Link>
                             </li>
                         </>
                     }

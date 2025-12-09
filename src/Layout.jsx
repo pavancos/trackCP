@@ -47,7 +47,7 @@ function Layout() {
   };
 
   const isHomePage = location.pathname === '/';
-  const isrewind = location.pathname === '/rewind';
+  const isrewind = location.pathname === '/rewind24' || location.pathname.startsWith('/rewind25');
 
 
   const [hamburgerIsOpen, setHamburgerIsOpen] = useState(false);
