@@ -22,17 +22,13 @@ const Rewind25 = () => {
     document.body.style.backgroundColor = '#000000';
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
-    document.body.style.position = 'fixed';
-    document.body.style.width = '100%';
-    document.body.style.height = '100%';
+    document.body.style.overscrollBehavior = 'none';
     
     return () => {
       document.body.style.backgroundColor = originalStyle;
       document.body.style.overflow = originalOverflow;
       document.documentElement.style.overflow = originalHtmlOverflow;
-      document.body.style.position = '';
-      document.body.style.width = '';
-      document.body.style.height = '';
+      document.body.style.overscrollBehavior = '';
     };
   }, []);
 
@@ -81,7 +77,7 @@ const Rewind25 = () => {
   };
 
   return (
-    <div className="h-[100dvh] w-full bg-black flex flex-col items-center justify-center p-6 text-white overflow-hidden font-sans fixed inset-0 touch-none">
+    <div className="min-h-[100dvh] w-full bg-black flex flex-col items-center justify-center p-6 text-white overflow-hidden font-sans relative overscroll-none">
         {/* Back Button */}
         {/* <button 
             onClick={() => navigate('/')}
@@ -114,6 +110,8 @@ const Rewind25 = () => {
             <motion.div key={platform} variants={itemVariants} className="relative group">
                 <input
                 type="text"
+                name={platform.toLowerCase()}
+                autoComplete="on"
                 value={usernames[platform.toLowerCase()]}
                 onChange={(e) => handleInputChange(platform.toLowerCase(), e.target.value)}
                 placeholder={`Enter ${platform} Username`}
