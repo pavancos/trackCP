@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import rewindLogo from '../../assets/rewind/rewind25logo.svg';
 import rewindLogoOld from '../../assets/rewind/rewindlogo.svg';
 import leftArrow from '../../assets/left-arrow.svg';
@@ -78,6 +79,14 @@ const Rewind25 = () => {
 
   return (
     <div className="min-h-[100dvh] w-full bg-black flex flex-col items-center justify-center p-6 text-white overflow-hidden font-sans relative overscroll-none">
+        <Helmet>
+            <title>Rewind '25 | TrackCode</title>
+            <meta name="description" content="Unwrap your 2025 Competitive Programming journey. Visualize your stats from LeetCode, Codeforces, and CodeChef." />
+            <meta property="og:title" content="Rewind '25 | TrackCode" />
+            <meta property="og:description" content="Unwrap your 2025 Competitive Programming journey. Visualize your stats from LeetCode, Codeforces, and CodeChef." />
+            <meta name="theme-color" content="#000000" />
+        </Helmet>
+
         {/* Back Button */}
         {/* <button 
             onClick={() => navigate('/')}
