@@ -51,7 +51,7 @@ export const TotalProblemsSlide = ({ data }) => {
             className="mt-12 px-6 py-2 border border-emerald-500/30 rounded-full bg-emerald-900/20 backdrop-blur-sm"
         >
             <p className="text-sm text-emerald-200 font-mono">
-                One by one. Line by line.
+                * In Contests Only
             </p>
         </motion.div>
 

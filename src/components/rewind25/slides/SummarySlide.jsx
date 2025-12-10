@@ -16,7 +16,7 @@ const RollingDigit = ({ char, delay }) => {
   const targetIndex = 9 - digit;
   
   return (
-    <div className="relative h-[1em] inline-block overflow-hidden">
+    <div className="relative h-[1em] inline-block overflow-hidden p-0.5">
       <motion.div
         initial={{ y: "-90%" }}
         animate={{ y: `-${targetIndex * 10}%` }}
@@ -237,12 +237,13 @@ export const SummarySlide = ({ data }) => {
             </div>
 
             {/* Middle Section - Hero Stat */}
-            <div className="flex flex-col items-center justify-center  border-b border-neutral-800 py-4 my-1 md:my-2 md:py-7 relative">
+            <div className="flex flex-col items-center justify-center  border-b border-neutral-800 py-4 my-1 md:my-1 md:py-5 relative">
                <div className="absolute inset-0 via-neutral-900/50 to-transparent pointer-events-none"></div>
                <span className="text-xs font-mono text-neutral-500 uppercase tracking-[0.3em] mb-4">Total Problems Solved</span>
                <div className="text-8xl font-black md:tracking-tighter text-neutral-200 leading-none flex overflow-hidden h-[1em]">
                  <RollingCounter value={data.totalProblemsSolved} />
                </div>
+               <span className="text-[10px] font-mono text-neutral-600 uppercase tracking-widest mt-2">* In Contests Only</span>
             </div>
 
             {/* Bottom Section - Details Grid */}
